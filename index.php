@@ -54,6 +54,30 @@
         </div>
     </section>
     <!-- End Hero -->
+    <!-- Start About Us -->
+    <section id="about" class="about">
+        <div class="container" data-aos="fade-up">
+            <div class="section-title">
+                <h2>About Us</h2>
+            </div>
+
+            <div class="row content">
+                <div class="col-lg-6">
+                    <p>
+                        Was born to make sure you never lose a parcel again.
+                        Be it tracking your orders internationally, locally or in your building we are here to help.
+                    </p>
+                </div>
+                <div class="col-lg-6 pt-4 pt-lg-0">
+                    <p>
+                        Log parcels for all major carriers including Pos Malaysia, J&T Express, Shopee Express, DHL Ecommerce and many more
+                    </p>
+                    <a href="#" class="btn-learn-more">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End About Us Section -->
 </body>
 
 </html>
