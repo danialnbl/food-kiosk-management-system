@@ -19,7 +19,7 @@
     <header id="header" class="fixed-top">
         <div class="container d-flex align-items-center">
 
-            <!-- <h1 class="logo me-auto"><a href="index.html">Arsha</a></h1> -->
+            <!-- <h1 class="logo me-auto"><a href="index.html">KIOSK</a></h1> -->
             <!-- Uncomment below if you prefer to use an image logo -->
             <a href="index.php" class="logo me-auto"><img src="https://kalam.ump.edu.my/pluginfile.php/1/core_admin/favicon/64x64/1698313381/android-chrome-512x512.png" alt="" class="img-fluid"></a>
 
