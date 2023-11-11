@@ -9,7 +9,7 @@
     <!-- Luar  -->
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <!-- <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"> -->
     <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
 
     <!-- Template Main CSS File -->
@@ -28,10 +28,10 @@
 
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a class="nav-link scrollto active" href="#">Home</a></li>
-                    <li><a class="nav-link scrollto" href="#about">About Us</a></li>
-                    <li><a class="nav-link scrollto" href="#team">Our Team</a></li>
-                    <li><a class="nav-link scrollto" href="#">Login</a></li>
+                    <li><a class="nav-link scrollto active" href="index.php">Home</a></li>
+                    <li><a class="nav-link scrollto" href="index.php#about">About Us</a></li>
+                    <li><a class="nav-link scrollto" href="index.php#team">Our Team</a></li>
+                    <li><a class="nav-link scrollto" href="login.php">Login</a></li>
                     <li><a class="getstarted scrollto" href="#">Get Started</a></li>
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
