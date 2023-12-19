@@ -6,6 +6,14 @@
     <title>Document</title>
 </head>
 <body>
+<?php
+        session_start();
+        if (!isset($_SESSION["User"])) {
+            header("Location:login.php");
+        }
+
+        include 'includes/connect.php';
+?>
     <p>Success In</p>
 </body>
 </html>
