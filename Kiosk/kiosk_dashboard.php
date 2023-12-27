@@ -3,7 +3,7 @@ session_start();
 //error_reporting(0);
 include('../includes/connect.php');
 if (!isset($_SESSION['User'])) {
-    //   header('location:../login.php');
+    header('location:../login.php');
 } else {
 ?>
 
@@ -103,6 +103,7 @@ if (!isset($_SESSION['User'])) {
                 </div>
             </div>
         </div>
+        <script src="../assets/js/dashboards-analytics.js"></script>
     </body>
 
     </html>
