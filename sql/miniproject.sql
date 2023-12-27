@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Dec 19, 2023 at 05:12 PM
+-- Generation Time: Dec 27, 2023 at 09:56 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.2.12
 
@@ -60,7 +60,10 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`UserID`, `FirstName`, `LastName`, `userName`, `password`, `Email`, `NumPhone`, `UserType`, `UserQR`) VALUES
-(1, 'John', 'Doe', 'johndoe', '123456', 'john.doe@example.com', '123-456-78', 'Customer', '-');
+(1, 'John', 'Doe', 'johndoe', '123456', 'john.doe@example.com', '123-456-78', 'Customer', '-'),
+(2, '', '', 'danialnbl', '$2y$10$Qd2hajR4HK.Ax2i4o77DfuWdkd7Ikp9jwBRwpKm4SlR', '', '', '', ''),
+(3, '', '', 'admin', '$2y$10$UDzphJEltIRJohUEOI5Xk..KSEIIyuPQQrJoz/yqciv', 'test@gmail.com', '', '', ''),
+(4, '', '', 'cb22151', '123456', 'dsa@gmail.com', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -113,7 +116,7 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `UserID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `UserID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `vendor`
