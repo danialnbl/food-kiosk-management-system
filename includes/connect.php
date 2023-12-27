@@ -1,7 +1,7 @@
 <!-- connect.php -->
 <!-- To connect between php scripting and database. -->
 <?php
-define("DATABASE_HOST", "localhost:3307");
+define("DATABASE_HOST", "localhost");
 define("DATABASE_USER", "root");
 
 // To establish a connection to database and save in Sconn
