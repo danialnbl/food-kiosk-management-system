@@ -32,7 +32,7 @@
                     <li><a class="nav-link scrollto" href="index.php#about">About Us</a></li>
                     <li><a class="nav-link scrollto" href="index.php#team">Our Team</a></li>
                     <li><a class="nav-link scrollto" href="login.php">Login</a></li>
-                    <li><a class="getstarted scrollto" href="#">Get Started</a></li>
+                    <li><a class="getstarted scrollto" href="registration.php">Get Started</a></li>
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->
@@ -102,7 +102,7 @@
               <div class="member-info">
                 <h4>Danial Nabil</h4>
                 <span>Group Leader</span>
-                <p>testing 1234524523414</p>
+                <p>Oversees and coordinates the work of the group</p>
                 <!-- <div class="social">
                   <a href=""><i class="ri-twitter-fill"></i></a>
                   <a href=""><i class="ri-facebook-fill"></i></a>

@@ -23,22 +23,24 @@
 
 include './includes/connect.php';
 
-// if ($_SERVER["REQUEST_METHOD"] == "POST") {
-//     $username = $_POST['username'];
-//     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username'];
+    // $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+    $password = $_POST['password'];
+    $email = $_POST['email'];
 
-//     $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
-//     $stmt = $conn->prepare($sql);
-//     $stmt->bind_param("ss", $username, $password);
+    $sql = "INSERT INTO user (userName, password, Email) VALUES (?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sss", $username, $password, $email);
 
-//     if ($stmt->execute()) {
-//         echo "Registration successful!";
-// 		header("Location: login.php");
-// 		exit;
-//     } else {
-//         echo "Error: " . $stmt->error;
-//     }
-// }
+    if ($stmt->execute()) {
+        echo "Registration successful!";
+		header("Location: login.php");
+		exit;
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+}
 ?>
 <!-- HTML form for user registration -->
 </head>
