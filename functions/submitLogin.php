@@ -17,7 +17,7 @@ if(isset($_POST['submit']))
             if(mysqli_fetch_assoc($result))
             {
                 $_SESSION['User']=$_POST['username'];
-                header("location:../student.php");
+                header("location:../Kiosk/kiosk_dashboard.php");
             }
             else
             {
