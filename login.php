@@ -2,11 +2,13 @@
 <html>
 
 <head>
-  <title>Sketchpad</title>
+  <title>Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- connect css -->
-  <link rel="stylesheet" type="text/css" href="assets/css/style2.scss">
+  
+  <?php include('includes/headsettings.php'); ?>
 
+  <!-- connect css -->
+<link rel="stylesheet" type="text/css" href="assets/css/style2.scss">
   <!-- HTML form for user login -->
 </head>
 

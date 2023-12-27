@@ -6,11 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
 
-    <!-- Luar  -->
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <!-- <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"> -->
-    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <?php include('includes/headsettings.php'); ?>
 
     <!-- Template Main CSS File -->
     <link href="assets/css/style.scss" rel="stylesheet">
@@ -52,7 +48,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-2 hero-img">
-                    <img src="assets/img/hero-img.png" class="img-fluid animated" alt="">
+                    <img src="assets/img/NasiLemak.png" class="img-fluid animated" alt="">
                 </div>
             </div>
         </div>
