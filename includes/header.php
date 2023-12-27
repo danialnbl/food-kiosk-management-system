@@ -19,7 +19,13 @@
             <a class="dropdown-item" href="#">
               <div class="d-flex">
                 <div class="flex-grow-1">
-                  <span class="fw-semibold d-block">John Doe</span>
+                <?php
+                  $userID = $_SESSION['User'];
+                  $username = getUsername($userID);
+                  ?>
+                  <span class="fw-semibold d-block">
+                    <?php echo "$username"; ?>
+                  </span>
                 </div>
               </div>
             </a>

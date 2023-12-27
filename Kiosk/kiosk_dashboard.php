@@ -2,6 +2,7 @@
 session_start();
 //error_reporting(0);
 include('../includes/connect.php');
+include('../functions/functions.php');
 if (!isset($_SESSION['User'])) {
     header('location:../login.php');
 } else {
