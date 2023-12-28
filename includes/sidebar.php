@@ -24,7 +24,7 @@
         </li>
         <!-- Layouts for Vendor -->
         <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link">
+            <a href="manage_menu.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-folder"></i>
                 <div data-i18n="Layouts">Manage Menu</div>
             </a>

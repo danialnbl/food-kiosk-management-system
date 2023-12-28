@@ -6,7 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
 
-    <?php include('includes/headsettings.php'); ?>
+    <!-- Favicon -->
+    <link rel="icon" href="https://umpsa.edu.my/themes/pana/favicon.ico" />
+
+    <!-- Luar  -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <!-- <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"> -->
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
 
     <!-- Template Main CSS File -->
     <link href="assets/css/style.scss" rel="stylesheet">
