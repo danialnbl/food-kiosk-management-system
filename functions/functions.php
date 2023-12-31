@@ -15,11 +15,11 @@ function getUsername($session)
 {
     global $conn;
 
-    $sql = "SELECT * FROM user WHERE userName = '$session'";
+    $sql = "SELECT * FROM user WHERE UserName = '$session'";
     $result = $conn->query($sql);
 
     $row = $result->fetch_assoc();
-    return $row['userName'];
+    return $row['UserName'];
     // return $_SESSION['User'];
 }
 
