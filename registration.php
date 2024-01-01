@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Sketchpad</title>
+    <title>Register</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- connect css -->
     <link rel="stylesheet" type="text/css" href="assets/css/style2.scss">
+    <!-- Favicon -->
+    <link rel="icon" href="https://umpsa.edu.my/themes/pana/favicon.ico" />
 </head>
 <body>
-<img src="assets/img/logo.png" alt="Vendor" width="180" height="100">
+<a href="index.php">
+    <img src="assets/img/logo.png" alt="Vendor" width="180" height="100">
+  </a>
 <div class="form">
     <h1 class="title"><i>Food Kiosk Management System</i></h1>
         <div class="container"> 

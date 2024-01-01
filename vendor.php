@@ -1,67 +1,52 @@
-
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Sketchpad</title>
+    <title>Register</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- connect css -->
     <link rel="stylesheet" type="text/css" href="assets/css/style2.scss">
 
-<?php
-// // Database connection parameters
-// $servername = "localhost";
-// $username = "root";
-// $password = '';
-// $database = "miniproject";
-
-// // Create a connection to the database
-// $conn = new mysqli($servername, $username, $password, $database);
-
-// // Check the connection
-// if ($conn->connect_error) {
-//     die("Connection failed: " . $conn->connect_error);
-// }
-
-include './includes/connect.php';
-
-// if ($_SERVER["REQUEST_METHOD"] == "POST") {
-//     $username = $_POST['username'];
-//     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-
-//     $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
-//     $stmt = $conn->prepare($sql);
-//     $stmt->bind_param("ss", $username, $password);
-
-//     if ($stmt->execute()) {
-//         echo "Registration successful!";
-// 		header("Location: login.php");
-// 		exit;
-//     } else {
-//         echo "Error: " . $stmt->error;
-//     }
-// }
-?>
-<!-- HTML form for user registration -->
+    <?php
+    include './includes/connect.php';
+    ?>
+    <!-- HTML form for user registration -->
 </head>
+
 <body>
-<img src="assets/img/logo.png" alt="Vendor" width="180" height="100">
-<div class="form">
-    <h1 class="title"><i>Vendor Registration Form</i></h1>
-    <form action="" method="post" name="registration">
+    <a href="index.php">
+        <img src="assets/img/logo.png" alt="Vendor" width="180" height="100">
+    </a>
+    <div class="form">
+        <h1 class="title"><i>Vendor Registration Form</i></h1>
         <div class="container">
-            Email:  <input type="text" name="email" placeholder="Email" required />
-            Username:  <input type="text" name="username" placeholder="Username" required />
-            Password:  <input type="password" name="password" placeholder="Password" required />    
-            Business Name  <input type="password" name="business" placeholder="Business Name" required />
-            Business Description <input type="password" name="description" placeholder="Description" required />
-            <input name="submit" type="submit" value="Submit"/>
-            <a href="registration.php">
-            </a>
-    </form>
+            <form method="post" name="registration">
+                Vendor Name: <input type="text" name="vendorName" placeholder="Business Name" required />
+                Email: <input type="text" name="email" placeholder="Email" required />
+                Password: <input type="password" name="password" placeholder="Password" required />
+                Phone Number: <input type="text" name="phoneNum" placeholder="Phone Number" required />
+                <input id="submitBtn" name="submitBtn" type="submit" value="Submit" />
+            </form>
             <a href="registration.php"><button>Back</button></a>
             <p>This form will be send to the administration for approval.</p>
         </div>
-</div>
-</form>
+    </div>
+
+    <?php
+
+    if (isset($_POST['submitBtn'])) {
+
+        $vendorName = $_POST['vendorName'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $phoneNum = $_POST['phoneNum'];
+
+        $query = mysqli_query($conn, "INSERT INTO vendor (VendorName, VendorEmail, VendorPassword, VendorNum, ApprovalStatus,KioskID) VALUES ('$vendorName','$email','$password','$phoneNum','Pending',1)");
+
+    }
+
+    ?>
+
 </body>
+
 </html>
