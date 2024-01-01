@@ -21,7 +21,14 @@
                 <div class="flex-grow-1">
                 <?php
                   $userID = $_SESSION['User'];
-                  $username = getUsername($userID);
+                  $role = $_SESSION['Role'];
+                  
+                  if($role == 1){
+                    $username = getVendorUsername($userID);
+                  }else{
+                    $username = getUsername($userID);
+                  }
+                  
                   ?>
                   <span class="fw-semibold d-block">
                     <?php echo "$username"; ?>

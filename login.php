@@ -5,7 +5,8 @@
   <title>Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <?php include('includes/headsettings.php'); ?>
+  <!-- Favicon -->
+  <link rel="icon" href="https://umpsa.edu.my/themes/pana/favicon.ico" />
 
   <!-- Luar  -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">

@@ -4,7 +4,7 @@ function getVendorUsername($session)
 {
     global $conn;
 
-    $sql = "SELECT VendorName FROM vendor WHERE VendorName = $session";
+    $sql = "SELECT VendorName FROM vendor WHERE VendorEmail = '$session'";
     $result = $conn->query($sql);
 
     $row = $result->fetch_assoc();

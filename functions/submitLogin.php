@@ -5,18 +5,31 @@ require_once('../includes/connect.php');
 
 if(isset($_POST['submit']))
     {
-       if(empty($_POST['username']) || empty($_POST['password']))
+       if($_POST['userType'] == "Vendor")
        {
-            
-       }
-       else
-       {
-            $query="select * from user where userName='".$_POST['username']."' and password='".$_POST['password']."'";
+            $query="select * from vendor where VendorEmail='".$_POST['username']."' and VendorPassword='".$_POST['password']."'";
             $result=mysqli_query($conn,$query);
 
             if(mysqli_fetch_assoc($result))
             {
                 $_SESSION['User']=$_POST['username'];
+                $_SESSION['Role']=1;
+                header("location:../Kiosk/kiosk_dashboard.php");
+            }
+            else
+            {
+                header("location:../wrongDetails.php?Invalid= Please Enter Correct User Name and Password ");
+            }
+       }
+       else if($_POST['userType'] == "Customer")
+       {
+            $query="select * from user where UserName='".$_POST['username']."' and Password='".$_POST['password']."'";
+            $result=mysqli_query($conn,$query);
+
+            if(mysqli_fetch_assoc($result))
+            {
+                $_SESSION['User']=$_POST['username'];
+                $_SESSION['Role']=2;
                 header("location:../Kiosk/kiosk_dashboard.php");
             }
             else
