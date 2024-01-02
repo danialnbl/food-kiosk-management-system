@@ -36,10 +36,17 @@ if (!isset($_SESSION['User'])) {
                                                 <div class="d-flex align-items-end row">
                                                     <div class="col-sm-7">
                                                         <div class="card-body">
-                                                            <h5 class="card-title text-primary">Congratulations John! 🎉</h5>
+                                                            <h5 class="card-title text-primary">Congratulations
+                                                                <?php 
+                                                                $userID = $_SESSION['User'];
+                                                                $username = getVendorUsername($userID);
+                                                                
+                                                                echo "$username"; 
+                                                                
+                                                                ?>
+                                                                🎉</h5>
                                                             <p class="mb-4">
-                                                                You have done <span class="fw-bold">72%</span> more sales today. Check your new badge in
-                                                                your profile.
+                                                                You have done <span class="fw-bold">72%</span> more sales today. 
                                                             </p>
                                                         </div>
                                                     </div>
@@ -60,7 +67,7 @@ if (!isset($_SESSION['User'])) {
                                                                 <span class="badge bg-label-warning rounded-pill">Year 2023</span>
                                                             </div>
                                                             <div class="mt-sm-auto">
-                                                                <small class="text-success text-nowrap fw-semibold"><i class="bx bx-chevron-up"></i> 68.2%</small>
+                                                                <!-- <small class="text-success text-nowrap fw-semibold"><i class="bx bx-chevron-up"></i> 68.2%</small> -->
                                                                 <h3 class="mb-0">RM1,540</h3>
                                                             </div>
                                                         </div>
@@ -77,8 +84,8 @@ if (!isset($_SESSION['User'])) {
                                                         </div>
                                                     </div>
                                                     <span class="fw-semibold d-block mb-1">Total Appointments</span>
-                                                    <h3 class="card-title mb-2">$12,628</h3>
-                                                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
+                                                    <h3 class="card-title mb-2">RM12,628</h3>
+                                                    <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -90,8 +97,8 @@ if (!isset($_SESSION['User'])) {
                                                         </div>
                                                     </div>
                                                     <span>New Queries</span>
-                                                    <h3 class="card-title text-nowrap mb-1">$4,679</h3>
-                                                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small>
+                                                    <h3 class="card-title text-nowrap mb-1">RM4,679</h3>
+                                                    <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small> -->
                                                 </div>
                                             </div>
                                         </div>
