@@ -58,8 +58,10 @@ if (!isset($_SESSION['User'])) {
                         echo '<img src="data:image/jpeg;base64,'.base64_encode($row['ItemImage']).'" class="img-thumbnail menu-image" alt="Menu Item Image">';
                         echo "<h5 class='mb-1'>" . $row["ItemName"] . "</h5>";
                         echo "<p class='mb-1'><strong>Price:</strong> RM" . $row["ItemPrice"] . "</p>";
-                        echo "<button class='btn btn-primary add-to-cart'>Add to Cart</button>";
+                        echo "<div class='text-center'>"; 
+                        echo "<a href='cart.php?id=" . $row["MenuID"] . "' class='btn btn-primary'>Add to Cart</a>";
                         // Add more item details as needed based on your menu structure
+                        echo "</div>";
                         echo "</a>";
                         
                         echo "</div>";
