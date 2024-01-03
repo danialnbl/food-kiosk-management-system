@@ -62,7 +62,11 @@ if (!isset($_SESSION['User'])) {
                         <tr id="<?php echo $row['MenuID'] ?>">
                           <th scope="row"><?php echo $i; ?></th>
                           <td><?php echo $row['ItemName']; ?></td>
-                          <td><?php echo $row['ItemDesc']; ?></td>
+                          <td>
+                           <?php
+                           echo $row['ItemDesc']; 
+                           ?>
+                          </td>
                           <td><?php echo $row['ItemPrice']; ?></td>
                           <td><?php echo $row['Availability']; ?></td>
                           <td><?php echo $row['Stock']; ?></td>

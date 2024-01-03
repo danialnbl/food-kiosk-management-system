@@ -36,12 +36,12 @@ if (!isset($_SESSION['User'])) {
                                                 <div class="d-flex align-items-end row">
                                                     <div class="col-sm-7">
                                                         <div class="card-body">
-                                                            <h5 class="card-title text-primary">Congratulations
+                                                            <h5 class="card-title text-primary">Welcome
                                                                 <?php 
                                                                 $userID = $_SESSION['User'];
-                                                                // $username = getVendorUsername($userID);
+                                                                $username = getUsername($userID);
                                                                 
-                                                                // echo "$username"; 
+                                                                echo "$username"; 
                                                                 
                                                                 ?>
                                                                 🎉</h5>
@@ -63,7 +63,7 @@ if (!isset($_SESSION['User'])) {
                                                     <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
                                                         <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
                                                             <div class="card-title">
-                                                                <h5 class="text-nowrap mb-2">Sales Report</h5>
+                                                                <h5 class="text-nowrap mb-2">All Kiosk Sales Report</h5>
                                                                 <span class="badge bg-label-warning rounded-pill">Year 2024</span>
                                                             </div>
                                                             <div class="mt-sm-auto">
@@ -83,10 +83,10 @@ if (!isset($_SESSION['User'])) {
                                                         <div class="avatar flex-shrink-0">
                                                         </div>
                                                     </div> -->
-                                                    <span class="fw-semibold d-block mb-1">Total Revenue</span>                                   
-                                                    <h3 class="card-title mb-2">RM12,628</h3>
-                                                    <div id="totalRevenueChart"></div>
-                                                    <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small> -->      
+                                                    <span>Total Menu</span>
+                                                    <h3 class="card-title text-nowrap mb-1">4</h3>
+                                                    <div id="orderStatisticsChart"></div>
+                                                    <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -97,10 +97,9 @@ if (!isset($_SESSION['User'])) {
                                                         <div class="avatar flex-shrink-0">
                                                         </div>
                                                     </div> -->
-                                                    <span>Total Menu</span>
-                                                    <h3 class="card-title text-nowrap mb-1">4</h3>
-                                                    <div id="orderStatisticsChart"></div>
-                                                    <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small> -->
+                                                    <span class="fw-semibold d-block mb-1">Total Revenue</span>                                   
+                                                    <h3 class="card-title mb-2">RM12,628</h3>
+                                                    <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small> -->      
                                                 </div>
                                             </div>
                                         </div>

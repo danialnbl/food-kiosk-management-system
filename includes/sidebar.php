@@ -104,6 +104,30 @@
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
         </li>
+        <li class="menu-item">
+            <a href="admin_dashboard.php" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Analytics">Manage User</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="admin_dashboard.php" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-store"></i>
+                <div data-i18n="Analytics">Manage Vendor</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="admin_dashboard.php" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-food-menu"></i>
+                <div data-i18n="Analytics">Manage Menu</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="admin_dashboard.php" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Analytics">Manage Kiosk</div>
+            </a>
+        </li>
     </ul>
     HTML;
     }
