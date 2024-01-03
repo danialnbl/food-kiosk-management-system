@@ -18,11 +18,11 @@
     totalRevenueChartOptions = {
       series: [
         {
-          name: '2021',
+          name: '2024',
           data: [18, 7, 15, 29, 18, 12, 9]
         },
         {
-          name: '2020',
+          name: '2023',
           data: [-13, -18, -9, -14, -5, -17, -15]
         }
       ],
@@ -424,11 +424,11 @@
   const chartOrderStatistics = document.querySelector('#orderStatisticsChart'),
     orderChartConfig = {
       chart: {
-        height: 165,
-        width: 130,
+        height: 450,
+        width: 450,
         type: 'donut'
       },
-      labels: ['Electronic', 'Sports', 'Decor', 'Fashion'],
+      labels: ['Nasi Lemak', 'Mee Goreng', 'Roti Canai', 'Roti Telur'],   
       series: [85, 15, 50, 50],
       colors: [config.colors.primary, config.colors.secondary, config.colors.info, config.colors.success],
       stroke: {
@@ -442,7 +442,9 @@
         }
       },
       legend: {
-        show: false
+        show: true,
+        position: 'left'
+        
       },
       grid: {
         padding: {
@@ -474,9 +476,9 @@
                 show: true,
                 fontSize: '0.8125rem',
                 color: axisColor,
-                label: 'Weekly',
+                label: 'Total',
                 formatter: function (w) {
-                  return '38%';
+                  return '100%';
                 }
               }
             }
@@ -488,6 +490,50 @@
     const statisticsChart = new ApexCharts(chartOrderStatistics, orderChartConfig);
     statisticsChart.render();
   }
+
+  // Test
+
+  var optionDonut = {
+    chart: {
+        type: 'donut',
+        width: '100%',
+        height: 400
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    plotOptions: {
+      pie: {
+        customScale: 0.8,
+        donut: {
+          size: '75%',
+        },
+        offsetY: 20,
+      },
+      stroke: {
+        colors: undefined
+      }
+    },
+    colors: colorPalette,
+    title: {
+      text: 'Department Sales',
+      style: {
+        fontSize: '18px'
+      }
+    },
+    series: [21, 23, 19, 14, 6],
+    labels: ['Clothing', 'Food Products', 'Electronics', 'Kitchen Utility', 'Gardening'],
+    legend: {
+      position: 'left',
+      offsetY: 80
+    }
+  }
+  
+  var donut = new ApexCharts(
+    document.querySelector("#donut"),
+    optionDonut
+  )
+  donut.render();
 
   // Income Chart - Area chart
   // --------------------------------------------------------------------
