@@ -5,9 +5,26 @@
     </a>
   </div>
 
+  <?php 
+    $userID = $_SESSION['User'];
+    $role = $_SESSION['Role'];
+  ?>
+
   <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+    
     <ul class="navbar-nav flex-row align-items-center ms-auto">
       <!-- User -->
+      <?php
+      if($role == 2){
+        echo <<<HTML
+        <a href="cart.php" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-cart"></i>
+                <div>Cart</div>
+        </a>
+        HTML;
+      }
+      
+      ?>
       <li class="nav-item navbar-dropdown dropdown-user dropdown">
         <a class="nav-link dropdown-toggle hide-arrow d-flex align-items-center" href="javascript:void(0);" data-bs-toggle="dropdown">
           <div class="avatar ">
@@ -20,9 +37,6 @@
               <div class="d-flex">
                 <div class="flex-grow-1">
                 <?php
-                  $userID = $_SESSION['User'];
-                  $role = $_SESSION['Role'];
-                  
                   if($role == 1){
                     $username = getVendorUsername($userID);
                   }else{
@@ -59,5 +73,6 @@
       </li>
       <!--/ User -->
     </ul>
+    
   </div>
 </nav>

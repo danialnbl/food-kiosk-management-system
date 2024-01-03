@@ -29,8 +29,14 @@ if(isset($_POST['submit']))
             if($row = mysqli_fetch_assoc($result))
             {
                 $_SESSION['User']=$row['UserID'];
-                $_SESSION['Role']=2;
-                header("location:../Kiosk/kiosk_dashboard.php");
+
+                if($row['UserType'] == "Customer"){
+                    $_SESSION['Role']=2;
+                    header("location:../user/displayKiosk.php");
+                }else{
+                    $_SESSION['Role']=3;
+                    header("location:../admin/admin_dashboard.php");
+                }
             }
             else
             {

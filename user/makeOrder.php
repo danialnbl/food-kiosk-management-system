@@ -55,7 +55,7 @@ if (!isset($_SESSION['User'])) {
                         while ($row = $result->fetch_assoc()) {
                         echo "<div class='col-md-4 menu-item'>";
                         echo "<a href='#' class='list-group-item list-group-item-action'>";
-                        echo '<img src="data:image/jpeg;base64,'.base64_encode($row['ItemImage']).'" class="img-thumbnail menu-image" alt="Menu Item Image">';
+                        echo '<img src="data:image;base64,'.$row['ItemImage'].'" class="img-thumbnail menu-image" alt="Menu Item Image">';
                         echo "<h5 class='mb-1'>" . $row["ItemName"] . "</h5>";
                         echo "<p class='mb-1'><strong>Price:</strong> RM" . $row["ItemPrice"] . "</p>";
                         echo "<div class='text-center'>"; 

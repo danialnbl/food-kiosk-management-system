@@ -1,5 +1,11 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-    <div class="app-brand demo">
+
+    <?php
+    $role = $_SESSION['Role'];
+
+    if ($role == 1) {
+        echo <<<HTML
+        <div class="app-brand demo">
         <!--Logo-->
         <a href="kiosk_dashboard.php" class="app-brand-link">
             <span class="app-brand-logo demo">
@@ -37,4 +43,69 @@
         </li>
         <!-- Layouts for Vendor -->
     </ul>
+    HTML;
+    } else if ($role == 2) {
+        echo <<<HTML
+        <div class="app-brand demo">
+        <!--Logo-->
+        <a href="displayKiosk.php" class="app-brand-link">
+            <span class="app-brand-logo demo">
+                <img width="100" src="../assets/img/logo.png">
+            </span>
+        </a>
+
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+        </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+    <!--Sidebar-->
+    <ul class="menu-inner py-1">
+        <!-- Dashboard -->
+        <li class="menu-item">
+            <a href="kiosk_dashboard.php" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home"></i>
+                <div data-i18n="Analytics">Dashboard</div>
+            </a>
+        </li>
+        <!-- Layouts for Customer -->
+        <li class="menu-item">
+            <a href="displayKiosk.php" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-edit"></i>
+                <div data-i18n="Layouts">Make Order</div>
+            </a>
+        </li>
+        <!-- Layouts for Customer -->
+    </ul>
+    HTML;
+    } else {
+        echo <<<HTML
+        <div class="app-brand demo">
+        <!--Logo-->
+        <a href="admin_dashboard.php" class="app-brand-link">
+            <span class="app-brand-logo demo">
+                <img width="100" src="../assets/img/logo.png">
+            </span>
+        </a>
+
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+        </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+    <!--Sidebar-->
+    <ul class="menu-inner py-1">
+        <!-- Dashboard -->
+        <li class="menu-item">
+            <a href="admin_dashboard.php" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home"></i>
+                <div data-i18n="Analytics">Dashboard</div>
+            </a>
+        </li>
+    </ul>
+    HTML;
+    }
+    ?>
 </aside>

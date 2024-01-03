@@ -15,7 +15,6 @@ if (!isset($_SESSION['User'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Display Kiosk</title>
          <?php include('../includes/headsettings.php'); ?>
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     </head>
 
   <body>
