@@ -64,7 +64,7 @@ if (!isset($_SESSION['User'])) {
                                                         <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
                                                             <div class="card-title">
                                                                 <h5 class="text-nowrap mb-2">Sales Report</h5>
-                                                                <span class="badge bg-label-warning rounded-pill">Year 2023</span>
+                                                                <span class="badge bg-label-warning rounded-pill">Year 2024</span>
                                                             </div>
                                                             <div class="mt-sm-auto">
                                                                 <!-- <small class="text-success text-nowrap fw-semibold"><i class="bx bx-chevron-up"></i> 68.2%</small> -->
@@ -79,25 +79,27 @@ if (!isset($_SESSION['User'])) {
                                         <div class="col-lg-6 col-md-12 col-6 mb-4">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <div class="card-title d-flex align-items-start justify-content-between">
+                                                    <!-- <div class="card-title d-flex align-items-start justify-content-between">
                                                         <div class="avatar flex-shrink-0">
                                                         </div>
-                                                    </div>
-                                                    <span class="fw-semibold d-block mb-1">Total Appointments</span>
+                                                    </div> -->
+                                                    <span class="fw-semibold d-block mb-1">Total Revenue</span>                                   
                                                     <h3 class="card-title mb-2">RM12,628</h3>
-                                                    <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small> -->
+                                                    <div id="totalRevenueChart"></div>
+                                                    <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small> -->      
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-12 col-6 mb-4">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <div class="card-title d-flex align-items-start justify-content-between">
+                                                    <!-- <div class="card-title d-flex align-items-start justify-content-between">
                                                         <div class="avatar flex-shrink-0">
                                                         </div>
-                                                    </div>
-                                                    <span>New Queries</span>
-                                                    <h3 class="card-title text-nowrap mb-1">RM4,679</h3>
+                                                    </div> -->
+                                                    <span>Total Menu</span>
+                                                    <h3 class="card-title text-nowrap mb-1">10</h3>
+                                                    <div id="orderStatisticsChart"></div>
                                                     <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small> -->
                                                 </div>
                                             </div>
