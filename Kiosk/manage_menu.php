@@ -45,6 +45,7 @@ if (!isset($_SESSION['User'])) {
                         <th>Status</th>
                         <th>Stocks</th>
                         <th>Image</th>
+                        <th>QR</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -66,6 +67,7 @@ if (!isset($_SESSION['User'])) {
                           <td><?php echo $row['Availability']; ?></td>
                           <td><?php echo $row['Stock']; ?></td>
                           <td><img style="height: 100px; width: 100px;" src="data:image;base64,  <?php echo $row['ItemImage']  ?> " alt="Test"></td>
+                          <td><img style="height: 100px; width: 100px;" src="data:image;base64,  <?php echo $row['MenuQR']  ?> " alt="TestQR"></td>
                           <td>
                             <form method="post">
                               <div class="dropdown">
@@ -264,7 +266,10 @@ if (!isset($_SESSION['User'])) {
 
   </html>
 
-
+  <!-- QR Library -->
+  <?php 
+  require_once '../assets/vendor/phpqrcode/qrlib.php'; 
+  ?>
 
   <!-- CRUD Function -->
   <?php
@@ -276,12 +281,20 @@ if (!isset($_SESSION['User'])) {
     $menuStock = $_POST['menuStock'];
     $menuDesc = $_POST['menuDesc'];
 
+    $Uid = $_SESSION['User'];
+
     //declare variables
     $image = $_FILES['formFile']['tmp_name'];
     $name = $_FILES['formFile']['name'];
     $image = base64_encode(file_get_contents(addslashes($image)));
 
-    $query = mysqli_query($conn, "INSERT INTO menu (KioskID, ItemName, ItemDesc, ItemPrice, Availability, Stock, ItemImage) VALUES (1,'$menuName', '$menuDesc','$menuPrice','$menuAvailability','$menuStock','$image')");
+    //QR
+    $pathQr = '../assets/img/qr/';
+    $qrCode = $pathQr.time().".png";
+    QRcode :: png($menuName . "uid=" . $Uid,$qrCode,'H',4,4 );
+    $qrImage = base64_encode(file_get_contents(addslashes($qrCode)));
+
+    $query = mysqli_query($conn, "INSERT INTO menu (KioskID, ItemName, ItemDesc, ItemPrice, Availability, Stock, ItemImage, MenuQR) VALUES (1,'$menuName', '$menuDesc','$menuPrice','$menuAvailability','$menuStock','$image','$qrImage')");
 
     if ($query) {
       echo '

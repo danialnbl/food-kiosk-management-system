@@ -18,11 +18,11 @@
     totalRevenueChartOptions = {
       series: [
         {
-          name: '2021',
+          name: '2024',
           data: [18, 7, 15, 29, 18, 12, 9]
         },
         {
-          name: '2020',
+          name: '2023',
           data: [-13, -18, -9, -14, -5, -17, -15]
         }
       ],
@@ -424,8 +424,8 @@
   const chartOrderStatistics = document.querySelector('#orderStatisticsChart'),
     orderChartConfig = {
       chart: {
-        height: 300,
-        width: 300,
+        height: 450,
+        width: 450,
         type: 'donut'
       },
       labels: ['Nasi Lemak', 'Mee Goreng', 'Roti Canai', 'Roti Telur'],   

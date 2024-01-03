@@ -10,9 +10,9 @@ if(isset($_POST['submit']))
             $query="select * from vendor where VendorEmail='".$_POST['username']."' and VendorPassword='".$_POST['password']."'";
             $result=mysqli_query($conn,$query);
 
-            if(mysqli_fetch_assoc($result))
+            if($row = mysqli_fetch_assoc($result))
             {
-                $_SESSION['User']=$_POST['username'];
+                $_SESSION['User']=$row['VendorID'];
                 $_SESSION['Role']=1;
                 header("location:../Kiosk/kiosk_dashboard.php");
             }
@@ -26,9 +26,9 @@ if(isset($_POST['submit']))
             $query="select * from user where UserName='".$_POST['username']."' and Password='".$_POST['password']."'";
             $result=mysqli_query($conn,$query);
 
-            if(mysqli_fetch_assoc($result))
+            if($row = mysqli_fetch_assoc($result))
             {
-                $_SESSION['User']=$_POST['username'];
+                $_SESSION['User']=$row['UserID'];
                 $_SESSION['Role']=2;
                 header("location:../Kiosk/kiosk_dashboard.php");
             }

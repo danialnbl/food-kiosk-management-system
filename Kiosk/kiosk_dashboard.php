@@ -98,7 +98,7 @@ if (!isset($_SESSION['User'])) {
                                                         </div>
                                                     </div> -->
                                                     <span>Total Menu</span>
-                                                    <h3 class="card-title text-nowrap mb-1">10</h3>
+                                                    <h3 class="card-title text-nowrap mb-1">4</h3>
                                                     <div id="orderStatisticsChart"></div>
                                                     <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small> -->
                                                 </div>
