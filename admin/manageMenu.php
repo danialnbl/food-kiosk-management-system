@@ -16,6 +16,9 @@ if (!isset($_SESSION['User'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Menu</title>
     <?php include('../includes/headsettings.php'); ?>
+    <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
   </head>
 
   <body>
@@ -35,7 +38,7 @@ if (!isset($_SESSION['User'])) {
                   </button>
                 </h5>
                 <div class="table-responsive text-nowrap">
-                  <table class="table">
+                  <table id="menuTable" class="table">
                     <thead>
                       <tr class="text-nowrap">
                         <th>#</th>
@@ -249,7 +252,7 @@ if (!isset($_SESSION['User'])) {
       </div>
     </form>
     <!-- / Layout wrapper -->
-    <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+   
     <script>
       var id;
       $(".opn").click(function() {
@@ -286,6 +289,17 @@ if (!isset($_SESSION['User'])) {
         }).then((result) => {
           if (result.isConfirmed) {
             window.location.replace("manageMenu.php?mode=delete&id=" + id);
+          }
+        });
+      });
+
+      $(document).ready(function() {
+        $('#menuTable').dataTable({
+          dom: '<"custom-length"f><t><p>',
+
+          // Callback function to handle the DataTable initialization
+          initComplete: function(settings, json) {
+            $('.custom-length').css('margin-right', '25px'); // Adjust the margin value as needed
           }
         });
       });
