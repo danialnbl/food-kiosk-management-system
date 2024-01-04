@@ -51,10 +51,12 @@ if (!isset($_SESSION['User'])) {
                     </thead>
                     <tbody>
                       <?php
+
+                      $KioskID = $_SESSION['KioskID'];
                       $i = 0;
                       $ret = mysqli_query(
                         $conn,
-                        "SELECT * FROM menu"
+                        "SELECT * FROM menu WHERE KioskID = $KioskID"
                       );
                       while ($row = mysqli_fetch_array($ret)) {
                         $i++;
@@ -298,7 +300,7 @@ if (!isset($_SESSION['User'])) {
     QRcode :: png($menuName . "uid=" . $Uid,$qrCode,'H',4,4 );
     $qrImage = base64_encode(file_get_contents(addslashes($qrCode)));
 
-    $query = mysqli_query($conn, "INSERT INTO menu (KioskID, ItemName, ItemDesc, ItemPrice, Availability, Stock, ItemImage, MenuQR) VALUES (1,'$menuName', '$menuDesc','$menuPrice','$menuAvailability','$menuStock','$image','$qrImage')");
+    $query = mysqli_query($conn, "INSERT INTO menu (KioskID, ItemName, ItemDesc, ItemPrice, Availability, Stock, ItemImage, MenuQR) VALUES ($KioskID,'$menuName', '$menuDesc','$menuPrice','$menuAvailability','$menuStock','$image','$qrImage')");
 
     if ($query) {
       echo '

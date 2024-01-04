@@ -14,6 +14,7 @@ if(isset($_POST['submit']))
             {
                 $_SESSION['User']=$row['VendorID'];
                 $_SESSION['Role']=1;
+                $_SESSION['KioskID'] = $row['KioskID'];
                 header("location:../Kiosk/kiosk_dashboard.php");
             }
             else
