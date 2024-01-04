@@ -23,4 +23,24 @@ function getUsername($session)
     // return $_SESSION['User'];
 }
 
+function getListKiosk()
+{
+    global $conn;
+
+    $sql = "SELECT * FROM kiosk";
+    $result = $conn->query($sql);
+
+    while ($row = $result->fetch_assoc()) {
+        $arr[] = array(
+            'KioskID' => trim($row['KioskID']),
+            'KioskName' => trim($row['KioskName']),
+            'OperationStatus' => trim($row['OperationStatus']),
+            'KioskLogo' => trim($row['KioskLogo']),
+            'KioskNum' => trim($row['KioskNum']),
+        );
+    }
+
+    return $arr;
+}
+
 ?>
