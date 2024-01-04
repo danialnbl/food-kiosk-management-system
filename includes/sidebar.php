@@ -105,7 +105,7 @@
             </a>
         </li>
         <li class="menu-item">
-            <a href="admin_dashboard.php" class="menu-link">
+            <a href="manageUser.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div data-i18n="Analytics">Manage User</div>
             </a>
