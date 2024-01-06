@@ -1,6 +1,8 @@
-<!-- connect.php -->
-<!-- To connect between php scripting and database. -->
+
 <?php
+
+// connect.php
+// To connect between php scripting and database.
 define("DATABASE_HOST", "10.26.30.17");
 define("DATABASE_USER", "cb22151");
 define("DATABASE_PASSWORD", "cb22151");

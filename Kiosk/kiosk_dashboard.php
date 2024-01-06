@@ -16,6 +16,10 @@ if (!isset($_SESSION['User'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Dashboard</title>
         <?php include('../includes/headsettings.php'); ?>
+        <!-- Jquery -->
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js" integrity="sha512-42PE0rd+wZ2hNXftlM78BSehIGzezNeQuzihiBCvUEB3CVxHvsShF86wBWwQORNxNINlBPuq7rG4WWhNiTVHFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     </head>
 
     <body>
@@ -37,16 +41,17 @@ if (!isset($_SESSION['User'])) {
                                                     <div class="col-sm-7">
                                                         <div class="card-body">
                                                             <h5 class="card-title text-primary">Congratulations
-                                                                <?php 
+                                                                <?php
                                                                 $userID = $_SESSION['User'];
                                                                 $username = getVendorUsername($userID);
-                                                                
-                                                                echo "$username"; 
-                                                                
+
+                                                                echo "$username";
+
                                                                 ?>
                                                                 🎉</h5>
+                                                            <input id="kioskID" hidden value="<?php $_SESSION['KioskID']; ?>" hidden>
                                                             <p class="mb-4">
-                                                                You have done <span class="fw-bold">72%</span> more sales today. 
+                                                                You have done <span class="fw-bold">72%</span> more sales today.
                                                             </p>
                                                         </div>
                                                     </div>
@@ -71,7 +76,7 @@ if (!isset($_SESSION['User'])) {
                                                                 <h3 class="mb-0">RM1,540</h3>
                                                             </div>
                                                         </div>
-                                                        <div id="profileReportChart"></div>
+                                                        <!-- <div id="profileReportChart"></div> -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -83,10 +88,10 @@ if (!isset($_SESSION['User'])) {
                                                         <div class="avatar flex-shrink-0">
                                                         </div>
                                                     </div> -->
-                                                    <span class="fw-semibold d-block mb-1">Total Revenue</span>                                   
+                                                    <span class="fw-semibold d-block mb-1">Total Revenue</span>
                                                     <h3 class="card-title mb-2">RM12,628</h3>
-                                                    <div id="totalRevenueChart"></div>
-                                                    <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small> -->      
+                                                    <!-- <div id="totalRevenueChart"></div> -->
+                                                    <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -98,8 +103,8 @@ if (!isset($_SESSION['User'])) {
                                                         </div>
                                                     </div> -->
                                                     <span>Total Menu</span>
-                                                    <h3 class="card-title text-nowrap mb-1">4</h3>
-                                                    <div id="orderStatisticsChart"></div>
+                                                    <h3 id="totalMenuspan" class="card-title text-nowrap mb-1">Loading Data...</h3>
+                                                    <div id="chart"></div>
                                                     <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small> -->
                                                 </div>
                                             </div>
@@ -113,8 +118,51 @@ if (!isset($_SESSION['User'])) {
                 </div>
             </div>
         </div>
-        <script src="../assets/js/dashboards-analytics.js"></script>
+        <!-- <script src="../assets/js/dashboards-analytics.js"></script> -->
     </body>
+
+    <script>
+        $(document).ready(function() {
+            $.post('../api.php?getMenu=1', {
+                test: 123
+            }, function(res) {
+                console.log(res)
+
+                $('#totalMenuspan').html(res.totalMenu)
+
+                var options = {
+                    dataLabels: {
+                        enabled: false,
+                        formatter: function(val) {
+                            return val + "%"
+                        }
+                    },
+                    series: res.StockValue,
+                    chart: {
+                        width: 380,
+                        type: 'donut',
+                    },
+                    labels: res.itemName,
+                    responsive: [{
+                        breakpoint: 480,
+                        options: {
+                            chart: {
+                                width: 200
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }]
+                };
+
+                var chart = new ApexCharts(document.querySelector("#chart"), options);
+                chart.render();
+
+            }, 'json')
+
+        })
+    </script>
 
     </html>
 <?php } ?>
