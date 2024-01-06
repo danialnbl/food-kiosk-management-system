@@ -111,7 +111,7 @@
             </a>
         </li>
         <li class="menu-item">
-            <a href="admin_dashboard.php" class="menu-link">
+            <a href="manageVendor.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-store"></i>
                 <div data-i18n="Analytics">Manage Vendor</div>
             </a>
