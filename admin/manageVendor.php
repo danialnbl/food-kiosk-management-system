@@ -89,11 +89,11 @@ if (!isset($_SESSION['User'])) {
                                                                         Edit
                                                                     </a>
                                                                     <?php
-                                                                    
+
                                                                     $approveStatus = $row['ApprovalStatus'];
 
-                                                                    if($approveStatus == "Pending"){
-                                                                        echo '<a class="dropdown-item approveBtn text-success" href="javascript:void(0);" data-id="'. $row['VendorID'] .'">
+                                                                    if ($approveStatus == "Pending") {
+                                                                        echo '<a class="dropdown-item approveBtn text-success" href="javascript:void(0);" data-id="' . $row['VendorID'] . '">
                                                                         <i class="bx bx-check-square me-1"></i>
                                                                         Approve
                                                                         </a>';
@@ -195,7 +195,7 @@ if (!isset($_SESSION['User'])) {
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                        <div class="row">
+                            <div class="row">
                                 <div class="col mb-3">
                                     <label for="vendorNameEdit" class="form-label">Vendor Name</label>
                                     <input type="text" id="vendorNameEdit" name="vendorNameEdit" class="form-control" placeholder="Enter Vendor Name" value="" />
@@ -268,8 +268,25 @@ if (!isset($_SESSION['User'])) {
                 $("#approvalEdit").val(col[3].innerText).change();
                 $("#kioskEdit").val(col[5].innerText).change();
                 $("#passwordEdit").val(col[7].innerText);
-                
+
                 $("#vendorIDEdit").val(id);
+            });
+
+            $(".approveBtn").click(function() {
+                id = $(this).data('id');
+
+                $.post('../api.php?postVendorStatus', {
+                    test: id
+                }, function(res) {
+                    Swal.fire({
+                        title: "Vendor Approved!",
+                        icon: "success",
+                        timer: 2000,
+                        showConfirmButton: false,
+                    }).then(function() {
+                        window.location.href = "manageVendor.php";
+                    });
+                })
             });
 
             $(".del").click(function() {
