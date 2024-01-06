@@ -8,15 +8,18 @@ if (!isset($_SESSION['User'])) {
 } else {
 ?>
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Display Kiosk</title>
-         <?php include('../includes/headsettings.php'); ?>
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <style>
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Menu</title>
+    <?php include('../includes/headsettings.php'); ?>
+    <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+    <style>
         .menu-item {
             margin-bottom: 15px;
         }
@@ -27,7 +30,7 @@ if (!isset($_SESSION['User'])) {
             object-fit: cover;
         }
     </style>
-    </head>
+  </head>
 
   <body>
     <div class="layout-wrapper layout-content-navbar">
@@ -39,43 +42,45 @@ if (!isset($_SESSION['User'])) {
             <!-- Content -->
 
             <div class="container-xxl flex-grow-1 container-p-y">
-            <?php 
+              <div class="card">
+              <?php 
 
-                // Check if kiosk_id parameter is set in the URL
-                if (isset($_GET['id'])) {
-                    $kiosk_id = $_GET['id'];
+if (isset($_GET['id'])) {
+  $kiosk_id = $_GET['id'];
 
-                    // Query to retrieve menu items for the specified kiosk_id
-                    $sql = "SELECT * FROM menu WHERE KioskID = $kiosk_id";
-                    $result = $conn->query($sql);
+  // Query to retrieve menu items for the specified kiosk_id
+  $sql = "SELECT * FROM menu WHERE KioskID = $kiosk_id";
+  $result = $conn->query($sql);
+  $subtotal = 0;
 
-                    if ($result->num_rows > 0) {
-                        // Displaying menu items
-                        echo "<div class='row'>";
-                        while ($row = $result->fetch_assoc()) {
-                        echo "<div class='col-md-4 menu-item'>";
-                        echo "<a href='#' class='list-group-item list-group-item-action'>";
-                        echo '<img src="data:image/jpeg;base64,'.base64_encode($row['ItemImage']).'" class="img-thumbnail menu-image" alt="Menu Item Image">';
-                        echo "<h5 class='mb-1'>" . $row["ItemName"] . "</h5>";
-                        echo "<p class='mb-1'><strong>Price:</strong> RM" . $row["ItemPrice"] . "</p>";
-                        echo "<button class='btn btn-primary add-to-cart'>Add to Cart</button>";
-                        // Add more item details as needed based on your menu structure
-                        echo "</a>";
-                        
-                        echo "</div>";
-                        }
-                        echo "</div>";
-                    } else {
-                        echo "No menu items available for this kiosk.";
-                    }
-                } else {
-                    echo "Kiosk ID not found.";
-                }
-
-                // Close the connection
-                $conn->close();
-    ?>
-
+  if ($result->num_rows > 0) {
+    // Displaying menu items
+    echo "<div class='row'>";
+    while ($row = $result->fetch_assoc()) {
+        ?>
+        <div class='col-md-4 menu-item'>
+            <a href='#' class='list-group-item list-group-item-action'>
+                <img src="data:image/jpeg;base64,<?= base64_encode($row['ItemImage']) ?>" class="img-thumbnail menu-image" alt="Menu Item Image">
+                <h5 class='mb-1'><?= $row["ItemName"] ?></h5>
+                <p class='mb-1'><strong>Price:</strong> RM<?= $row["ItemPrice"] ?></p>
+                Quantity: <input type="number">
+            </a>
+        </div>
+        <?php
+            }
+            echo "</div>";
+        } else {
+            echo "No menu items available for this kiosk.";
+        }
+    } else {
+        echo "Kiosk ID not found.";
+    }
+    
+    // Close the connection
+    $conn->close();
+         ?>
+                
+              </div>
 
             </div>
             <!-- / Content -->
@@ -83,8 +88,4 @@ if (!isset($_SESSION['User'])) {
         </div>
       </div>
     </div>
-   
-        
-    </body>
-</html>
 <?php } ?>

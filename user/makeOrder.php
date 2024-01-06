@@ -13,12 +13,13 @@ if (!isset($_SESSION['User'])) {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Display Kiosk</title>
+        <title>Make Order</title>
          <?php include('../includes/headsettings.php'); ?>
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <style>
         .menu-item {
             margin-bottom: 15px;
+            height: 100%;
         }
 
         .menu-item img {
@@ -50,14 +51,15 @@ if (!isset($_SESSION['User'])) {
                     $result = $conn->query($sql);
 
                     if ($result->num_rows > 0) {
-                        // Displaying menu items
+                        // Displaying cart
                         echo "<div class='row'>";
                         while ($row = $result->fetch_assoc()) {
                         echo "<div class='col-md-4 menu-item'>";
                         echo "<a href='#' class='list-group-item list-group-item-action'>";
                         echo '<img src="data:image;base64,'.$row['ItemImage'].'" class="img-thumbnail menu-image" alt="Menu Item Image">';
                         echo "<h5 class='mb-1'>" . $row["ItemName"] . "</h5>";
-                        echo "<p class='mb-1'><strong>Price:</strong> RM" . $row["ItemPrice"] . "</p>";
+                        echo "<p class='mb-1'>" . $row["ItemDesc"] . "</p>" . "<br>";
+                        echo "<h6 class='mb-1'><strong>Price:</strong> RM" . $row["ItemPrice"] . "</h6>";
                         echo "<div class='text-center'>"; 
                         echo "<a href='cart.php?id=" . $row["MenuID"] . "' class='btn btn-primary'>Add to Cart</a>";
                         // Add more item details as needed based on your menu structure
@@ -71,7 +73,7 @@ if (!isset($_SESSION['User'])) {
                         echo "No menu items available for this kiosk.";
                     }
                 } else {
-                    echo "Kiosk ID not found.";
+                    echo "Select Kiosk first.";
                 }
 
                 // Close the connection
