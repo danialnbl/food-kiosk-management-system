@@ -275,7 +275,7 @@ if (!isset($_SESSION['User'])) {
             $(".approveBtn").click(function() {
                 id = $(this).data('id');
 
-                $.post('../api.php?postVendorStatus', {
+                $.post('../api.php?postVendorStatus=1', {
                     test: id
                 }, function(res) {
                     Swal.fire({
