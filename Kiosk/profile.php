@@ -24,7 +24,7 @@ if (!isset($_SESSION['User'])) {
 
   $ret = mysqli_query(
     $conn,
-    "SELECT * FROM vendor WHERE VendorID = $uid"
+    "SELECT * FROM vendor INNER JOIN kiosk ON vendor.KioskID = kiosk.KioskID WHERE VendorID = $uid"
   );
 
   while ($row = mysqli_fetch_array($ret)) {
@@ -52,7 +52,7 @@ if (!isset($_SESSION['User'])) {
                       <!-- Account -->
                       <hr class="my-0" />
                       <div class="card-body">
-                        <form id="formAccountSettings" method="post">
+                        <form id="formAccountSettings" method="post" enctype="multipart/form-data">
                           <div class="row">
                             <div class="mb-3 col-md-6">
                               <label for="vendorName" class="form-label">Vendor Name</label>
@@ -74,6 +74,17 @@ if (!isset($_SESSION['User'])) {
                               <input class="form-control" type="password" id="password" name="password" value="<?php echo $row['VendorPassword']; ?>" autofocus />
                             </div>
                           </div>
+                          <div class="row">
+                            <div class="col mb-3">
+                              <label for="formFile" class="form-label">Kiosk Logo </label>
+                              <input class="form-control" type="file" id="formFile" name="formFile" onchange="preview()">
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col mb-3">
+                              <img id="frame" src="data:image;base64,  <?php echo $row['KioskLogo']  ?>" class="img-fluid" style="height: 200px;" />
+                            </div>
+                          </div>
                           <div class="mt-2">
                             <button id="editBtn" name="editBtn" type="submit" class="btn btn-primary me-2">Save changes</button>
                             <button type="reset" class="btn btn-outline-secondary">Cancel</button>
@@ -82,15 +93,25 @@ if (!isset($_SESSION['User'])) {
                       </div>
                       <!-- /Account -->
                     </div>
+
                     <script>
                       function checkMe() {
                         var checkbox = document.getElementById("accountDeactivation");
 
-                        if (checkbox.checked==true) {
+                        if (checkbox.checked == true) {
                           document.getElementById("deactiveBtn").disabled = false;
-                        }else{
+                        } else {
                           document.getElementById("deactiveBtn").disabled = true;
                         }
+                      }
+
+                      function preview() {
+                        frame.src = URL.createObjectURL(event.target.files[0]);
+                      }
+
+                      function clearImage() {
+                        document.getElementById('formFile').value = null;
+                        frame.src = "";
                       }
                     </script>
                     <div class="card">
@@ -134,7 +155,12 @@ if (!isset($_SESSION['User'])) {
       $phoneNumber = $_POST['phoneNumber'];
       $password = $_POST['password'];
 
-      $query = mysqli_query($conn, "UPDATE vendor SET VendorName = '$vendorName', VendorEmail = '$email', VendorNum = '$phoneNumber', VendorPassword = '$password' WHERE VendorID = '$uid'");
+      //declare variables
+      $image = $_FILES['formFile']['tmp_name'];
+      $name = $_FILES['formFile']['name'];
+      $image = base64_encode(file_get_contents(addslashes($image)));
+
+      $query = mysqli_query($conn, "UPDATE vendor INNER JOIN kiosk ON vendor.KioskID = kiosk.KioskID SET VendorName = '$vendorName', VendorEmail = '$email', VendorNum = '$phoneNumber', VendorPassword = '$password', KioskLogo = '$image'  WHERE VendorID = '$uid'");
 
       if ($query) {
         echo '
