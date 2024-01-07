@@ -35,7 +35,7 @@ if (!isset($_SESSION['User'])) {
                             <div class="row">
                                 <div class="col-lg-12 col-md-4 order-1">
                                     <div class="row">
-                                        <div class="col-lg-8 mb-4 order-0">
+                                        <div class="col-lg-12 mb-4 order-0">
                                             <div class="card">
                                                 <div class="d-flex align-items-end row">
                                                     <div class="col-sm-7">
@@ -43,13 +43,17 @@ if (!isset($_SESSION['User'])) {
                                                             <h5 class="card-title text-primary">Congratulations
                                                                 <?php
                                                                 $userID = $_SESSION['User'];
+                                                                $KioskID = $_SESSION['KioskID'];
                                                                 $username = getVendorUsername($userID);
 
                                                                 echo "$username";
 
                                                                 ?>
                                                                 🎉</h5>
-                                                            <input id="kioskID" hidden value="<?php $_SESSION['KioskID']; ?>" hidden>
+                                                            <?php
+                                                            echo '<input id="kioskID" value="' . $KioskID . '" hidden>';
+                                                            ?>
+
                                                             <p class="mb-4">
                                                                 You have done <span class="fw-bold">72%</span> more sales today.
                                                             </p>
@@ -68,12 +72,13 @@ if (!isset($_SESSION['User'])) {
                                                     <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
                                                         <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
                                                             <div class="card-title">
-                                                                <h5 class="text-nowrap mb-2">Sales Report</h5>
+                                                                <h5 class="text-nowrap mb-2">Online Sales Report</h5>
                                                                 <span class="badge bg-label-warning rounded-pill">Year 2024</span>
                                                             </div>
+                                                            <div id="totalSalesGraph"></div>
                                                             <div class="mt-sm-auto">
                                                                 <!-- <small class="text-success text-nowrap fw-semibold"><i class="bx bx-chevron-up"></i> 68.2%</small> -->
-                                                                <h3 class="mb-0">RM1,540</h3>
+                                                                
                                                             </div>
                                                         </div>
                                                         <!-- <div id="profileReportChart"></div> -->
@@ -82,32 +87,34 @@ if (!isset($_SESSION['User'])) {
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-12 col-6 mb-4">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <!-- <div class="card-title d-flex align-items-start justify-content-between">
-                                                        <div class="avatar flex-shrink-0">
-                                                        </div>
-                                                    </div> -->
-                                                    <span class="fw-semibold d-block mb-1">Total Revenue</span>
-                                                    <h3 class="card-title mb-2">RM12,628</h3>
-                                                    <!-- <div id="totalRevenueChart"></div> -->
-                                                    <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small> -->
+                                            <div class="row mb-3">
+                                                <div class="card col">
+                                                    <div class="card-body">
+                                                        <!-- <div class="card-title d-flex align-items-start justify-content-between">
+                                                            <div class="avatar flex-shrink-0">
+                                                            </div>
+                                                        </div> -->
+                                                        <span>Total Menu</span>
+                                                        <h3 id="totalMenuspan" class="card-title text-nowrap mb-1">Loading Data...</h3>
+                                                        <div id="chart"></div>
+                                                        <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small> -->
+                                                    </div>
                                                 </div>
+                                                
                                             </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-12 col-6 mb-4">
-                                            <div class="card">
+                                            <div class="row">
+                                            <div class="card col">
                                                 <div class="card-body">
-                                                    <!-- <div class="card-title d-flex align-items-start justify-content-between">
-                                                        <div class="avatar flex-shrink-0">
-                                                        </div>
-                                                    </div> -->
-                                                    <span>Total Menu</span>
-                                                    <h3 id="totalMenuspan" class="card-title text-nowrap mb-1">Loading Data...</h3>
-                                                    <div id="chart"></div>
+                                                    <span>Total Online Sales</span>
+                                                    <h3 id="totalSalespan" class="card-title text-nowrap mb-1">Loading Data...</h3>
                                                     <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small> -->
                                                 </div>
                                             </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="col-lg-4 col-md-12 col-6 mb-4">
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -123,8 +130,12 @@ if (!isset($_SESSION['User'])) {
 
     <script>
         $(document).ready(function() {
+
+            var KioskID = document.getElementById('kioskID').value;
+
+            //Get Menu
             $.post('../api.php?getMenu=1', {
-                test: 123
+                test: KioskID
             }, function(res) {
                 console.log(res)
 
@@ -157,6 +168,52 @@ if (!isset($_SESSION['User'])) {
                 };
 
                 var chart = new ApexCharts(document.querySelector("#chart"), options);
+                chart.render();
+
+            }, 'json')
+
+            // Get Total Sales
+            $.post('../api.php?getSales=1', {
+                test: KioskID
+            }, function(res) {
+                console.log(res)
+
+                $('#totalSalespan').html(res.totalSales)
+
+                var options = {
+                    series: [{
+                        name: "Total Sales",
+                        data: res.OrderTotal
+                    }],
+                    chart: {
+                        height: 300,
+                        type: 'line',
+                        zoom: {
+                            enabled: false
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    stroke: {
+                        curve: 'straight'
+                    },
+                    title: {
+                        text: 'Vendor Sales by Month',
+                        align: 'left'
+                    },
+                    grid: {
+                        row: {
+                            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                            opacity: 0.5
+                        },
+                    },
+                    xaxis: {
+                        categories: res.OrderDate,
+                    }
+                };
+
+                var chart = new ApexCharts(document.querySelector("#totalSalesGraph"), options);
                 chart.render();
 
             }, 'json')

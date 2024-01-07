@@ -11,9 +11,12 @@ error_reporting(0);
 
 // }
 
+//Get Menu List
 if ($_GET['getMenu']) {
 
-    $sql = "SELECT * from menu";
+    $vendorID = $_POST['test'];
+
+    $sql = "SELECT * from menu WHERE KioskID= $vendorID";
     $result = $conn->query($sql);
     $result = $result->fetch_all(MYSQLI_ASSOC);
 
@@ -32,6 +35,31 @@ if ($_GET['getMenu']) {
     die;
 }
 
+//Get Sales
+if ($_GET['getSales']) {
+
+    $vendorID = $_POST['test'];
+
+    $sql = "SELECT SUM(OrderTotalPrice) SumTotalPrice, DATE_FORMAT(OrderDate, '%M') OrderMonth from onlineorder INNER JOIN orderlist ON onlineorder.OrderID = orderlist.OrderID INNER JOIN menu ON orderlist.MenuID = menu.MenuID WHERE onlineorder.KioskID= $vendorID GROUP BY MONTH(OrderDate)";
+    $result = $conn->query($sql);
+    $result = $result->fetch_all(MYSQLI_ASSOC);
+
+
+    foreach ($result as $row) {
+        $OrderTotal[] = $row['SumTotalPrice'];
+        $OrderDate[] = $row['OrderMonth'];
+        $totalSales = array_sum($OrderTotal);
+    }
+
+    echo json_encode([
+        "OrderTotal" => $OrderTotal,
+        "OrderDate" => $OrderDate,
+        "totalSales" => "RM " . $totalSales,
+    ],JSON_NUMERIC_CHECK );
+    die;
+}
+
+// Approve vendor
 if ($_GET['postVendorStatus']) {
     $vendorID = $_POST['test'];
     $dateNow = date("Y-m-d");
