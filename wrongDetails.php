@@ -6,6 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-    <p>Wrong Details</p>
+    <p><?php echo $_GET['Invalid']; ?></p>
 </body>
 </html>
