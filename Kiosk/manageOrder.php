@@ -40,7 +40,7 @@ if (!isset($_SESSION['User'])) {
                       <tr class="text-nowrap">
                         <th>#</th>
                         <th>Customer Name</th>
-                        <th>Order List Id</th>
+                        <th>Order Item</th>
                         <th>Order Date</th>
                         <th>Order Time</th>
                         <th>Quantity</th>
@@ -64,7 +64,7 @@ if (!isset($_SESSION['User'])) {
                         <tr id="<?php echo $row['OrderID'] ?>">
                           <th scope="row"><?php echo $i; ?></th>
                           <td><?php echo $row['FullName'] ?></td>
-                          <td><?php echo $row['OrderListID'] ?></td>
+                          <td><?php echo $row['ItemName'] ?></td>
                           <td><?php echo date('d/m/Y', strtotime($row['OrderDate'])); ?></td>
                           <td><?php echo $row['OrderTime'] ?></td>
                           <td><?php echo $row['Quantity'] ?></td>
