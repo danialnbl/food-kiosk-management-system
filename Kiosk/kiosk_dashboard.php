@@ -40,7 +40,7 @@ if (!isset($_SESSION['User'])) {
                                                 <div class="d-flex align-items-end row">
                                                     <div class="col-sm-7">
                                                         <div class="card-body">
-                                                            <h5 class="card-title text-primary">Congratulations
+                                                            <h5 class="card-title text-primary">Stay Motivated
                                                                 <?php
                                                                 $userID = $_SESSION['User'];
                                                                 $KioskID = $_SESSION['KioskID'];
@@ -55,7 +55,7 @@ if (!isset($_SESSION['User'])) {
                                                             ?>
 
                                                             <p class="mb-4">
-                                                                You have done <span class="fw-bold">72%</span> more sales today.
+                                                                Rezeki itu hadir kepada mereka yang <b>berusaha</b>, bukan untuk mereka yang <b>berputus asa</b>.
                                                             </p>
                                                         </div>
                                                     </div>

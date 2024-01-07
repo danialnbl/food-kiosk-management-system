@@ -73,7 +73,7 @@
         <?php
         $ret = mysqli_query(
           $conn,
-          "SELECT * FROM menu WHERE Availability ='Available'"
+          "SELECT * FROM menu INNER JOIN vendor ON menu.KioskID = vendor.KioskID WHERE Availability ='Available'"
         );
         while ($row = mysqli_fetch_array($ret)) {
         ?>
@@ -83,7 +83,8 @@
             <div class="card-body">
               <h5 class="card-title"><?php echo $row['ItemName']; ?></h5>
               <p class="card-text"><?php echo $row['ItemDesc']; ?></p>
-              <p class="card-text">Kiosk Number : <?php echo $row['KioskID']; ?></p>
+              <p class="card-text">Stocks Available : <?php echo $row['Stock']; ?></p>
+              <p class="card-text">Kiosk Name : <?php echo $row['VendorName']; ?></p>
               <a href="login.php" class="btn btn-primary">Browse Now</a>
             </div>
           </div>
