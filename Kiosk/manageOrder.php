@@ -77,15 +77,15 @@ if (!isset($_SESSION['User'])) {
                                   <i class="bx bx-dots-vertical-rounded"></i>
                                 </button>
                                 <div class="dropdown-menu">
-                                <a class="dropdown-item opn" href="javascript:void(0);" data-id="<?php echo $row['OrderID']; ?>">
+                                <a class="dropdown-item opn" data-bs-toggle="modal" data-bs-target="#edit-menu" href="javascript:void(0);" data-id="<?php echo $row['OrderID']; ?>">
                                     <i class="bx bx-show me-1"></i>
                                     View More
                                   </a>
-                                  <a class="dropdown-item opn" data-bs-toggle="modal" data-bs-target="#edit-menu" href="javascript:void(0);" data-id="<?php echo $row['OrderID']; ?>">
+                                  <!-- <a class="dropdown-item opn" data-bs-toggle="modal" data-bs-target="#edit-menu" href="javascript:void(0);" data-id="<?php echo $row['OrderID']; ?>">
                                     <i class="bx bx-edit-alt me-1"></i>
                                     Edit
-                                  </a>
-                                  <a class="dropdown-item del" data-id="<?php echo $row['OrderID']; ?>" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
+                                  </a> -->
+                                  <a class="dropdown-item del" data-id="<?php echo $row['OrderID']; ?>" href="javascript:void(0);"><i class="bx bxs-x-square me-1"></i> Cancel Order</a>
                                 </div>
                               </div>
                             </form>
@@ -107,41 +107,45 @@ if (!isset($_SESSION['User'])) {
     <!-- Edit Menu Modal -->
     <form method="post">
       <div class="modal fade" id="edit-menu" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel2">Edit New Menu</h5>
+              <h5 class="modal-title" id="exampleModalLabel2">View Order</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <div class="row">
-                <div class="col mb-3">
-                  <label for="menuNameEdit" class="form-label">Menu Name</label>
-                  <input type="text" id="menuNameEdit" name="menuNameEdit" class="form-control" placeholder="Enter Name" value="" />
+                <div class="col mb-6">
+                  <label for="customerName" class="form-label">Customer Name</label>
+                  <input type="text" id="customerName" name="customerName" class="form-control" placeholder="" value="" readonly/>
+                </div>
+                <div class="col mb-6">
+                  <label for="menuOrdered" class="form-label">Menu Ordered</label>
+                  <input type="text" id="menuOrdered" name="menuOrdered" class="form-control" placeholder="" value="" readonly/>
+                </div>
+              </div>
+              <div class="row">
+              <div class="col mb-6">
+                  <label for="OrderTime" class="form-label">Order Time</label>
+                  <input type="text" id="OrderTime" name="OrderTime" class="form-control" placeholder="" value="" readonly/>
                 </div>
                 <div class="col mb-3">
-                  <label for="menuAvailabilityEdit" class="form-label">Availability</label>
-                  <select class="form-select" id="menuAvailabilityEdit" aria-label="Default select example" name="menuAvailabilityEdit">
+                  <label for="orderQuantity" class="form-label">Quantity</label>
+                  <input type="text" id="orderQuantity" name="orderQuantity" class="form-control" placeholder="" value="" readonly/>
+                </div>
+              </div>
+              <div class="row">
+              <div class="col mb-6">
+                  <label for="OrderTotalPrice" class="form-label">Order Total Price (RM)</label>
+                  <input type="text" id="OrderTotalPrice" name="OrderTotalPrice" class="form-control" placeholder="" value="" readonly/>
+                </div>
+                <div class="col mb-3">
+                  <label for="orderStatus" class="form-label">Order Status</label>
+                  <select class="form-select" id="orderStatus" aria-label="Default select example" name="orderStatus">
                     <option selected>Open this select menu</option>
-                    <option id="menuAvailable" value="Available">Available</option>
-                    <option id="menuNotAvailable" value="Not Available">Not Available</option>
+                    <option id="OrderPreparing" value="Preparing">Preparing</option>
+                    <option id="OrderCompleted" value="Completed">Completed</option>
                   </select>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col mb-3">
-                  <label for="menuPriceEdit" class="form-label">Price</label>
-                  <input type="text" id="menuPriceEdit" name="menuPriceEdit" class="form-control" placeholder="Enter Price" value="" />
-                </div>
-                <div class="col mb-3">
-                  <label for="menuStockEdit" class="form-label">Stock</label>
-                  <input type="text" id="menuStockEdit" name="menuStockEdit" class="form-control" placeholder="Enter Stock" value="" />
-                </div>
-              </div>
-              <div class="row">
-                <div class="col mb-3">
-                  <label for="menuDescEdit" class="form-label">Menu Description</label>
-                  <textarea type="text" id="menuDescEdit" name="menuDescEdit" class="form-control" placeholder="Enter Description" value="" rows="3"></textarea>
                 </div>
               </div>
               <input hidden type="text" id="menuIDEdit" name="menuIDEdit" class="form-control" placeholder="" value="" />         
@@ -162,19 +166,33 @@ if (!isset($_SESSION['User'])) {
       var id;
       $(".opn").click(function() {
         id = $(this).data('id');
-        var col = $("#".concat(id, " > td"));
-        var unitVal = $("#menuAvailabilityEdit option").filter(function() {
-          return $(this).html() == col[3].innerText;
+
+        $.post('../api.php?getOrder=1', {
+          test: id
+        }, function (res) {
+        console.log(res)
+        $("#customerName").val(res.CustomerName);
+        $("#menuOrdered").val(res.ItemName);
+        $("#OrderTime").val(res.OrderTime);
+        $("#orderQuantity").val(res.Quantity);
+        $("#OrderTotalPrice").val(res.OrderTotalAmount);
+
+        var unitVal = $("#orderStatus option").filter(function() {
+          return $(this).html() == res.orderStatus;
         }).val()
-        console.log(col[0].innerText);
-        $("#id").val(id);
-        $("#menuNameEdit").val(col[0].innerText);
-        $("#menuDescEdit").val(col[1].innerText);
-        $("#menuPriceEdit").val(col[2].innerText);
-        $("#menuAvailabilityEdit").val(unitVal).change();
-        $("#menuStockEdit").val(col[4].innerText);
-        $("#frameEdit").val(col[4].innerText);
-        $("#menuIDEdit").val(id);
+
+        $("#orderStatus").val(unitVal).change();
+        
+    }, 'json')
+        
+         $("#id").val(id);
+        
+        // $("#menuDescEdit").val(col[1].innerText);
+        // $("#menuPriceEdit").val(col[2].innerText);
+        // $("#menuAvailabilityEdit").val(unitVal).change();
+        // $("#menuStockEdit").val(col[4].innerText);
+        // $("#frameEdit").val(col[4].innerText);
+        // $("#menuIDEdit").val(id);
       });
 
       $(".del").click(function() {

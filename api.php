@@ -59,6 +59,36 @@ if ($_GET['getSales']) {
     die;
 }
 
+//Get Online Order
+if ($_GET['getOrder']) {
+
+    $OrderID = $_POST['test'];
+
+    $sql = "SELECT * FROM onlineorder INNER JOIN orderlist ON onlineorder.OrderID = orderlist.OrderID INNER JOIN menu ON orderlist.MenuID = menu.MenuID INNER JOIN user ON onlineorder.UserID = user.UserID WHERE onlineorder.OrderID = $OrderID";
+    $result = $conn->query($sql);
+    $result = $result->fetch_all(MYSQLI_ASSOC);
+
+
+    foreach ($result as $row) {
+        $ItemName[] = $row['ItemName'];
+        $CustomerName[] = $row['FullName'];
+        $OrderTime[] = $row['OrderTime'];
+        $Quantity[] = $row['Quantity'];
+        $OrderTotalAmount[] = $row['OrderTotalAmount'];
+        $orderStatus[] = $row['OrderStatus'];
+    }
+
+    echo json_encode([
+        "ItemName" => $ItemName,
+        "CustomerName" => $CustomerName,
+        "OrderTime" => $OrderTime,
+        "Quantity" => $Quantity,
+        "OrderTotalAmount" => $OrderTotalAmount,
+        "orderStatus" => $orderStatus,
+    ],JSON_NUMERIC_CHECK );
+    die;
+}
+
 // Approve vendor
 if ($_GET['postVendorStatus']) {
     $vendorID = $_POST['test'];
