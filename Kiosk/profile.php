@@ -74,6 +74,21 @@ if (!isset($_SESSION['User'])) {
                               <input class="form-control" type="password" id="password" name="password" value="<?php echo $row['VendorPassword']; ?>" autofocus />
                             </div>
                           </div>
+                          <div class="mt-2">
+                            <button id="editBtn" name="editBtn" type="submit" class="btn btn-primary me-2">Save changes</button>
+                            <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                          </div>
+                        </form>
+                      </div>
+                      <!-- /Account -->
+                    </div>
+
+                    <div class="card mb-4">
+                      <h5 class="card-header">Edit Logo</h5>
+                      <!-- Account -->
+                      <hr class="my-0" />
+                      <div class="card-body">
+                        <form id="editLogo" method="post" enctype="multipart/form-data">
                           <div class="row">
                             <div class="col mb-3">
                               <label for="formFile" class="form-label">Kiosk Logo </label>
@@ -86,8 +101,7 @@ if (!isset($_SESSION['User'])) {
                             </div>
                           </div>
                           <div class="mt-2">
-                            <button id="editBtn" name="editBtn" type="submit" class="btn btn-primary me-2">Save changes</button>
-                            <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                            <button id="editLogoBtn" name="editLogoBtn" type="submit" class="btn btn-primary me-2" disabled>Save changes</button>
                           </div>
                         </form>
                       </div>
@@ -107,12 +121,21 @@ if (!isset($_SESSION['User'])) {
 
                       function preview() {
                         frame.src = URL.createObjectURL(event.target.files[0]);
+
+                        if (document.getElementById("formFile").files.length >= 1) {
+                        document.getElementById("editLogoBtn").disabled = false;
+                        }
                       }
 
                       function clearImage() {
                         document.getElementById('formFile').value = null;
                         frame.src = "";
                       }
+
+                      function enableLogoBtn(){
+                        
+                      }
+                      
                     </script>
                     <div class="card">
                       <h5 class="card-header">Delete Account</h5>
@@ -155,12 +178,7 @@ if (!isset($_SESSION['User'])) {
       $phoneNumber = $_POST['phoneNumber'];
       $password = $_POST['password'];
 
-      //declare variables
-      $image = $_FILES['formFile']['tmp_name'];
-      $name = $_FILES['formFile']['name'];
-      $image = base64_encode(file_get_contents(addslashes($image)));
-
-      $query = mysqli_query($conn, "UPDATE vendor INNER JOIN kiosk ON vendor.KioskID = kiosk.KioskID SET VendorName = '$vendorName', VendorEmail = '$email', VendorNum = '$phoneNumber', VendorPassword = '$password', KioskLogo = '$image'  WHERE VendorID = '$uid'");
+      $query = mysqli_query($conn, "UPDATE vendor INNER JOIN kiosk ON vendor.KioskID = kiosk.KioskID SET VendorName = '$vendorName', VendorEmail = '$email', VendorNum = '$phoneNumber', VendorPassword = '$password'  WHERE VendorID = '$uid'");
 
       if ($query) {
         echo '
@@ -194,6 +212,67 @@ if (!isset($_SESSION['User'])) {
                 });
               </script>
              ';
+      }
+    }
+
+    if (isset($_POST['editLogoBtn'])) {
+      //declare variables
+      $uid = $_SESSION['User'];
+      $image = $_FILES['formFile']['tmp_name'];
+      $name = $_FILES['formFile']['name'];
+      $image = base64_encode(file_get_contents(addslashes($image)));
+
+      if ($image != null) {
+        $query = mysqli_query($conn, "UPDATE vendor INNER JOIN kiosk ON vendor.KioskID = kiosk.KioskID SET KioskLogo = '$image'  WHERE VendorID = '$uid'");
+        if ($query) {
+          echo '
+          <script type="text/javascript">
+          $(document).ready(function(){
+            Swal.fire({
+              title: "Logo Updated!",
+              icon: "success",
+              timer: 2000,
+              showConfirmButton: false,
+            }).then(function() {
+              window.location.href="profile.php";
+            });
+          });
+    
+          </script>
+                ';
+        } else {
+          echo '
+          <script type="text/javascript">
+                  $(document).ready(function(){
+                    Swal.fire({
+                      title: "Something went wrong! 😢",
+                      text: "Please try again",
+                      icon: "error",
+                      timer: 2000,
+                      showConfirmButton: false,
+                    }).then(function() {
+                      window.location.href="profile.php";
+                    });
+                  });
+                </script>
+               ';
+        }
+      } else {
+        echo '
+          <script type="text/javascript">
+                  $(document).ready(function(){
+                    Swal.fire({
+                      title: "Something went wrong! 😢",
+                      text: "Please choose your image!",
+                      icon: "error",
+                      timer: 2000,
+                      showConfirmButton: false,
+                    }).then(function() {
+                      window.location.href="profile.php";
+                    });
+                  });
+                </script>
+               ';
       }
     }
 
