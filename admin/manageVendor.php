@@ -73,7 +73,15 @@ if (!isset($_SESSION['User'])) {
                                                         ?>
                                                     </td>
                                                     <td><?php echo $row['ApprovalStatus']; ?></td>
-                                                    <td><?php echo date('d/m/Y', strtotime($row['ApprovalDate'])); ?></td>
+                                                    <td><?php 
+
+                                                    if($row['ApprovalDate'] != null){
+                                                        echo date('d/m/Y', strtotime($row['ApprovalDate']));
+                                                    }else{
+                                                        echo "Null";
+                                                    }
+                                                    ; 
+                                                    ?></td>
                                                     <td><?php echo $row['KioskID']; ?></td>
                                                     <td><img style="height: 100px; width: 100px;" src="data:image;base64,  <?php echo $row['VendorQR']  ?> " alt="TestQR"></td>
                                                     <td hidden><?php echo $row['VendorPassword']; ?></td>

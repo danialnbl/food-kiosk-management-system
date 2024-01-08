@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- connect css -->
     <link rel="stylesheet" type="text/css" href="assets/css/style2.scss">
-
+    <script src="./assets/vendor/libs/jquery/jquery.js"></script>
     <?php
     include './includes/connect.php';
+    include('./includes/headsettings.php');
+    require_once './assets/vendor/phpqrcode/qrlib.php';
     ?>
     <!-- HTML form for user registration -->
 </head>
@@ -41,8 +43,47 @@
         $password = $_POST['password'];
         $phoneNum = $_POST['phoneNum'];
 
-        $query = mysqli_query($conn, "INSERT INTO vendor (VendorName, VendorEmail, VendorPassword, VendorNum, ApprovalStatus,KioskID) VALUES ('$vendorName','$email','$password','$phoneNum','Pending',1)");
+        //QR
+        $pathQr = './assets/img/qr/';
+        $qrCode = $pathQr . time() . ".png";
+        QRcode::png($phoneNum . "uid=" . $vendorName, $qrCode, 'H', 4, 4);
+        $qrImage = base64_encode(file_get_contents(addslashes($qrCode)));
 
+        $query = mysqli_query($conn, "INSERT INTO vendor (VendorName, VendorEmail, VendorPassword, VendorNum, ApprovalStatus,KioskID,VendorQR) VALUES ('$vendorName','$email','$password','$phoneNum','Pending',1, '$qrImage')");
+
+        if ($query) {
+            echo '
+<script type="text/javascript">
+$(document).ready(function(){
+Swal.fire({
+  title: "Account Created!",
+  icon: "success",
+  timer: 2000,
+  showConfirmButton: false,
+}).then(function() {
+  window.location.href="login.php";
+});
+});
+
+</script>
+    ';
+        } else {
+            echo '
+<script type="text/javascript">
+      $(document).ready(function(){
+        Swal.fire({
+          title: "Something went wrong! 😢",
+          text: "Please try again",
+          icon: "error",
+          timer: 2000,
+          showConfirmButton: false,
+        }).then(function() {
+          window.location.href="login.php";
+        });
+      });
+    </script>
+   ';
+        }
     }
 
     ?>
