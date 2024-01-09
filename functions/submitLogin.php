@@ -40,7 +40,7 @@ if (isset($_POST['submit'])) {
             echo "<script>alert('Invalid Login'); window.location='../login.php';</script>";
         }
     } else if ($_POST['userType'] == "Customer") {
-        $query = "select * from user where UserName='" . $_POST['username'] . "' and Password='" . $_POST['password'] . "'";
+        $query = "select * from user where UserName='" . $_POST['username'] . "' and Password='" . $_POST['password'] . "' and UserType='".$_POST['userType']."' ";
         $result = mysqli_query($conn, $query);
 
         if ($row = mysqli_fetch_assoc($result)) {
