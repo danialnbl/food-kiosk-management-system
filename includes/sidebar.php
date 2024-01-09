@@ -70,7 +70,7 @@
     <ul class="menu-inner py-1">
         <!-- Dashboard -->
         <li class="menu-item">
-            <a href="kiosk_dashboard.php" class="menu-link">
+            <a href="user_dashboard.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home"></i>
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
