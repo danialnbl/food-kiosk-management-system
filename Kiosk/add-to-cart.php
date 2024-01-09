@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+$KioskID = $_SESSION['KioskID'];
+
 include('../includes/connect.php');
 // Check if the cart is already initiated in the session or create a new cart array
 if (!isset($_SESSION['cart'])) {
@@ -20,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['data'])) {
     $qrContent = $_POST['data'];
 
     // Query to find the MenuID based on scanned content
-    $menuQuery = mysqli_query($conn, "SELECT MenuID FROM menu WHERE MenuID = '$qrContent'");
+    $menuQuery = mysqli_query($conn, "SELECT MenuID FROM menu WHERE MenuID = '$qrContent' AND KioskID = '$KioskID'");
 
     if (!$menuQuery) {
         echo "Error: " . mysqli_error($link);
