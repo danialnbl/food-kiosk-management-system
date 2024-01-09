@@ -12,7 +12,7 @@ function clearCart() {
 // Check if the clear button is clicked
 if (isset($_POST['clear'])) {
     clearCart();
-    header("Location: cart.php"); // Redirect to refresh the page
+    header("Location: InstoreCart.php"); // Redirect to refresh the page
     exit;
 }
 
@@ -36,7 +36,7 @@ function removeItem($itemId) {
 if (isset($_POST['remove_item'])) {
     $itemIdToRemove = $_POST['item_id'];
     removeItem($itemIdToRemove);
-    header("Location: cart.php"); // Redirect to refresh the page
+    header("Location: InstoreCart.php"); // Redirect to refresh the page
     exit;
 }
 
