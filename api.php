@@ -59,6 +59,30 @@ if ($_GET['getSales']) {
     die;
 }
 
+//Get Sales
+if ($_GET['getIPSales']) {
+
+    $vendorID = $_POST['test'];
+
+    $sql = "SELECT SUM(InPurchaseTotalPrice) SumTotalPrice, DATE_FORMAT(InPurchaseDate, '%M') OrderMonth from inpurchaseorder INNER JOIN inpurchaselist ON inpurchaseorder.InPurchaseID = inpurchaselist.InPurchaseID WHERE inpurchaseorder.KioskID= $vendorID GROUP BY MONTH(InPurchaseDate)";
+    $result = $conn->query($sql);
+    $result = $result->fetch_all(MYSQLI_ASSOC);
+
+
+    foreach ($result as $row) {
+        $OrderTotal[] = $row['SumTotalPrice'];
+        $OrderDate[] = $row['OrderMonth'];
+        $totalSales = array_sum($OrderTotal);
+    }
+
+    echo json_encode([
+        "OrderTotal" => $OrderTotal,
+        "OrderDate" => $OrderDate,
+        "totalSales" => "RM " . $totalSales,
+    ],JSON_NUMERIC_CHECK );
+    die;
+}
+
 //Get Online Order
 if ($_GET['getOrder']) {
 

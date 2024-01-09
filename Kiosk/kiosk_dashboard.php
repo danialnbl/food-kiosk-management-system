@@ -75,10 +75,10 @@ if (!isset($_SESSION['User'])) {
                                                                 <h5 class="text-nowrap mb-2">Online Sales Report</h5>
                                                                 <span class="badge bg-label-warning rounded-pill">Year 2024</span>
                                                             </div>
-                                                            <div id="totalSalesGraph"></div>
+                                                            <div id="totalSalesGraph">Loading Data...</div>
                                                             <div class="mt-sm-auto">
                                                                 <!-- <small class="text-success text-nowrap fw-semibold"><i class="bx bx-chevron-up"></i> 68.2%</small> -->
-                                                                
+
                                                             </div>
                                                         </div>
                                                         <!-- <div id="profileReportChart"></div> -->
@@ -100,21 +100,49 @@ if (!isset($_SESSION['User'])) {
                                                         <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small> -->
                                                     </div>
                                                 </div>
-                                                
+
                                             </div>
                                             <div class="row">
+                                                <div class="card col">
+                                                    <div class="card-body">
+                                                        <span>Total Online Sales</span>
+                                                        <h3 id="totalSalespan" class="card-title text-nowrap mb-1">Loading Data...</h3>
+                                                        <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-12 col-6 mb-4">
                                             <div class="card col">
                                                 <div class="card-body">
-                                                    <span>Total Online Sales</span>
-                                                    <h3 id="totalSalespan" class="card-title text-nowrap mb-1">Loading Data...</h3>
+                                                    <h5 class="text-nowrap mb-2">Inpurchase Sales Report</h5>
+                                                    <div id="totalInpurchaseSalesGraph">Loading Data...</div>
                                                     <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small> -->
                                                 </div>
                                             </div>
-                                            </div>
-                                            
                                         </div>
                                         <div class="col-lg-4 col-md-12 col-6 mb-4">
-                                            
+                                            <div class="row mb-4">
+                                                <div class="card col">
+                                                    <div class="card-body">
+                                                        <span>Total Inpurchase Sales</span>
+                                                        <h3 id="totalIPSalespan" class="card-title text-nowrap mb-1">Loading Data...</h3>
+                                                        <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-4">
+                                                <div class="card col">
+                                                    <div class="card-body">
+                                                        <span>Total Sales</span>
+                                                        <h3 id="totalALLSalespan" class="card-title text-nowrap mb-1">Loading Data...</h3>
+                                                        <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small> -->
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -132,6 +160,7 @@ if (!isset($_SESSION['User'])) {
         $(document).ready(function() {
 
             var KioskID = document.getElementById('kioskID').value;
+            var totalAllSales = 0;
 
             //Get Menu
             $.post('../api.php?getMenu=1', {
@@ -139,37 +168,38 @@ if (!isset($_SESSION['User'])) {
             }, function(res) {
                 console.log(res)
 
-                $('#totalMenuspan').html(res.totalMenu)
+                if (res.totalMenu != null) {
+                    $('#totalMenuspan').html(res.totalMenu)
 
-                var options = {
-                    dataLabels: {
-                        enabled: false,
-                        formatter: function(val) {
-                            return val + "%"
-                        }
-                    },
-                    series: res.StockValue,
-                    chart: {
-                        width: 380,
-                        type: 'donut',
-                    },
-                    labels: res.itemName,
-                    responsive: [{
-                        breakpoint: 480,
-                        options: {
-                            chart: {
-                                width: 200
-                            },
-                            legend: {
-                                position: 'bottom'
+                    var options = {
+                        dataLabels: {
+                            enabled: false,
+                            formatter: function(val) {
+                                return val + "%"
                             }
-                        }
-                    }]
-                };
+                        },
+                        series: res.StockValue,
+                        chart: {
+                            width: 380,
+                            type: 'donut',
+                        },
+                        labels: res.itemName,
+                        responsive: [{
+                            breakpoint: 480,
+                            options: {
+                                chart: {
+                                    width: 200
+                                },
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            }
+                        }]
+                    };
 
-                var chart = new ApexCharts(document.querySelector("#chart"), options);
-                chart.render();
-
+                    var chart = new ApexCharts(document.querySelector("#chart"), options);
+                    chart.render();
+                }
             }, 'json')
 
             // Get Total Sales
@@ -178,48 +208,111 @@ if (!isset($_SESSION['User'])) {
             }, function(res) {
                 console.log(res)
 
-                $('#totalSalespan').html(res.totalSales)
-
-                var options = {
-                    series: [{
-                        name: "Total Sales",
-                        data: res.OrderTotal
-                    }],
-                    chart: {
-                        height: 300,
-                        type: 'line',
-                        zoom: {
-                            enabled: false
-                        }
-                    },
-                    dataLabels: {
-                        enabled: false
-                    },
-                    stroke: {
-                        curve: 'straight'
-                    },
-                    title: {
-                        text: 'Vendor Sales by Month',
-                        align: 'left'
-                    },
-                    grid: {
-                        row: {
-                            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-                            opacity: 0.5
+                if (res.totalSales != null) {
+                    $('#totalSalespan').html(res.totalSales)
+                    $('#totalSalesGraph').html("")
+                    var options = {
+                        series: [{
+                            name: "Total Sales",
+                            data: res.OrderTotal
+                        }],
+                        chart: {
+                            height: 300,
+                            type: 'line',
+                            zoom: {
+                                enabled: false
+                            }
                         },
-                    },
-                    xaxis: {
-                        categories: res.OrderDate,
-                    }
-                };
+                        dataLabels: {
+                            enabled: false
+                        },
+                        stroke: {
+                            curve: 'straight'
+                        },
+                        title: {
+                            text: 'Vendor Sales by Month',
+                            align: 'left'
+                        },
+                        grid: {
+                            row: {
+                                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                                opacity: 0.5
+                            },
+                        },
+                        xaxis: {
+                            categories: res.OrderDate,
+                        }
+                    };
 
-                var chart = new ApexCharts(document.querySelector("#totalSalesGraph"), options);
-                chart.render();
+                    var chart = new ApexCharts(document.querySelector("#totalSalesGraph"), options);
+                    chart.render();
+                }
+            }, 'json')
 
+            // Get Inpurchase Sales Report
+            $.post('../api.php?getIPSales=1', {
+                test: KioskID
+            }, function(res) {
+                console.log(res)
+
+                $('#totalInpurchaseSalesGraph').html("")
+                if (res.totalSales != null) {
+
+                    $('#totalIPSalespan').html(res.totalSales)
+                    var inpurchaseOptions = {
+                        series: [{
+                            name: "Total Sales",
+                            data: res.OrderTotal
+                        }],
+                        chart: {
+                            height: 300,
+                            type: 'line',
+                            zoom: {
+                                enabled: false
+                            }
+                        },
+                        dataLabels: {
+                            enabled: false
+                        },
+                        stroke: {
+                            curve: 'straight'
+                        },
+                        title: {
+                            text: 'Vendor Sales by Month',
+                            align: 'left'
+                        },
+                        grid: {
+                            row: {
+                                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                                opacity: 0.5
+                            },
+                        },
+                        xaxis: {
+                            categories: res.OrderDate,
+                        }
+                    };
+
+                    var chart = new ApexCharts(document.querySelector("#totalInpurchaseSalesGraph"), inpurchaseOptions);
+                    chart.render();
+                }
             }, 'json')
 
         })
     </script>
 
+    <script>
+        setTimeout(() => {
+            var InpurchaseSales = document.getElementById('totalIPSalespan').innerHTML;
+            var onlineSales = document.getElementById('totalSalespan').innerHTML;
+
+            var retInpurchaseSales = parseFloat(InpurchaseSales.replace('RM ',''));
+            var retonlineSales = parseFloat(onlineSales.replace('RM ','')); 
+
+            
+
+            var TotalAllSales = retInpurchaseSales + retonlineSales;
+            $('#totalALLSalespan').html("RM " + TotalAllSales)
+        }, 5000);
+    </script>
     </html>
 <?php } ?>
