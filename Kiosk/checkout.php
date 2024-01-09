@@ -84,31 +84,30 @@ if (!isset($_SESSION['User'])) {
                         <div class="card mb-3">
                             <h5 class="card-header">Payment Method</h5>
                             <div class="card-body" style="padding: 30px;">
-
-                            <!-- First form-check -->
-                            <div class="custom-border" onclick="document.getElementById('flexRadioDefault1').checked = true;">
-                                <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
-                                <label class="form-check-label" for="flexRadioDefault1">
-                                    Cash
-                                </label>
+                                <!-- First form-check -->
+                                <div class="custom-border" onclick="setPaymentMethod('Cash'); document.getElementById('flexRadioDefault1').checked = true;">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="Payment" id="flexRadioDefault1" checked>
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            Cash
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <i class="fa fa-money" style="font-size:24px;color: #7D7D6E"></i> <!-- Font Awesome cash icon -->
+                                    </div>
                                 </div>
-                                <div>
-                                    <i class="fa fa-money" style="font-size:24px;color: #7D7D6E"></i> <!-- Font Awesome cash icon -->
+                                <!-- Second form-check -->
+                                <div class="custom-border" onclick="setPaymentMethod('Kiosk Membership Card'); document.getElementById('flexRadioDefault2').checked = true;">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="Payment" id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            Kiosk Membership Card
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <i class="fa fa-credit-card" style="font-size:24px;color: #7D7D6E"></i><!-- Font Awesome cash icon -->
+                                    </div>
                                 </div>
-                            </div>
-                            <!-- Second form-check -->
-                            <div class="custom-border" onclick="document.getElementById('flexRadioDefault2').checked = true;">
-                                <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                                <label class="form-check-label" for="flexRadioDefault2">
-                                    Kiosk Membership Card
-                                </label>
-                                </div>
-                                <div>
-                                    <i class="fa fa-credit-card" style="font-size:24px;color: #7D7D6E"></i><!-- Font Awesome cash icon -->
-                                </div>
-                            </div>
                             </div>
                         </div>
 
@@ -119,7 +118,7 @@ if (!isset($_SESSION['User'])) {
                                     <p class="mb-1"><strong>Collect Points: </span></strong></p>
                                     <div class="input-group mb-3">
                                         <input  type="text" name="phonenumber" class="form-control" placeholder="Phone Number" aria-label="Phone number" aria-describedby="button-collect-points" >
-                                        <button id="collectingpoints" type="submit" class="btn btn-outline-secondary">Enter</button>
+                                        <button id="collectingpoints" type="button" class="btn btn-outline-secondary">Enter</button>
                                     </div>
                                     <div class="mb-3">
                                         <button id="redeemButton" type="button" class="btn btn-link px-0 text-decoration-none" data-bs-toggle="modal" data-bs-target="#redeemPointsModal" disabled>
@@ -164,12 +163,10 @@ if (!isset($_SESSION['User'])) {
                                     <h4 class="m-0"><strong>Total Amount:</strong></h4>
                                     <h4 id="HargaTotalTolak" class="m-0 text-end"><strong>RM <?= $totalPrice ?></strong></h4>
                                 </div>                              
-                                <form action="process-checkout.php" method="POST">
                                     <div class="d-grid">
-                                        <button type="submit" class="btn btn-success mb-2">Confirm Order</button>
-                                        <button type="button" class="btn btn-danger">Cancel Order</button>
+                                        <button type="submit" id="confirmOrderBtn" class="btn btn-success mb-2">Confirm Order</button>
+                                        <button type="button" id="cancelOrderBtn" class="btn btn-danger">Cancel Order</button>
                                     </div>
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -221,10 +218,16 @@ if (!isset($_SESSION['User'])) {
         var RMRedeem2 = 0;
         var pointsRedeem2 = 0;
 
+        var selectedPaymentMethod = '';
+
+        function setPaymentMethod(method) {
+            selectedPaymentMethod = method;
+        }
+
         $(document).ready(function() {
 
             // Event listener for the "Enter" button
-            $('button[type="submit"]').click(function(e) {
+            $('#collectingpoints').click(function(e) {
                 e.preventDefault(); // Prevent default form submission
 
                 // Fetch entered phone number value
@@ -241,43 +244,36 @@ if (!isset($_SESSION['User'])) {
                     $('#pointsRedeemSection').hide(); 
                     return; // Exit the function
                 }
-                
-                var collectingpoints = $(this).attr('id');
-                
-                // AJAX request based on the specific button clicked
-                if (collectingpoints === 'collectingpoints') {
-                    // AJAX request to check userID
-                    $.ajax({
-                        url: 'checkprocess.php',
-                        method: 'POST',
-                        data: { phoneNumber: phoneNumber },
-                        success: function(response) {
+                                
+                // AJAX request to check userID
+                $.ajax({
+                    url: 'checkprocess.php',
+                    method: 'POST',
+                    data: { phoneNumber: phoneNumber },
+                    success: function(response) {
 
-                            if (response.salah === 'salah') {
-                                alert('Account not found');  
-                                $('#redeemButton').prop('disabled', true);
-                                $('#pointsCollectedValue').text('');
-                                $('#pointsCollectedSection').hide(); 
-                                $('#pointsRedeemValue').text('');
-                                $('#pointsRedeemSection').hide();               
-                            } else {
-                                // Process the response from the server
-                                userID = response.userID;
-                                points = response.points;
-                                $('#redeemButton').prop('disabled', false);
+                        if (response.salah === 'salah') {
+                            alert('Account not found');  
+                            $('#redeemButton').prop('disabled', true);
+                            $('#pointsCollectedValue').text('');
+                            $('#pointsCollectedSection').hide(); 
+                            $('#pointsRedeemValue').text('');
+                            $('#pointsRedeemSection').hide();               
+                        } else {
+                            // Process the response from the server
+                            userID = response.userID;
+                            points = response.points;
+                            $('#redeemButton').prop('disabled', false);
 
-                                $('#pointsCollectedValue').text(points);
-                                $('#pointsCollectedSection').show(); // Show the points collected section
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(error); // Log any errors
+                            $('#pointsCollectedValue').text(points);
+                            $('#pointsCollectedSection').show(); // Show the points collected section
                         }
-                    });
-                } else if (collectingpoints === 'submitButton2') {
-                    // AJAX request for submitButton2
-                    // Use this block to handle actions specific to submitButton2
-                }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error); // Log any errors
+                    }
+                });
+                 
                 
             });
             
