@@ -175,7 +175,7 @@ if (!isset($_SESSION['User'])) {
                     
 
                     echo "</tbody></table></div>";
-                    echo "<div class='total-price'>";
+                    echo "<div class='total-price mt-4'>";
                     //Display total price
                     echo "<p><strong>Total Price: RM <span id='total-price'>" . number_format($totalPrice, 2) . "</span></strong><p>";
                     echo "</div>";

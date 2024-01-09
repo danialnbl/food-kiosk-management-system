@@ -29,6 +29,7 @@ if (isset($_POST['phoneNumber'])) {
 
         $userID = $row['UserID'];        
         $points =  $totalPrice* 0.2;
+        $points = round($points, 2);
         $response = [
             'userID' => $userID,
             'points' => $points
