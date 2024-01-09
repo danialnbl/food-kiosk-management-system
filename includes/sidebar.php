@@ -36,9 +36,15 @@
             </a>
         </li>
         <li class="menu-item">
-            <a href="manageOrder.php" class="menu-link">
+            <a href="#" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-cart"></i>
                 <div data-i18n="Account Settings">Manage Collected Order</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="InstoreCart.php" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-store-alt"></i>
+                <div data-i18n="Account Settings">Manage In-Store Purchase</div>
             </a>
         </li>
         <!-- Layouts for Vendor -->
