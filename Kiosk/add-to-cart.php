@@ -74,7 +74,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['data'])) {
         echo "success";
         header("Location: InstoreCart.php");
     } else {
-        echo "MenuID not found for scanned content";
+        echo "<script>alert('Menu not found for scanned content'); window.location='InstoreCart.php';</script>";
+
+
+        // echo "MenuID not found for scanned content";
     }
     
 } else {
