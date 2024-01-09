@@ -316,7 +316,7 @@ if (!isset($_SESSION['User'])) {
     //QR
     $pathQr = '../assets/img/qr/';
     $qrCode = $pathQr.$menuName.".png";
-    QRcode :: png($menuName . "menuID=" . $menuid,$qrCode,'H',4,4 );
+    QRcode :: png("menuID=" . $menuid,$qrCode,'H',4,4 );
     $qrImage = base64_encode(file_get_contents(addslashes($qrCode)));
     $queryQR = mysqli_query($conn, "UPDATE menu SET MenuQR = '$qrImage' WHERE MenuID = '$menuid'");
 
