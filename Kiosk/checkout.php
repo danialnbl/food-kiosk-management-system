@@ -318,6 +318,7 @@ if (!isset($_SESSION['User'])) {
                             // Update the total amount in the main checkout area
                             $('#HargaTotalTolak').html('<strong>RM ' + totalPriceBaru + '</strong>');
                             points = totalPriceBaru * 0.2;
+                            points = points.toFixed(2);
                             $('#pointsCollectedValue').text(points);
                             
                         });
