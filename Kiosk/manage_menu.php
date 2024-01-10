@@ -307,15 +307,19 @@ if (!isset($_SESSION['User'])) {
     $name = $_FILES['formFile']['name'];
     $image = base64_encode(file_get_contents(addslashes($image)));
 
-    //QR
-    $pathQr = '../assets/img/qr/';
-    $qrCode = $pathQr.time().".png";
-    QRcode :: png($menuName . "uid=" . $Uid,$qrCode,'H',4,4 );
-    $qrImage = base64_encode(file_get_contents(addslashes($qrCode)));
-
-    $query = mysqli_query($conn, "INSERT INTO menu (KioskID, ItemName, ItemDesc, ItemPrice, Availability, Stock, ItemImage, MenuQR) VALUES ($KioskID,'$menuName', '$menuDesc','$menuPrice','$menuAvailability','$menuStock','$image','$qrImage')");
+    $query = mysqli_query($conn, "INSERT INTO menu (KioskID, ItemName, ItemDesc, ItemPrice, Availability, Stock, ItemImage) VALUES ($KioskID,'$menuName', '$menuDesc','$menuPrice','$menuAvailability','$menuStock','$image')");
 
     if ($query) {
+
+    $menuid = mysqli_insert_id($conn);
+
+    //QR
+    $pathQr = '../assets/img/qr/';
+    $qrCode = $pathQr.$menuName."-".$KioskID.".png";
+    QRcode :: png($menuid,$qrCode,'H',4,4 );
+    $qrImage = base64_encode(file_get_contents(addslashes($qrCode)));
+    $queryQR = mysqli_query($conn, "UPDATE menu SET MenuQR = '$qrImage' WHERE MenuID = '$menuid'");
+
       echo '
       <script type="text/javascript">
       $(document).ready(function(){

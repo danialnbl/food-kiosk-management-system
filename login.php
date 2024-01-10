@@ -44,7 +44,7 @@
         <div class="row">
         <div class="col mb-3">
           <select class="form-select" id="userType" aria-label="Default select example" name="userType">
-            <option selected>Open this select menu</option>
+            <option value="" selected>Open this select menu</option>
             <option id="Customer" value="Customer">Customer</option>
             <option id="Vendor" value="Vendor">Vendor</option>
           </select>

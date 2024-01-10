@@ -4,13 +4,32 @@ session_start();
 require_once('../includes/connect.php');
 
 if (isset($_POST['submit'])) {
-    if ($_POST['userType'] == "Vendor") {
+
+    $Admin = "Admin";
+
+    if($_POST['userType'] == ""){
+
+        $query = "SELECT * FROM user WHERE UserName='" . $_POST['username'] . "' AND Password='" . $_POST['password'] . "' AND UserType ='$Admin'";
+        $result = mysqli_query($conn, $query);
+
+        if ($row = mysqli_fetch_assoc($result)) {
+            $_SESSION['User'] = $row['UserID'];
+
+            $_SESSION['Role'] = 3;
+            header("location:../admin/admin_dashboard.php");
+            
+        } else {
+            echo "<script>alert('Invalid Login'); window.location='../login.php';</script>";
+        }
+
+
+    }else if ($_POST['userType'] == "Vendor") {
         $query = "select * from vendor where VendorEmail='" . $_POST['username'] . "' and VendorPassword='" . $_POST['password'] . "'";
         $result = mysqli_query($conn, $query);
 
         if ($row = mysqli_fetch_assoc($result)) {
             if ($row['ApprovalStatus'] == "Pending") {
-                header("location:../wrongDetails.php?Invalid= Your application is being review. Try again later. ");
+                echo "<script>alert('Your application is being review. Try again later.'); window.location='../login.php';</script>";
             } else {
                 $_SESSION['User'] = $row['VendorID'];
                 $_SESSION['Role'] = 1;
@@ -18,10 +37,10 @@ if (isset($_POST['submit'])) {
                 header("location:../Kiosk/kiosk_dashboard.php");
             }
         } else {
-            header("location:../wrongDetails.php?Invalid= Please Enter Correct User Name and Password ");
+            echo "<script>alert('Invalid Login'); window.location='../login.php';</script>";
         }
     } else if ($_POST['userType'] == "Customer") {
-        $query = "select * from user where UserName='" . $_POST['username'] . "' and Password='" . $_POST['password'] . "'";
+        $query = "select * from user where UserName='" . $_POST['username'] . "' and Password='" . $_POST['password'] . "' and UserType='".$_POST['userType']."' ";
         $result = mysqli_query($conn, $query);
 
         if ($row = mysqli_fetch_assoc($result)) {
@@ -30,12 +49,10 @@ if (isset($_POST['submit'])) {
             if ($row['UserType'] == "Customer") {
                 $_SESSION['Role'] = 2;
                 header("location:../user/displayKiosk.php");
-            } else {
-                $_SESSION['Role'] = 3;
-                header("location:../admin/admin_dashboard.php");
             }
+
         } else {
-            header("location:../wrongDetails.php?Invalid= Please Enter Correct User Name and Password ");
+            echo "<script>alert('Invalid Login'); window.location='../login.php';</script>";
         }
     }
 } else {
