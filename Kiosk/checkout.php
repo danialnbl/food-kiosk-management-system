@@ -362,8 +362,7 @@ if (!isset($_SESSION['User'])) {
                                 $('#pointsCollectedValue').text(points);
 
                                 dapatredeem= "false";
-                                
-                                                                
+                                                                                              
                             }
     
                         });
@@ -426,7 +425,25 @@ if (!isset($_SESSION['User'])) {
                 
             });
 
+            $('#cancelOrderBtn').click(function(e) {
+
+                var confirmation = window.confirm("Are you sure you want to proceed?");
+
+                if (confirmation) {
+                    // User clicked 'OK' (confirmed)
+                    console.log("User confirmed.");
+                    window.location.href = 'InstoreCart.php';
+                } else {
+                    // User clicked 'Cancel'
+                    console.log("User canceled.");
+                    return;
+                }
+                
+            });
+
         });
+
+        
 
     </script>  
     
