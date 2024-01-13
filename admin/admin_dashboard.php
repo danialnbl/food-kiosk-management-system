@@ -210,7 +210,7 @@ if (!isset($_SESSION['User'])) {
                     });
 
                     // Display the total in the specified element
-                    $('#totalMenuspan').html(totalSales);
+                    $('#totalMenuspan').html("RM " + totalSales);
 
                     var options = {
                         dataLabels: {

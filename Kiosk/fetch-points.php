@@ -18,8 +18,8 @@ if(isset($_GET['userID'])){
 
         $totalPointsEarned = $row['TotalPointsEarned'];
 
-        // Calculate RMRedeem, RMRedeem2, and pointsRedeem2 as described before
-        if($totalPointsEarned >= 10){
+        // Calculate RMRedeem, RMRedeem2, and pointsRedeem2
+        if($totalPointsEarned >= 100){
             
             $totalPrice = 0;
 
@@ -28,9 +28,13 @@ if(isset($_GET['userID'])){
                     $itemTotalPrice = $item['price'] * $item['quantity'];
                     $totalPrice += $itemTotalPrice;
                 }
+
+                $totalPrice = number_format($totalPrice, 2);
             }
 
             $RMRedeem = $totalPointsEarned / 100;
+            $RMRedeem = intval($RMRedeem);
+
 
             if($RMRedeem > $totalPrice){
                 $RMRedeem2 = $totalPrice;
@@ -53,7 +57,7 @@ if(isset($_GET['userID'])){
                 'RMRedeem' => $RMRedeem,
                 'RMRedeem2' => $RMRedeem2,
                 'pointsRedeem2' => $pointsRedeem2,
-                'wrong' => $true
+                'check' => $true
 
             ];
 
@@ -62,11 +66,11 @@ if(isset($_GET['userID'])){
             echo json_encode($response);
         } else {
 
-            $wrong="wrong";
+            $wrong="false";
 
             $response = [
                 'TotalPointsEarned' => $totalPointsEarned,
-                'wrong' => $wrong
+                'check' => $wrong
             ];
 
             // Return the response as JSON
