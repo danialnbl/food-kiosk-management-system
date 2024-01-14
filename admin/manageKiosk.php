@@ -1,4 +1,4 @@
-<?php
+j <?php
 session_start();
 //error_reporting(0);
 include('../includes/connect.php');
@@ -33,7 +33,7 @@ if (!isset($_SESSION['User'])) {
                         <div class="container-xxl flex-grow-1 container-p-y">
                             <div class="card">
                                 <h5 class="card-header">Kiosk List
-                                    <button type="button" style="float: right;" class="btn rounded-pill btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#add-meal">
+                                    <button type="button" style="float: right;" class="btn rounded-pill btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#add-kiosk">
                                         <span class="tf-icons bx bx-plus"></span>
                                     </button>
                                 </h5>
@@ -67,8 +67,11 @@ if (!isset($_SESSION['User'])) {
                                                         echo $row['OperationStatus'];
                                                         ?>
                                                     </td>
+                                                    <td>
+                                                        <!--<img style="height: 100px; width: 100px;" src="",  <?php echo $row['ItemImage']  ?> " alt="Test">
+                                                        -->
+                                                    </td>
                                                     <td><?php echo $row['KioskNum']; ?></td>
-                                                    <td><?php echo $row['KioskNum']; ?></td> <!-- Suppose to letak gambar -->
                                                     <td>
                                                         <form method="post">
                                                             <div class="dropdown">
@@ -76,7 +79,7 @@ if (!isset($_SESSION['User'])) {
                                                                     <i class="bx bx-dots-vertical-rounded"></i>
                                                                 </button>
                                                                 <div class="dropdown-menu">
-                                                                    <a class="dropdown-item opn" data-bs-toggle="modal" data-bs-target="#edit-menu" href="javascript:void(0);" data-id="<?php echo $row['KioskID']; ?>">
+                                                                    <a class="dropdown-item opn" data-bs-toggle="modal" data-bs-target="#edit-kiosk" href="javascript:void(0);" data-id="<?php echo $row['KioskID']; ?>">
                                                                         <i class="bx bx-edit-alt me-1"></i>
                                                                         Edit
                                                                     </a>
@@ -123,6 +126,13 @@ if (!isset($_SESSION['User'])) {
                                 <div class="col mb-3">
                                     <label for="kiosknum" class="form-label">Kiosk Number</label>
                                     <input type="text" id="kiosknum" name="kiosknum" class="form-control" placeholder="Enter Kiosk Number" value="" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label for="kiosklogo" class="form-label">Kiosk Logo</label>
+                                    <input class="form-control" type="file" id="formFile" name="formFile" onchange="preview()">
+                                    <!--<input type="text" id="kiosklogo" name="kiosklogo" class="form-control" placeholder="Enter Kiosk Logo" value="" />-->
                                 </div>
                             </div>
                         </div>
@@ -178,7 +188,7 @@ if (!isset($_SESSION['User'])) {
         </form>
         <!-- / Layout wrapper -->
 
-        <script>
+        <script> //xtau
             var id;
             $(".opn").click(function() {
                 id = $(this).data('id');
@@ -233,11 +243,6 @@ if (!isset($_SESSION['User'])) {
 
     </html>
 
-    <!-- QR Library -->
-    <?php
-    require_once '../assets/vendor/phpqrcode/qrlib.php';
-    ?>
-
     <!-- CRUD Function -->
     <?php
     if (isset($_POST['addBtn'])) {
@@ -246,13 +251,14 @@ if (!isset($_SESSION['User'])) {
         $operationstatus = $_POST['operationstatus'];
         $kiosknum = $_POST['kiosknum'];
 
-        //QR
-        $pathQr = '../assets/img/qr/';
-        $qrCode = $pathQr . time() . ".png";
-        QRcode::png($phoneNo . "uid=" . $username, $qrCode, 'H', 4, 4);
-        $qrImage = base64_encode(file_get_contents(addslashes($qrCode)));
+        $Uid = $_SESSION['Kiosk'];
 
-        $query = mysqli_query($conn, "INSERT INTO kiosk (KioskName, OperationStatus, KioskLogo, KioskNum) VALUES ('$kioskname','$operationstatus', '$kiosknum')");
+        //declare variables //xtauuu
+        $image = $_FILES['formFile']['tmp_name'];
+        $name = $_FILES['formFile']['name'];
+        $image = base64_encode(file_get_contents(addslashes($image)));
+
+        $query = mysqli_query($conn, "INSERT INTO kiosk (KioskName, OperationStatus, KioskLogo, KioskNum) VALUES ('$kioskname','$operationstatus', '$image', '$kiosknum')");
 
         if ($query) {
             echo '
@@ -311,7 +317,7 @@ if (!isset($_SESSION['User'])) {
           timer: 2000,
           showConfirmButton: false,
         }).then(function() {
-          window.location.href="manageUser.php";
+          window.location.href="manageKiosk.php";
         });
       });
 
@@ -328,7 +334,7 @@ if (!isset($_SESSION['User'])) {
                   timer: 2000,
                   showConfirmButton: false,
                 }).then(function() {
-                  window.location.href="manageUser.php";
+                  window.location.href="manageKiosk.php";
                 });
               });
             </script>
@@ -352,7 +358,7 @@ if (!isset($_SESSION['User'])) {
                 confirmButtonText: "OK"
               }).then((result) => {
                 if (result.isConfirmed) {
-                  window.location.href="manageUser.php";
+                  window.location.href="manageKiosk.php";
                 }
               });
             </script>';
@@ -367,7 +373,7 @@ if (!isset($_SESSION['User'])) {
                 confirmButtonText: "Back"
                 }).then((result) => {
                   if (result.isConfirmed) {
-                    window.location.href="manageUser.php";
+                    window.location.href="manageKiosk.php";
                   }
                 });
               });
