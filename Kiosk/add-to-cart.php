@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['data'])) {
     $menuQuery = mysqli_query($conn, "SELECT MenuID FROM menu WHERE MenuID = '$qrContent' AND KioskID = '$KioskID'");
 
     if (!$menuQuery) {
-        echo "Error: " . mysqli_error($link);
+        echo "Error: " . mysqli_error($conn);
         exit();
     }
 
@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['data'])) {
             $_SESSION['cart'][$existingItemKey]['quantity'] += 1;
         } else {
             // Retrieve item details based on MenuID
-            $itemQuery = mysqli_query($conn, "SELECT * FROM menu WHERE MenuID = '$itemId'");
+            $itemQuery = mysqli_query($conn, "SELECT * FROM menu WHERE MenuID = '$itemId' AND KioskID = '$KioskID'");
 
             if (!$itemQuery) {
                 echo "Error: " . mysqli_error($link);
@@ -58,6 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['data'])) {
             $itemDetails = mysqli_fetch_assoc($itemQuery);
 
             if ($itemDetails) {
+                
                 $itemToAdd = array(
                     'id' => $itemDetails['MenuID'],
                     'name' => $itemDetails['ItemName'],
@@ -75,7 +76,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['data'])) {
         header("Location: InstoreCart.php");
     } else {
         echo "<script>alert('Menu not found for scanned content'); window.location='InstoreCart.php';</script>";
-
 
         // echo "MenuID not found for scanned content";
     }

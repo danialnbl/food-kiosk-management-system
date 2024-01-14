@@ -57,7 +57,7 @@
         </div>
       </form>
       <p><a href='registration.php'>Don't have an account?</a></p>
-      <p><a href='forgot.php'>Forgot Password?</a></p>
+      <!-- <p><a href='forgot.php'>Forgot Password?</a></p> -->
     </div>
   </div>
 </body>

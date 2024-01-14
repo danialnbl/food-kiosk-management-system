@@ -11,8 +11,17 @@ if (isset($_POST['phoneNumber'])) {
     $phoneNumber = $_POST['phoneNumber']; // Sanitize as needed
 
     // Query the database to check if the phone number exists
-    $getUserIDQuery = mysqli_query($conn, "SELECT UserID FROM user WHERE NumPhone = '$phoneNumber'");
+    $getUserIDQuery = mysqli_query($conn, "
+    SELECT *
+    FROM user u
+    JOIN membership m ON u.UserID = m.UserID
+    WHERE u.NumPhone = '$phoneNumber'
+    ");
+
     $row = mysqli_fetch_assoc($getUserIDQuery);
+
+    // $getUserIDQuery = mysqli_query($conn, "SELECT UserID FROM user WHERE NumPhone = '$phoneNumber'");
+    // $row = mysqli_fetch_assoc($getUserIDQuery);
 
     $totalPrice = 0;
 
@@ -22,17 +31,21 @@ if (isset($_POST['phoneNumber'])) {
             $itemTotalPrice = $item['price'] * $item['quantity'];
             $totalPrice += $itemTotalPrice;
         }
+
+        $totalPrice = number_format($totalPrice, 2);
     }
     
     // Check if a match is found
     if ($row) { 
 
-        $userID = $row['UserID'];        
-        $points =  $totalPrice* 0.2;
-        $points = round($points, 2);
+        $userID = $row['UserID'];
+        $TotalPointsCollect = $row['TotalPointsEarned'];        
+        $points =  $totalPrice / 0.2;
+
         $response = [
             'userID' => $userID,
-            'points' => $points
+            'points' => $points,
+            'collectedpoints' => $TotalPointsCollect
         ];
 
         // Return the points as a JSON response

@@ -5,6 +5,7 @@ include('../includes/connect.php');
 include('../functions/functions.php');
 
 $totalPrice = 0;
+$KioskID = $_SESSION['KioskID'];
 
 // Calculating total price
 if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
@@ -12,6 +13,8 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
         $itemTotalPrice = $item['price'] * $item['quantity'];
         $totalPrice += $itemTotalPrice;
     }
+
+    $totalPrice = number_format($totalPrice, 2);
 }
 
 
@@ -63,6 +66,11 @@ if (!isset($_SESSION['User'])) {
             margin-right: 10px; /* Adjust margin for the input to create space */
         }
 
+        #useButton:disabled {
+            background-color: grey;
+            border-color: grey;
+        }
+
         
     </style>
 
@@ -85,10 +93,10 @@ if (!isset($_SESSION['User'])) {
                             <h5 class="card-header">Payment Method</h5>
                             <div class="card-body" style="padding: 30px;">
                                 <!-- First form-check -->
-                                <div class="custom-border" onclick="setPaymentMethod('Cash'); document.getElementById('flexRadioDefault1').checked = true;">
+                                <div class="custom-border" onclick="setPaymentMethod('Cash'); document.getElementById('Cash').checked = true;">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="Payment" id="flexRadioDefault1" checked>
-                                        <label class="form-check-label" for="flexRadioDefault1">
+                                        <input class="form-check-input" type="radio" name="Payment" id="Cash" checked>
+                                        <label class="form-check-label" for="Cash">
                                             Cash
                                         </label>
                                     </div>
@@ -97,10 +105,10 @@ if (!isset($_SESSION['User'])) {
                                     </div>
                                 </div>
                                 <!-- Second form-check -->
-                                <div class="custom-border" onclick="setPaymentMethod('Kiosk Membership Card'); document.getElementById('flexRadioDefault2').checked = true;">
+                                <div class="custom-border" onclick="setPaymentMethod('Kiosk Membership Card'); document.getElementById('Kiosk Membership Card').checked = true;">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="Payment" id="flexRadioDefault2">
-                                        <label class="form-check-label" for="flexRadioDefault2">
+                                        <input class="form-check-input" type="radio" name="Payment" id="Kiosk Membership Card">
+                                        <label class="form-check-label" for="Kiosk Membership Card">
                                             Kiosk Membership Card
                                         </label>
                                     </div>
@@ -137,7 +145,7 @@ if (!isset($_SESSION['User'])) {
                                         <?php foreach ($_SESSION['cart'] as $index => $item): ?>   
                                             <div class="d-flex justify-content-between mb-2">       
                                                 <p class="m-0 textcolor"><?= $item['quantity'] ?> x <?= $item['name'] ?></p>
-                                                <p class="m-0 text-end textcolor">RM <?= $item['price'] * $item['quantity'] ?></p>
+                                                <p class="m-0 text-end textcolor">RM <?= number_format($item['price'] * $item['quantity'], 2) ?></p>
                                             </div>
                                         <?php endforeach; ?>
                                         <?php else: ?>
@@ -161,7 +169,7 @@ if (!isset($_SESSION['User'])) {
                                 <div style="margin:30px;"></div>
                                 <div class="d-flex justify-content-between mb-3">
                                     <h4 class="m-0"><strong>Total Amount:</strong></h4>
-                                    <h4 id="HargaTotalTolak" class="m-0 text-end"><strong>RM <?= $totalPrice ?></strong></h4>
+                                    <h4 id="HargaTotalTolakTambah" class="m-0 text-end"><strong>RM <?= $totalPrice ?></strong></h4>
                                 </div>                              
                                     <div class="d-grid">
                                         <button type="submit" id="confirmOrderBtn" class="btn btn-success mb-2">Confirm Order</button>
@@ -170,6 +178,8 @@ if (!isset($_SESSION['User'])) {
                             </div>
                         </div>
                     </div>
+
+                    <div id="output"></div>
                 </div>
             </div>
           </div>
@@ -189,7 +199,7 @@ if (!isset($_SESSION['User'])) {
                 </div>
                 <!-- Modal Body -->
                 <div class="modal-body d-flex flex-column">
-                    <p id="pointsInfo">Your Total Points:</p>
+                    <p id="pointsInfo">Total Points:</p>
                     <p id="redeemablePointsInfo">Redeemable Points:</p>
                     <button id="useButton" class="btn btn-primary" data-bs-dismiss="modal" disabled>Use</button>
                 </div>
@@ -200,31 +210,28 @@ if (!isset($_SESSION['User'])) {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 
-
-
-
-    <!-- / Layout wrapper -->
-
-    <script src="../assets/js/dashboards-analytics.js"></script>
-
     <script>
 
-        var userID = 0;
-        var points = 0;
-        var TotalPointsEarned = 0;
-        var totalPriceBaru = 0;
+            var KioskID =  <?= json_encode($KioskID); ?>;
+            var userID = 0;
+            var TotalPointsEarned = 0;
+            var points = 0;
+            
+    
+            var totalPriceInitial = <?= json_encode($totalPrice); ?>;
+            var totalPriceBaru = 0;
+            var RMRedeem = 0;
+            var RMRedeem2 = 0;
+            var dapatredeem = "false";
 
-        var RMRedeem = 0;
-        var RMRedeem2 = 0;
-        var pointsRedeem2 = 0;
+            var pointsRedeem2 = 0;
+            var selectedPaymentMethod = 'Cash';
 
-        var selectedPaymentMethod = '';
+            function setPaymentMethod(method) {
+                selectedPaymentMethod = method;
+            }
 
-        function setPaymentMethod(method) {
-            selectedPaymentMethod = method;
-        }
-
-        $(document).ready(function() {
+        $(document).ready(function() {     
 
             // Event listener for the "Enter" button
             $('#collectingpoints').click(function(e) {
@@ -242,6 +249,11 @@ if (!isset($_SESSION['User'])) {
                     $('#pointsCollectedSection').hide();
                     $('#pointsRedeemValue').text('');
                     $('#pointsRedeemSection').hide(); 
+                    $('#HargaTotalTolakTambah').html('<strong>RM ' + totalPriceInitial + '</strong>');
+                    
+                    userID = 0;
+                    points = 0;
+                    
                     return; // Exit the function
                 }
                                 
@@ -253,18 +265,26 @@ if (!isset($_SESSION['User'])) {
                     success: function(response) {
 
                         if (response.salah === 'salah') {
+
                             alert('Account not found');  
                             $('#redeemButton').prop('disabled', true);
                             $('#pointsCollectedValue').text('');
                             $('#pointsCollectedSection').hide(); 
                             $('#pointsRedeemValue').text('');
-                            $('#pointsRedeemSection').hide();               
+                            $('#pointsRedeemSection').hide();   
+                            $('#HargaTotalTolakTambah').html('<strong>RM ' + totalPriceInitial + '</strong>');
+
+                            userID = 0;
+                            points = 0;
+
                         } else {
                             // Process the response from the server
                             userID = response.userID;
                             points = response.points;
+                            points = Math.floor(points);
+                            TotalPointsEarned = response.collectedpoints;
+                            
                             $('#redeemButton').prop('disabled', false);
-
                             $('#pointsCollectedValue').text(points);
                             $('#pointsCollectedSection').show(); // Show the points collected section
                         }
@@ -286,23 +306,26 @@ if (!isset($_SESSION['User'])) {
                 data: { userID: userID },
                 success: function(response) {
 
-                    if (response.wrong === 'wrong'){
+                    if (response.check === 'false'){
 
-                        TotalPointsEarned = response.TotalPointsEarned;
-
-                        $('#pointsInfo').html('Your Total Points: ' + TotalPointsEarned);
+                        $('#pointsInfo').html('Total Points: ' + TotalPointsEarned);
                         $('#redeemablePointsInfo').html('Insufficient Balance');
                         $('#useButton').prop('disabled', true);
+
 
                     } else{
 
                         $('#useButton').prop('disabled', false);
 
-                        TotalPointsEarned = response.TotalPointsEarned;
                         totalPriceBaru = response.totalPriceBaru;
+                        totalPriceBaru = parseFloat(totalPriceBaru).toFixed(2);
 
                         RMRedeem = response.RMRedeem ;
+                        RMRedeem = parseFloat(RMRedeem).toFixed(2);
+
                         RMRedeem2 = response.RMRedeem2;
+                        RMRedeem2 = parseFloat(RMRedeem2).toFixed(2);
+
                         pointsRedeem2 = response.pointsRedeem2;
 
                         // Update modal content with calculated values
@@ -310,16 +333,38 @@ if (!isset($_SESSION['User'])) {
                         $('#redeemablePointsInfo').html('Redeemable Amount: RM ' + RMRedeem2 + ' (' + pointsRedeem2 + ')');
 
                         // Use button event listener
-                        $('#useButton').click(function() {
+                        $('#useButton').off().click(function() {  
 
-                            $('#pointsRedeemValue').text('-' + RMRedeem2);
-                            $('#pointsRedeemSection').show();
+                            if (dapatredeem === "false") {
 
-                            // Update the total amount in the main checkout area
-                            $('#HargaTotalTolak').html('<strong>RM ' + totalPriceBaru + '</strong>');
-                            points = totalPriceBaru * 0.2;
-                            $('#pointsCollectedValue').text(points);
-                            
+                                $('#pointsRedeemValue').text('- RM ' + RMRedeem2);
+                                $('#pointsRedeemSection').show();
+
+                                // Update the total amount in the main checkout area
+                                $('#HargaTotalTolakTambah').html('<strong>RM ' + totalPriceBaru + '</strong>');
+                                points = totalPriceBaru / 0.2;
+                                points = Math.floor(points);
+                                $('#pointsCollectedValue').text(points);
+                                $(this).text('Remove').removeClass('btn-primary').addClass('btn-danger');
+
+                                dapatredeem= "true";
+                                
+                            } else if (dapatredeem === "true") {
+
+                                $(this).text('Use').removeClass('btn-danger').addClass('btn-primary');
+
+                                $('#pointsRedeemValue').text('');
+                                $('#pointsRedeemSection').hide();   
+                                $('#HargaTotalTolakTambah').html('<strong>RM ' + totalPriceInitial + '</strong>');
+
+                                points = totalPriceInitial / 0.2;
+                                points = Math.floor(points);
+                                $('#pointsCollectedValue').text(points);
+
+                                dapatredeem= "false";
+                                                                                              
+                            }
+    
                         });
 
                     }
@@ -329,12 +374,82 @@ if (!isset($_SESSION['User'])) {
                     console.error(error); // Log any errors
                 }
                 });
+
+            });
+
+            $('#confirmOrderBtn').click(function(e){
+
+                var TotalPointsCollected = parseInt(TotalPointsEarned, 10) + parseInt(points, 10);
+                var TotalPointsCollectedRedeem = parseInt(TotalPointsEarned, 10) - parseInt(pointsRedeem2, 10);
+
+                console.log("Checkoutnya");
+                console.log("Kiosk ID:", KioskID);
+                console.log("price value:", totalPriceInitial);
+                console.log("User ID:", userID);
+                console.log("Point baru dlm db: ", TotalPointsCollected)
+                console.log("Point baru dlm db bila redeem: ", TotalPointsCollectedRedeem)
+                console.log("points value:", points);
+                console.log("dapatredeem", dapatredeem);
+                console.log("redeem points:", pointsRedeem2);
+                console.log("price value after redeem:", totalPriceBaru);
+                console.log("payment method:", selectedPaymentMethod); 
+                
+                // send to PHP for storage
+                $.ajax({
+                    url: 'store_values.php',
+                    method: 'POST',
+                    data: {
+                        KioskID: KioskID,
+                        UserID: userID,
+                        dapatredeem: dapatredeem,
+                        InPurchaseSubtotal: totalPriceInitial,
+                        InPurchaseTotalPrice: totalPriceBaru,
+                        TotalPointsEarned: points,
+                        TotalPointsRedeemed: pointsRedeem2,
+                        TotalPointsCollect: TotalPointsCollected,
+                        TotalPointsCollectedRedeem: TotalPointsCollectedRedeem,
+                        PaymentType: selectedPaymentMethod
+                    },
+                    success: function(response) {
+                        console.log('Success response:', response); // Log success response
+                        alert('Checkout succesfull!');
+                        window.location.href = 'InstoreCart.php';
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error); // Log any errors
+                        console.log('XHR object:', xhr); // Log XHR object for more details
+                        alert('Error occurred. Check console for details.'); // Display alert to user
+                    }
+                });
+                
+                
+            });
+
+            $('#cancelOrderBtn').click(function(e) {
+
+                var confirmation = window.confirm("Are you sure you want to proceed?");
+
+                if (confirmation) {
+                    // User clicked 'OK' (confirmed)
+                    console.log("User confirmed.");
+                    window.location.href = 'InstoreCart.php';
+                } else {
+                    // User clicked 'Cancel'
+                    console.log("User canceled.");
+                    return;
+                }
+                
             });
 
         });
 
-    </script>                                        
+        
 
+    </script>  
+    
+    <!-- / Layout wrapper -->
+
+    <script src="../assets/js/dashboards-analytics.js"></script>
   </body>
   </html>
 
@@ -343,3 +458,4 @@ if (!isset($_SESSION['User'])) {
   require_once '../assets/vendor/phpqrcode/qrlib.php'; 
   ?>
 <?php } ?>
+
