@@ -44,7 +44,6 @@ if (!isset($_SESSION['User'])) {
                                                 <th>#</th>
                                                 <th>Kiosk Name</th>
                                                 <th>Operation Status</th>
-                                                <th>kiosk Logo</th>
                                                 <th>Kiosk Number</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -66,10 +65,6 @@ if (!isset($_SESSION['User'])) {
                                                         <?php
                                                         echo $row['OperationStatus'];
                                                         ?>
-                                                    </td>
-                                                    <td>
-                                                        <!--<img style="height: 100px; width: 100px;" src="",  <?php echo $row['ItemImage']  ?> " alt="Test">
-                                                        -->
                                                     </td>
                                                     <td><?php echo $row['KioskNum']; ?></td>
                                                     <td>
@@ -128,13 +123,6 @@ if (!isset($_SESSION['User'])) {
                                     <input type="text" id="kiosknum" name="kiosknum" class="form-control" placeholder="Enter Kiosk Number" value="" />
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col mb-3">
-                                    <label for="kiosklogo" class="form-label">Kiosk Logo</label>
-                                    <input class="form-control" type="file" id="formFile" name="formFile" onchange="preview()">
-                                    <!--<input type="text" id="kiosklogo" name="kiosklogo" class="form-control" placeholder="Enter Kiosk Logo" value="" />-->
-                                </div>
-                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
@@ -170,7 +158,7 @@ if (!isset($_SESSION['User'])) {
                             <div class="row">
                                 <div class="col mb-3">
                                     <label for="kiosknumEdit" class="form-label">Kiosk Number</label>
-                                    <input type="text" id="kiosknum" name="kiosknumdEdit" class="form-control" placeholder="Enter Kiosk Number" value="" />
+                                    <input type="text" id="kiosknumEdit" name="kiosknumEdit" class="form-control" placeholder="Enter Kiosk Number" value="" />
                                 </div>
                             </div>
                             <input hidden type="text" id="kioskIDEdit" name="kioskIDEdit" class="form-control" placeholder="" value="" />
@@ -188,7 +176,7 @@ if (!isset($_SESSION['User'])) {
         </form>
         <!-- / Layout wrapper -->
 
-        <script> //xtau
+        <script>
             var id;
             $(".opn").click(function() {
                 id = $(this).data('id');
@@ -198,7 +186,8 @@ if (!isset($_SESSION['User'])) {
                 $("#id").val(id);
                 $("#kiosknameEdit").val(col[0].innerText);
                 $("#statusEdit").val(col[1].innerText);
-                $("#kiosknumEdit").val(col[3].innerText);
+                $("#kiosknumEdit").val(col[2].innerText);
+                $("#kioskIDEdit").val(id);
             });
 
             $(".del").click(function() {
@@ -251,14 +240,7 @@ if (!isset($_SESSION['User'])) {
         $operationstatus = $_POST['operationstatus'];
         $kiosknum = $_POST['kiosknum'];
 
-        $Uid = $_SESSION['Kiosk'];
-
-        //declare variables //xtauuu
-        $image = $_FILES['formFile']['tmp_name'];
-        $name = $_FILES['formFile']['name'];
-        $image = base64_encode(file_get_contents(addslashes($image)));
-
-        $query = mysqli_query($conn, "INSERT INTO kiosk (KioskName, OperationStatus, KioskLogo, KioskNum) VALUES ('$kioskname','$operationstatus', '$image', '$kiosknum')");
+        $query = mysqli_query($conn, "INSERT INTO kiosk (KioskName, OperationStatus, KioskNum) VALUES ('$kioskname','$operationstatus', '$kiosknum')");
 
         if ($query) {
             echo '
@@ -297,15 +279,12 @@ if (!isset($_SESSION['User'])) {
 
     if (isset($_POST['editBtn'])) {
 
-        $usernameEdit = $_POST['usernameEdit'];
-        $fullNameEdit = $_POST['fullNameEdit'];
-        $passwordEdit = $_POST['passwordEdit'];
-        $emailEdit = $_POST['emailEdit'];
-        $phoneNoEdit = $_POST['phoneNoEdit'];
-        $usertypeEdit = $_POST['usertypeEdit'];
-        $userIDEdit = $_POST['userIDEdit'];
+        $kioskname = $_POST['kiosknameEdit'];
+        $operationstatus = $_POST['statusEdit'];
+        $kiosknum = $_POST['kiosknumEdit'];
+        $kioskid = $_POST['kioskIDEdit'];
 
-        $query = mysqli_query($conn, "UPDATE user SET UserName = '$usernameEdit', FullName = '$fullNameEdit', Email = '$emailEdit', Password = '$passwordEdit', NumPhone = '$phoneNoEdit', UserType = '$usertypeEdit' WHERE UserID = '$userIDEdit'");
+        $query = mysqli_query($conn, "UPDATE kiosk SET KioskName='$kioskname', OperationStatus='$operationstatus', KioskNum='$kiosknum' WHERE KioskID='$kioskid'");
 
         if ($query) {
             echo '
