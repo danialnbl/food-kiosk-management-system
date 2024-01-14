@@ -280,12 +280,12 @@ if (!isset($_SESSION['User'])) {
           test: id
         }, function(res) {
           // console.log(res)
-          $("#customerName").val(res.CustomerName);
-          $("#OrderTime").val(res.OrderTime);
-          $("#OrderTotalPrice").val(res.OrderTotalAmount);
+          $("#customerName").val(res.CustomerName[0]);
+          $("#OrderTime").val(res.OrderTime[0]);
+          $("#OrderTotalPrice").val(res.OrderTotalAmount[0]);
 
           var unitVal = $("#orderStatus option").filter(function() {
-            return $(this).html() == res.orderStatus;
+            return $(this).html() == res.orderStatus[0];
           }).val()
 
           $("#orderStatus").val(unitVal).change();

@@ -98,7 +98,7 @@ if ($_GET['getOrder']) {
         $CustomerName[] = $row['FullName'];
         $OrderTime[] = $row['OrderTime'];
         $Quantity[] = $row['Quantity'];
-        $OrderTotalAmount[] = $row['OrderTotalAmount'];
+        $OrderTotalAmount[] = $row['OrderTotalPrice'];
         $orderStatus[] = $row['OrderStatus'];
     }
 
