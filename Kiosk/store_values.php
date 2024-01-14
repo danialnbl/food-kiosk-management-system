@@ -60,8 +60,6 @@ if($UserID == 0){
                        VALUES (CURDATE(), CURTIME(), '$PaymentType', null, '$InPurchaseID')";
         $result3 = mysqli_query($conn, $query3);
 
-        
-
     }
 
     unset($_SESSION['cart']);
