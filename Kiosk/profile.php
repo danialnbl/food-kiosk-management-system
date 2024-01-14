@@ -73,6 +73,10 @@ if (!isset($_SESSION['User'])) {
                               <label for="password" class="form-label">Password</label>
                               <input class="form-control" type="password" id="password" name="password" value="<?php echo $row['VendorPassword']; ?>" autofocus />
                             </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="qr" class="form-label">QR Code</label>
+                                <img style="height: 100px; width: 100px;" src="data:image/png;base64, <?php echo $row['VendorQR']; ?>" alt="QR Code">
+                            </div>
                           </div>
                           <div class="mt-2">
                             <button id="editBtn" name="editBtn" type="submit" class="btn btn-primary me-2">Save changes</button>

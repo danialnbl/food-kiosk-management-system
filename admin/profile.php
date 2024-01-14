@@ -73,6 +73,10 @@ if (!isset($_SESSION['User'])) {
                               <label for="password" class="form-label">Password</label>
                               <input class="form-control" type="password" id="password" name="password" value="<?php echo $row['Password']; ?>" autofocus />
                             </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="qr" class="form-label">QR Code</label>
+                                <img style="height: 100px; width: 100px;" src="data:image/png;base64, <?php echo $row['UserQR']; ?>" alt="QR Code">
+                            </div>
                           </div>
                           <div class="mt-2">
                             <button id="editBtn" name="editBtn" type="submit" class="btn btn-primary me-2">Save changes</button>
@@ -95,23 +99,6 @@ if (!isset($_SESSION['User'])) {
                         } else {
                           document.getElementById("deactiveBtn").disabled = true;
                         }
-                      }
-
-                      function preview() {
-                        frame.src = URL.createObjectURL(event.target.files[0]);
-
-                        if (document.getElementById("formFile").files.length >= 1) {
-                        document.getElementById("editLogoBtn").disabled = false; //xtau
-                        }
-                      }
-
-                      function clearImage() {
-                        document.getElementById('formFile').value = null;
-                        frame.src = "";
-                      }
-
-                      function enableLogoBtn(){
-                        
                       }
                       
                     </script>
