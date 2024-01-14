@@ -311,7 +311,7 @@ if (!isset($_SESSION['User'])) {
             
 
             var TotalAllSales = retInpurchaseSales + retonlineSales;
-            $('#totalALLSalespan').html("RM " + TotalAllSales)
+            $('#totalALLSalespan').html("RM " + TotalAllSales.toFixed(2))
         }, 5000);
     </script>
     </html>

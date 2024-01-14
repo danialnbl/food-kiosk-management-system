@@ -40,7 +40,7 @@ if ($_GET['getSales']) {
 
     $vendorID = $_POST['test'];
 
-    $sql = "SELECT SUM(OrderTotalPrice) SumTotalPrice, DATE_FORMAT(OrderDate, '%M') OrderMonth from onlineorder INNER JOIN orderlist ON onlineorder.OrderID = orderlist.OrderID INNER JOIN menu ON orderlist.MenuID = menu.MenuID WHERE onlineorder.KioskID= $vendorID GROUP BY MONTH(OrderDate)";
+    $sql = "SELECT SUM(OrderTotalPrice) SumTotalPrice, DATE_FORMAT(OrderDate, '%M') OrderMonth from onlineorder WHERE onlineorder.KioskID= $vendorID GROUP BY MONTH(OrderDate)";
     $result = $conn->query($sql);
     $result = $result->fetch_all(MYSQLI_ASSOC);
 
@@ -64,7 +64,7 @@ if ($_GET['getIPSales']) {
 
     $vendorID = $_POST['test'];
 
-    $sql = "SELECT SUM(InPurchaseTotalPrice) SumTotalPrice, DATE_FORMAT(InPurchaseDate, '%M') OrderMonth from inpurchaseorder INNER JOIN inpurchaselist ON inpurchaseorder.InPurchaseID = inpurchaselist.InPurchaseID WHERE inpurchaseorder.KioskID= $vendorID GROUP BY MONTH(InPurchaseDate)";
+    $sql = "SELECT SUM(InPurchaseTotalPrice) SumTotalPrice, DATE_FORMAT(InPurchaseDate, '%M') OrderMonth from inpurchaseorder WHERE inpurchaseorder.KioskID= $vendorID GROUP BY MONTH(InPurchaseDate)";
     $result = $conn->query($sql);
     $result = $result->fetch_all(MYSQLI_ASSOC);
 
@@ -89,6 +89,36 @@ if ($_GET['getOrder']) {
     $OrderID = $_POST['test'];
 
     $sql = "SELECT * FROM onlineorder INNER JOIN orderlist ON onlineorder.OrderID = orderlist.OrderID INNER JOIN menu ON orderlist.MenuID = menu.MenuID INNER JOIN user ON onlineorder.UserID = user.UserID WHERE onlineorder.OrderID = $OrderID";
+    $result = $conn->query($sql);
+    $result = $result->fetch_all(MYSQLI_ASSOC);
+
+
+    foreach ($result as $row) {
+        $ItemName[] = $row['ItemName'];
+        $CustomerName[] = $row['FullName'];
+        $OrderTime[] = $row['OrderTime'];
+        $Quantity[] = $row['Quantity'];
+        $OrderTotalAmount[] = $row['OrderTotalAmount'];
+        $orderStatus[] = $row['OrderStatus'];
+    }
+
+    echo json_encode([
+        "ItemName" => $ItemName,
+        "CustomerName" => $CustomerName,
+        "OrderTime" => $OrderTime,
+        "Quantity" => $Quantity,
+        "OrderTotalAmount" => $OrderTotalAmount,
+        "orderStatus" => $orderStatus,
+    ],JSON_NUMERIC_CHECK );
+    die;
+}
+
+//Get Online Order
+if ($_GET['getIPOrder']) {
+
+    $OrderID = $_POST['test'];
+
+    $sql = "SELECT * FROM inpurchaseorder INNER JOIN inpurchaselist ON inpurchaseorder.InPurchaseID = inpurchaselist.InPurchaseID INNER JOIN menu ON inpurchaselist.MenuID = menu.MenuID INNER JOIN user ON inpurchaseorder.UserID = user.UserID WHERE inpurchaselist.InPurchaseListID = $OrderID";
     $result = $conn->query($sql);
     $result = $result->fetch_all(MYSQLI_ASSOC);
 
