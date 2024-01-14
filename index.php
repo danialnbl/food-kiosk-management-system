@@ -77,7 +77,7 @@
         );
         while ($row = mysqli_fetch_array($ret)) {
         ?>
-        <div class="col">
+        <div class="col mb-3">
           <div class="card" style="width: 15rem;">
             <img class="card-img-top" style="height: 160px;" src="data:image;base64,  <?php echo $row['ItemImage']  ?> " alt="Menu Image">
             <div class="card-body">
