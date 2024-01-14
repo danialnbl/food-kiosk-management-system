@@ -8,7 +8,7 @@ if (isset($_GET['id'])) {
 
     // Fetch details from the database based on InPurchaseID
     $sql = "SELECT 
-            DATE_FORMAT(io.InPurchaseDate, '%d-%m-%y') AS FormattedInPurchaseDate,
+            DATE_FORMAT(io.InPurchaseDate, '%d/%m/%y') AS FormattedInPurchaseDate,
             io.InPurchaseTime, 
             io.InPurchaseSubtotal, 
             io.InPurchaseTotalPrice, 
