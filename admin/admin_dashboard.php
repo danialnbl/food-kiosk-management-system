@@ -222,7 +222,7 @@ if (!isset($_SESSION['User'])) {
                         series: res.map(item => item.value),
                         chart: {
                             type: 'donut',
-                            widthght: 380,
+                            width: 390,
                         },
                         labels: res.map(item => item.label),
                         responsive: [{
