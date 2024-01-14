@@ -265,7 +265,7 @@ if (!isset($_SESSION['User'])) {
 
                         if (response.salah === 'salah') {
 
-                            alert('Account not found');  
+                            alert('Account not found for membership');  
                             $('#redeemButton').prop('disabled', true);
                             $('#pointsCollectedValue').text('');
                             $('#pointsCollectedSection').hide(); 

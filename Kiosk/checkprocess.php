@@ -15,7 +15,7 @@ if (isset($_POST['phoneNumber'])) {
     SELECT *
     FROM user u
     JOIN membership m ON u.UserID = m.UserID
-    WHERE u.NumPhone = '$phoneNumber'
+    WHERE u.NumPhone = '$phoneNumber' AND u.UserType = 'Customer'
     ");
 
     $row = mysqli_fetch_assoc($getUserIDQuery);

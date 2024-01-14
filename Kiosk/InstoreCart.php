@@ -44,6 +44,7 @@ if (isset($_POST['remove_item'])) {
 if (!isset($_SESSION['User'])) {
   header('location:../login.php');
 } else {
+
 ?>
 
   <!DOCTYPE html>
@@ -115,75 +116,75 @@ if (!isset($_SESSION['User'])) {
                 <!-- PHP code to display cart items -->
                 <?php
 
-                // Check if the cart is initiated in the session
-                if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
-                    echo "<div class='card card-style position-relative'>";
-                    echo "<div class='table-responsive text-nowrap'>";
-                    echo "<table class='table'>";
-                    echo "<thead><tr>";
-                    echo "<th scope='col'>#</th>";
-                    echo "<th scope='col'>Item Name</th>";
-                    echo "<th scope='col'>Price</th>";
-                    echo "<th class='td-width' scope='col'>Quantity</th>";
-                    echo "<th class='td-remove' scope='col'>Action</th>";
-                    echo "</tr></thead>";
-                } else {
-                    echo "<div class='card card-style position-relative'>";
-                    echo "<div class='table-responsive text-nowrap'>";
-                    echo "<table class='table'>";
-                    echo "<thead><tr>";
-                    echo "<th scope='col'>#</th>";
-                    echo "<th scope='col'>Item Name</th>";
-                    echo "<th style='width:28%' scope='col'>Price</th>";
-                    echo "<th class='td-width' scope='col'>Quantity</th>";
-                    echo "<th class='td-remove' scope='col'>Action</th>";
-                    echo "</tr></thead>";
-                    echo "<tbody>";
+                    // Check if the cart is initiated in the session
+                    if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
+                        echo "<div class='card card-style position-relative'>";
+                        echo "<div class='table-responsive text-nowrap'>";
+                        echo "<table class='table'>";
+                        echo "<thead><tr>";
+                        echo "<th scope='col'>#</th>";
+                        echo "<th scope='col'>Item Name</th>";
+                        echo "<th scope='col'>Price</th>";
+                        echo "<th class='td-width' scope='col'>Quantity</th>";
+                        echo "<th class='td-remove' scope='col'>Action</th>";
+                        echo "</tr></thead>";
+                    } else {
+                        echo "<div class='card card-style position-relative'>";
+                        echo "<div class='table-responsive text-nowrap'>";
+                        echo "<table class='table'>";
+                        echo "<thead><tr>";
+                        echo "<th scope='col'>#</th>";
+                        echo "<th scope='col'>Item Name</th>";
+                        echo "<th style='width:28%' scope='col'>Price</th>";
+                        echo "<th class='td-width' scope='col'>Quantity</th>";
+                        echo "<th class='td-remove' scope='col'>Action</th>";
+                        echo "</tr></thead>";
+                        echo "<tbody>";
 
-                    $totalPrice = 0; // Initializing total price
-                    $itemNumber = 1;
+                        $totalPrice = 0; // Initializing total price
+                        $itemNumber = 1;
 
-                    //Display items in the cart
-                    foreach ($_SESSION['cart'] as $itemId => $item) {
-                        $itemTotalPrice = $item['price'] * $item['quantity'];
-                        $totalPrice += $itemTotalPrice; // Accumulating total price considering quantity
-                    
-                        echo "<tr>";
-                        echo "<th scope='row'>" . $itemNumber . "</th>";
-                        echo "<td>" . $item['name'] . "</td>";
-                        echo "<td class='item-price'>RM " . number_format($itemTotalPrice, 2) . "</td>";
-                        echo "<td class='td-width'>";
-                        echo "<form class='quantity-form' data-item-id='{$item['id']}' method='post'>";
-                        echo "<input type='hidden' name='item_id' value='{$item['id']}'>";
-                        echo "<div class='input-group'>";
-                        echo "<button type='button' class='input-group-text quantity-button decrease'>-</button>";
-                        echo "<input type='number' name='quantity' class='form-control quantity-input' value='{$item['quantity']}' readonly style='background-color: white;'>";
-                        echo "<button type='button' class='input-group-text quantity-button increase'>+</button>";
+                        //Display items in the cart
+                        foreach ($_SESSION['cart'] as $itemId => $item) {
+                            $itemTotalPrice = $item['price'] * $item['quantity'];
+                            $totalPrice += $itemTotalPrice; // Accumulating total price considering quantity
+                        
+                            echo "<tr>";
+                            echo "<th scope='row'>" . $itemNumber . "</th>";
+                            echo "<td>" . $item['name'] . "</td>";
+                            echo "<td class='item-price'>RM " . number_format($itemTotalPrice, 2) . "</td>";
+                            echo "<td class='td-width'>";
+                            echo "<form class='quantity-form' data-item-id='{$item['id']}' method='post'>";
+                            echo "<input type='hidden' name='item_id' value='{$item['id']}'>";
+                            echo "<div class='input-group'>";
+                            echo "<button type='button' class='input-group-text quantity-button decrease'>-</button>";
+                            echo "<input type='number' name='quantity' class='form-control quantity-input' value='{$item['quantity']}' readonly style='background-color: white;'>";
+                            echo "<button type='button' class='input-group-text quantity-button increase'>+</button>";
+                            echo "</div>";
+                            echo "</form>";
+                            echo "</td>";
+                            echo "<td>"; // Remove button column
+                            echo "<form method='post'>";
+                            echo "<input type='hidden' name='item_id' value='{$itemId}'>";
+                            echo "<button type='submit' name='remove_item' class='btn btn-danger'>Remove</button>";
+                            echo "</form>";
+                            echo "</td>";
+                            echo "</tr>";
+                        
+                            $itemNumber++; // Increment item number for the next item
+                        }
+                        
+
+                        echo "</tbody></table></div>";
+                        echo "<div class='total-price mt-4'>";
+                        //Display total price
+                        echo "<p><strong>Total Price: RM <span id='total-price'>" . number_format($totalPrice, 2) . "</span></strong><p>";
                         echo "</div>";
+                        echo "<form action='checkout.php' method='GET'>";
+                        echo "<button typr='submit' class='btn btn-success checkout-btn'>Checkout</button>";
                         echo "</form>";
-                        echo "</td>";
-                        echo "<td>"; // Remove button column
-                        echo "<form method='post'>";
-                        echo "<input type='hidden' name='item_id' value='{$itemId}'>";
-                        echo "<button type='submit' name='remove_item' class='btn btn-danger'>Remove</button>";
-                        echo "</form>";
-                        echo "</td>";
-                        echo "</tr>";
-                    
-                        $itemNumber++; // Increment item number for the next item
+                        echo "</div>"; // card div
                     }
-                    
-
-                    echo "</tbody></table></div>";
-                    echo "<div class='total-price mt-4'>";
-                    //Display total price
-                    echo "<p><strong>Total Price: RM <span id='total-price'>" . number_format($totalPrice, 2) . "</span></strong><p>";
-                    echo "</div>";
-                    echo "<form action='checkout.php' method='GET'>";
-                    echo "<button typr='submit' class='btn btn-success checkout-btn'>Checkout</button>";
-                    echo "</form>";
-                    echo "</div>"; // card div
-                }
                 ?>
                 <!-- End of PHP code -->
 

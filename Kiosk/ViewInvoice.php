@@ -74,9 +74,10 @@ if (!isset($_SESSION['User'])) {
 
                         // Fetch data from the database with LIMIT and OFFSET
                         $sql = "SELECT io.InPurchaseID, io.UserID, DATE_FORMAT(io.InPurchaseDate, '%d/%m/%Y') AS InPurchaseDate, io.InPurchaseTime, io.InPurchaseSubtotal, io.InPurchaseTotalPrice, p.PaymentType
-                        FROM inpurchaseorder io
-                        LEFT JOIN payment p ON io.InPurchaseID = p.InPurchaseID
-                        LIMIT $offset, $recordsPerPage";
+                                FROM inpurchaseorder io
+                                LEFT JOIN payment p ON io.InPurchaseID = p.InPurchaseID
+                                ORDER BY io.InPurchaseDate DESC
+                                LIMIT $offset, $recordsPerPage";
 
                         $result = $conn->query($sql);
 

@@ -50,7 +50,7 @@
         <li class="menu-item">
             <a href="ViewInvoice.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-receipt"></i>
-                <div data-i18n="Account Settings">View Invoice</div>
+                <div data-i18n="Account Settings">View In-Store Invoice</div>
             </a>
         </li>
         <!-- Layouts for Vendor -->
