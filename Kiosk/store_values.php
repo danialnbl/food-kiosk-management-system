@@ -35,8 +35,8 @@ if($UserID == 0){
             $ItemsTotalAmount = $cartItem['price'] * $cartItem['quantity'];
             $Quantity = $cartItem['quantity'];
         
-            $query2 = "INSERT INTO inpurchaselist (InPurchaseID, MenuID, ItemName, Quantity, ItemsTotalAmount )
-                       VALUES ('$InPurchaseID', '$MenuID', '$ItemName', '$Quantity', '$ItemsTotalAmount') ";
+            $query2 = "INSERT INTO inpurchaselist (InPurchaseID, ItemName, Quantity, ItemsTotalAmount )
+                       VALUES ('$InPurchaseID', '$ItemName', '$Quantity', '$ItemsTotalAmount') ";
             $result2 = mysqli_query($conn, $query2);
         
             // To update stock of items
@@ -90,8 +90,8 @@ if($UserID == 0){
                 $ItemsTotalAmount = $cartItem['price'] * $cartItem['quantity'];
                 $Quantity = $cartItem['quantity'];
             
-                $query2 = "INSERT INTO inpurchaselist (InPurchaseID, MenuID, ItemName, Quantity, ItemsTotalAmount )
-                           VALUES ('$InPurchaseID', '$MenuID', '$ItemName', '$Quantity', '$ItemsTotalAmount') ";
+                $query2 = "INSERT INTO inpurchaselist (InPurchaseID, ItemName, Quantity, ItemsTotalAmount )
+                           VALUES ('$InPurchaseID', '$ItemName', '$Quantity', '$ItemsTotalAmount') ";
                 $result2 = mysqli_query($conn, $query2);
             
                 // To update stock of items
@@ -142,8 +142,8 @@ if($UserID == 0){
                 $ItemsTotalAmount = $cartItem['price'] * $cartItem['quantity'];
                 $Quantity = $cartItem['quantity'];
             
-                $query2 = "INSERT INTO inpurchaselist (InPurchaseID, MenuID, ItemName, Quantity, ItemsTotalAmount )
-                           VALUES ('$InPurchaseID', '$MenuID', '$ItemName', '$Quantity', '$ItemsTotalAmount') ";
+                $query2 = "INSERT INTO inpurchaselist (InPurchaseID, ItemName, Quantity, ItemsTotalAmount )
+                           VALUES ('$InPurchaseID', '$ItemName', '$Quantity', '$ItemsTotalAmount') ";
                 $result2 = mysqli_query($conn, $query2);
             
                 // To update stock of items
