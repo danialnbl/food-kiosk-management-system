@@ -42,7 +42,6 @@ if (!isset($_SESSION['User'])) {
                         <th>Customer Name</th>
                         <th>Order Date</th>
                         <th>Order Time</th>
-                        <th>Quantity</th>
                         <th>Total Price (RM)</th>
                         <th>Status</th>
                         <th>QR</th>
@@ -66,7 +65,6 @@ if (!isset($_SESSION['User'])) {
                           <td><?php echo $row['FullName'] ?></td>
                           <td><?php echo date('d/m/Y', strtotime($row['OrderDate'])); ?></td>
                           <td><?php echo $row['OrderTime'] ?></td>
-                          <td><?php echo $row['Quantity'] ?></td>
                           <td><?php echo $row['OrderTotalPrice'] ?></td>
                           <td><?php echo $row['OrderStatus'] ?></td>
                           <td><img style="height: 100px; width: 100px;" src="data:image;base64,   " alt="TestQR"></td>
