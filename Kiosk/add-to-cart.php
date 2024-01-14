@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['data'])) {
             $itemQuery = mysqli_query($conn, "SELECT * FROM menu WHERE MenuID = '$itemId' AND KioskID = '$KioskID'");
 
             if (!$itemQuery) {
-                echo "Error: " . mysqli_error($link);
+                echo "Error: " . mysqli_error($conn);
                 exit();
             }
 

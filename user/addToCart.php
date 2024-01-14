@@ -121,8 +121,6 @@ if (isset($_POST['id'])) {
 $conn->close(); */
 
 
-
-
 session_start();
 
 $KioskID = $_SESSION['KioskID'];
@@ -134,19 +132,19 @@ if (!isset($_SESSION['cart'])) {
 }
 
 // Retrieve menu items from the database table
-$menuQuery = mysqli_query($conn, "SELECT * FROM menu");
+$menuQuery = mysqli_query($conn, "SELECT * FROM menu WHERE KioskID = '$KioskID' AND Stock > 0 AND Availability = 'Available'");
 
 if (!$menuQuery) {
     echo "Error: " . mysqli_error($conn);
     exit();
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['data'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
 
-    $item = $_POST['data'];
+    $MenuID = $_POST['id'];
 
     // Query to find the MenuID
-    $menuQuery = mysqli_query($conn, "SELECT MenuID FROM menu WHERE MenuID = '$item' AND KioskID = '$KioskID'");
+    $menuQuery = mysqli_query($conn, "SELECT MenuID FROM menu WHERE MenuID = '$MenuID' AND KioskID = '$KioskID' AND Stock > 0 AND Availability = 'Available'");
 
     if (!$menuQuery) {
         echo "Error: " . mysqli_error($link);
@@ -172,10 +170,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['data'])) {
             $_SESSION['cart'][$existingItemKey]['quantity'] += 1;
         } else {
             // Retrieve item details based on MenuID
-            $itemQuery = mysqli_query($conn, "SELECT * FROM menu WHERE MenuID = '$itemId'");
+            $itemQuery = mysqli_query($conn, "SELECT * FROM menu WHERE MenuID = '$itemId' AND KioskID = '$KioskID'");
 
             if (!$itemQuery) {
-                echo "Error: " . mysqli_error($link);
+                echo "Error: " . mysqli_error($conn);
                 exit();
             }
 
@@ -184,6 +182,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['data'])) {
             if ($itemDetails) {
                 $itemToAdd = array(
                     'id' => $itemDetails['MenuID'],
+                    'image' => $itemDetails['ItemImage'],
                     'name' => $itemDetails['ItemName'],
                     'price' => $itemDetails['ItemPrice'],
                     'quantity' => 1

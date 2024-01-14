@@ -4,6 +4,19 @@
     include('../includes/connect.php');
     include('../functions/functions.php');
 
+
+    $totalPrice = 0;
+
+    // Calculating total price
+    if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
+        foreach ($_SESSION['cart'] as $item) {
+            $itemTotalPrice = $item['price'] * $item['quantity'];
+            $totalPrice += $itemTotalPrice;
+        }
+
+        $totalPrice = number_format($totalPrice, 2);
+    }
+
     //Function to delete item
     function removeItem($itemId) {
         if (isset($_SESSION['cart'][$itemId])) {
@@ -53,14 +66,10 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
     <style>
-        .menu-item {
-            margin-bottom: 15px;
-        }
 
-        .menu-item img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
+
+        .no-border {
+            border: none !important;
         }
     </style>
   </head>
@@ -75,103 +84,42 @@
             <div class="content-wrapper content">
               <div class="container-xxl flex-grow-1 container-p-y">
                   <div class="row">
-                      <div class="col-md-8 mb-3 mb-md-0">
-                          <div class="card">
-                              <h5 class="card-header">Your Cart</h5>
-                              <div class="card-body">
-
-                                    <!-- PHP code to display cart items -->
-                                    <?php
-                                        if (isset($_GET['id'])) {
-                                            $kiosk_id = $_GET['id'];
-
-                                            // Query to retrieve menu items for the specified kiosk_id
-                                            $sql = "SELECT * FROM menu WHERE KioskID = $kiosk_id";
-                                            $result = $conn->query($sql);
-
-                                            // Check if the cart is initiated in the session
-                                            if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
-                                                echo "<div class='card card-style position-relative'>";
-                                                echo "<div class='table-responsive text-nowrap'>";
-                                                echo "<table class='table'>";
-                                                echo "<thead><tr>";
-                                                echo "<th scope='col'>#</th>";
-                                                echo "<th scope='col'>Item Name</th>";
-                                                echo "<th scope='col'>Price</th>";
-                                                echo "<th class='td-width' scope='col'>Quantity</th>";
-                                                echo "<th class='td-remove' scope='col'>Action</th>";
-                                                echo "</tr></thead>";
-                                            } else {
-                                                echo "<div class='card card-style position-relative'>";
-                                                echo "<div class='table-responsive text-nowrap'>";
-                                                echo "<table class='table'>";
-                                                echo "<thead><tr>";
-                                                echo "<th scope='col'>#</th>";
-                                                echo "<th scope='col'>Item Name</th>";
-                                                echo "<th scope='col'>Price</th>";
-                                                echo "<th class='td-width' scope='col'>Quantity</th>";
-                                                echo "<th class='td-remove' scope='col'>Action</th>";
-                                                echo "</tr></thead>";
-                                                echo "<tbody>";
-
-                                                $totalPrice = 0; // Initializing total price
-                                                $itemNumber = 1;
-
-                                                //Display items in the cart                                       
-                 
-                                                if ($result->num_rows > 0) {
-                                                    echo "<div class='row'>";
-                                                    while ($item = $result->fetch_assoc()) {
-                                                    $itemTotalPrice = $item['price'] * $item['quantity'];
-                                                    $totalPrice += $itemTotalPrice; // Accumulating total price considering quantity
-                                                
-                                                    echo "<tr>";
-                                                    echo "<th>" . $itemNumber . "</th>";
-                                                    echo "<td>" . $item['name'] . "</td>";
-                                                    echo "<td class='item-price'>RM " . number_format($itemTotalPrice, 2) . "</td>";
-                                                    echo "<td class='td-width'>";
-                                                    echo "<form class='quantity-form' data-item-id='{$item['id']}' method='post'>";
-                                                    echo "<input type='hidden' name='item_id' value='{$item['id']}'>";
-                                                    echo "<div class='input-group'>";
-                                                    echo "<button type='button' class='input-group-text quantity-button decrease'>-</button>";
-                                                    echo "<input type='number' name='quantity' class='form-control quantity-input' value='{$item['quantity']}'>";
-                                                    echo "<button type='button' class='input-group-text quantity-button increase'>+</button>";
-                                                    echo "</div>";
-                                                    echo "</form>";
-                                                    echo "</td>";
-                                                    echo "<td>"; // Remove button column
-                                                    echo "<form method='post'>";
-                                                    echo "<input type='hidden' name='item_id' value='{$itemId}'>";
-                                                    echo "<button type='submit' name='remove_item' class='btn btn-danger'>Remove</button>";
-                                                    echo "</form>";
-                                                    echo "</td>";
-                                                    echo "</tr>";
-                                                
-                                                    $itemNumber++; // Increment item number for the next item
-                                                    }
-                                                    echo "</div>";
-                                                } else {
-                                                    echo "Your cart is empty.";
-                                                }
-                                                
-
-                                                echo "</tbody></table></div>";
-                                                echo "<div class='total-price'>";
-                                                //Display total price
-                                                echo "<p><strong>Total Price: RM <span id='total-price'>" . number_format($totalPrice, 2) . "</span></strong><p>";
-                                                echo "</div>";
-                                                echo "</div>"; // card div
-                                            }
-                                        
-                                        }
-                                        // Close the connection
-                                        $conn->close();
-                                    ?>
-                                                
-                              </div>
-                          </div>
-                      </div>
-
+                    <!-- First Column - Larger Card -->
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <h5 class="card-header">Your Cart</h5>
+                            <div class="card-body">
+                            <?php if (!empty($_SESSION['cart'])): ?>
+                                        <?php foreach ($_SESSION['cart'] as $index => $item): ?>   
+                                            <table class="table">
+                                                <tr>
+                                                    <td class="no-border"><?= $item['name'] ?></td>
+                                                    <td style="width:30%;" class="no-border">
+                                                        <form class='quantity-form' data-item-id='<?= $item['id'] ?>' method='post'>
+                                                            <input type='hidden' name='item_id' value='<?= $item['id'] ?>'>
+                                                            <div class='input-group'>
+                                                                <button type='button' class='input-group-text quantity-button decrease'>-</button>
+                                                                <input type='number' name='quantity' class='form-control quantity-input' value='<?= $item['quantity'] ?>' readonly style='background-color: white;'>
+                                                                <button type='button' class='input-group-text quantity-button increase'>+</button>
+                                                            </div>
+                                                        </form>
+                                                    </td>                         
+                                                </tr>
+                                                <tr>
+                                                    <td class="item-price">RM <?= number_format($item['price'] * $item['quantity'], 2) ?></td>
+                                                    <td ><button class="btn btn-danger remove_item">Remove</button></td>
+                                                </tr>
+                                                <tr>
+                                                    
+                                                </tr>
+                                            </table>
+                                        <?php endforeach; ?>
+                                        <?php else: ?>
+                                        <p>Your cart is empty</p>
+                            <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
 
                       <!-- Left side of page -->
                       <div class="col-md-4">
@@ -179,27 +127,21 @@
                               <h5 class="card-header">Checkout Information</h5>
                               <div class="card-body">
                                   <div class="d-flex justify-content-between mb-3">
-                                      <p class="m-0"><strong>Subtotal:</strong></p>
-                                      <?php
-                                      echo "<p class='m-0 text-end'><strong>RM" . number_format($totalPrice, 2) . "</strong></p>"; ?>
+                                      <p class="m-0"><b>Total Price:</b></p>
+                                      <p class='m-0 text-end'><strong>RM <?= number_format($totalPrice, 2)?></strong></p>
                                   </div>
                                   <!-- Add payment method form or information here -->
                                   <form action="checkoutPage.php" method="POST">
-                                      <p class="m-0"><strong>Points Earned:</strong></p>
-                                      <div class="d-grid">
-                                        <form action='checkoutPage.php' method='GET'>
+                                    <p class="m-0"><strong>Points Earned:</strong></p>
+                                    <div class="d-grid mt-4">
                                         <button type="submit" class="btn btn-success mb-2">Confirm Order</button>
-                                        </form>
-                                        <form action='displayKiosk.php' method='POST'>
-                                        <button type="submit" class="btn btn-danger">Cancel Order</button>
-                                        </form>
-                                        
-                                      </div>
+                                        <button type="submit" formaction="displayKiosk.php" class="btn btn-danger mb-2">Cancel Order</button>
+                                    </div>
                                   </form>
-
                               </div>
                           </div>
                       </div>
+
                   </div>
               </div>
             </div>
@@ -239,7 +181,7 @@
 
         function updateQuantity(itemId, newQuantity) {
             const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'update-cart.php'); 
+            xhr.open('POST', 'update_cart.php'); 
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             
             xhr.onload = function() {
@@ -267,7 +209,7 @@
                 total += itemTotalPrice;
             });
 
-            document.querySelector('p strong').textContent = `Total Price: RM ${total.toFixed(2)}`;
+            document.querySelector('p strong').textContent = `RM ${total.toFixed(2)}`;
         }
     });
 
