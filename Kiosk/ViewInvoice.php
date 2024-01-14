@@ -233,7 +233,7 @@ if (!isset($_SESSION['User'])) {
                     $('#orderTime').text('Order Time: ' + data.InPurchaseTime);
                     $('#subtotal').text('RM ' + data.InPurchaseSubtotal);
                     $('#totalAmount').css('font-weight', 'bold').text('RM ' + data.InPurchaseTotalPrice);
-                    $('#redeemedAmount').text('RM ' + nilairedeem);
+                    $('#redeemedAmount').text('- RM ' + nilairedeem);
                     $('#pointsCollected').text(data.TotalPointsEarned);
                     $('#paymentMethod').text(data.PaymentType);
 

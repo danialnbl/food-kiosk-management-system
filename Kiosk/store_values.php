@@ -29,19 +29,38 @@ if($UserID == 0){
         $InPurchaseID = mysqli_insert_id($conn);
 
         foreach ($cartItems as $cartItem){
+            
             $MenuID = $cartItem['id'];
             $ItemName = $cartItem['name'];
-            $ItemsTotalAmount = $cartItem['price']*$cartItem['quantity'];
+            $ItemsTotalAmount = $cartItem['price'] * $cartItem['quantity'];
             $Quantity = $cartItem['quantity'];
-
+        
             $query2 = "INSERT INTO inpurchaselist (InPurchaseID, MenuID, ItemName, Quantity, ItemsTotalAmount )
                        VALUES ('$InPurchaseID', '$MenuID', '$ItemName', '$Quantity', '$ItemsTotalAmount') ";
             $result2 = mysqli_query($conn, $query2);
+        
+            // To update stock of items
+            $getQuantity = "SELECT Stock FROM menu WHERE MenuID = '$MenuID'";
+            $resultQuantity = mysqli_query($conn, $getQuantity);
+        
+            if ($resultQuantity) {
+                $row = mysqli_fetch_assoc($resultQuantity);
+                $currentStock = $row['Stock'];
+            
+                // Calculate the new stock quantity
+                $newStock = $currentStock - $Quantity;
+        
+                $updateMenuQuantity ="UPDATE menu SET Stock = '$newStock' WHERE MenuID = '$MenuID'";
+                $resultUpdate = mysqli_query($conn, $updateMenuQuantity);
+            }
         }
+        
 
         $query3 = "INSERT INTO payment (PaymentDate, PaymentTime, PaymentType, OrderID, InPurchaseID) 
                        VALUES (CURDATE(), CURTIME(), '$PaymentType', null, '$InPurchaseID')";
         $result3 = mysqli_query($conn, $query3);
+
+        
 
     }
 
@@ -65,15 +84,30 @@ if($UserID == 0){
             $InPurchaseID = mysqli_insert_id($conn);
 
             foreach ($cartItems as $cartItem){
+            
                 $MenuID = $cartItem['id'];
                 $ItemName = $cartItem['name'];
-                $ItemsTotalAmount = $cartItem['price']*$cartItem['quantity'];
+                $ItemsTotalAmount = $cartItem['price'] * $cartItem['quantity'];
                 $Quantity = $cartItem['quantity'];
-
+            
                 $query2 = "INSERT INTO inpurchaselist (InPurchaseID, MenuID, ItemName, Quantity, ItemsTotalAmount )
-                        VALUES ('$InPurchaseID', '$MenuID', '$ItemName', '$Quantity', '$ItemsTotalAmount') ";
+                           VALUES ('$InPurchaseID', '$MenuID', '$ItemName', '$Quantity', '$ItemsTotalAmount') ";
                 $result2 = mysqli_query($conn, $query2);
-
+            
+                // To update stock of items
+                $getQuantity = "SELECT Stock FROM menu WHERE MenuID = '$MenuID'";
+                $resultQuantity = mysqli_query($conn, $getQuantity);
+            
+                if ($resultQuantity) {
+                    $row = mysqli_fetch_assoc($resultQuantity);
+                    $currentStock = $row['Stock'];
+                
+                    // Calculate the new stock quantity
+                    $newStock = $currentStock - $Quantity;
+            
+                    $updateMenuQuantity ="UPDATE menu SET Stock = '$newStock' WHERE MenuID = '$MenuID'";
+                    $resultUpdate = mysqli_query($conn, $updateMenuQuantity);
+                }
             }
 
             $query3 = "INSERT INTO payment (PaymentDate, PaymentTime, PaymentType, OrderID, InPurchaseID) 
@@ -102,15 +136,30 @@ if($UserID == 0){
             $InPurchaseID = mysqli_insert_id($conn);
 
             foreach ($cartItems as $cartItem){
+            
                 $MenuID = $cartItem['id'];
                 $ItemName = $cartItem['name'];
-                $ItemsTotalAmount = $cartItem['price']*$cartItem['quantity'];
+                $ItemsTotalAmount = $cartItem['price'] * $cartItem['quantity'];
                 $Quantity = $cartItem['quantity'];
-
+            
                 $query2 = "INSERT INTO inpurchaselist (InPurchaseID, MenuID, ItemName, Quantity, ItemsTotalAmount )
-                        VALUES ('$InPurchaseID', '$MenuID', '$ItemName', '$Quantity', '$ItemsTotalAmount') ";
+                           VALUES ('$InPurchaseID', '$MenuID', '$ItemName', '$Quantity', '$ItemsTotalAmount') ";
                 $result2 = mysqli_query($conn, $query2);
-
+            
+                // To update stock of items
+                $getQuantity = "SELECT Stock FROM menu WHERE MenuID = '$MenuID'";
+                $resultQuantity = mysqli_query($conn, $getQuantity);
+            
+                if ($resultQuantity) {
+                    $row = mysqli_fetch_assoc($resultQuantity);
+                    $currentStock = $row['Stock'];
+                
+                    // Calculate the new stock quantity
+                    $newStock = $currentStock - $Quantity;
+            
+                    $updateMenuQuantity ="UPDATE menu SET Stock = '$newStock' WHERE MenuID = '$MenuID'";
+                    $resultUpdate = mysqli_query($conn, $updateMenuQuantity);
+                }
             }
 
             $query3 = "INSERT INTO payment (PaymentDate, PaymentTime, PaymentType, OrderID, InPurchaseID) 

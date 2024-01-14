@@ -10,7 +10,7 @@ if (!isset($_SESSION['cart'])) {
 }
 
 // Retrieve menu items from the database table
-$menuQuery = mysqli_query($conn, "SELECT * FROM menu");
+$menuQuery = mysqli_query($conn, "SELECT * FROM menu WHERE KioskID = '$KioskID' AND Stock > 0 AND Availability = 'Available'");
 
 if (!$menuQuery) {
     echo "Error: " . mysqli_error($conn);
@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['data'])) {
     $qrContent = $_POST['data'];
 
     // Query to find the MenuID based on scanned content
-    $menuQuery = mysqli_query($conn, "SELECT MenuID FROM menu WHERE MenuID = '$qrContent' AND KioskID = '$KioskID'");
+    $menuQuery = mysqli_query($conn, "SELECT MenuID FROM menu WHERE MenuID = '$qrContent' AND KioskID = '$KioskID' AND Stock > 0 AND Availability = 'Available'");
 
     if (!$menuQuery) {
         echo "Error: " . mysqli_error($conn);
@@ -75,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['data'])) {
         echo "success";
         header("Location: InstoreCart.php");
     } else {
-        echo "<script>alert('Menu not found for scanned content'); window.location='InstoreCart.php';</script>";
+        echo "<script>alert('Menu is not available'); window.location='InstoreCart.php';</script>";
 
         // echo "MenuID not found for scanned content";
     }
