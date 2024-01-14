@@ -243,7 +243,7 @@ if (!isset($_SESSION['User'])) {
 
     </html>
 
-    <!-- CRUD Function -->
+    <!-- CRUD Function Comment-->
     <?php
     if (isset($_POST['addBtn'])) {
 
