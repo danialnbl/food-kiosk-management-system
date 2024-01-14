@@ -79,6 +79,8 @@
                           <div class="card">
                               <h5 class="card-header">Your Cart</h5>
                               <div class="card-body">
+
+                                    <!-- PHP code to display cart items -->
                                     <?php
                                         if (isset($_GET['id'])) {
                                             $kiosk_id = $_GET['id'];
@@ -115,23 +117,21 @@
                                                 $totalPrice = 0; // Initializing total price
                                                 $itemNumber = 1;
 
-                                                //Display items in the cart
-                                        
-                                                
-
+                                                //Display items in the cart                                       
+                 
                                                 if ($result->num_rows > 0) {
                                                     echo "<div class='row'>";
-                                                    while ($row = $result->fetch_assoc()) {
+                                                    while ($item = $result->fetch_assoc()) {
                                                     $itemTotalPrice = $item['price'] * $item['quantity'];
                                                     $totalPrice += $itemTotalPrice; // Accumulating total price considering quantity
                                                 
                                                     echo "<tr>";
                                                     echo "<th>" . $itemNumber . "</th>";
-                                                    echo "<td>" . $row['name'] . "</td>";
+                                                    echo "<td>" . $item['name'] . "</td>";
                                                     echo "<td class='item-price'>RM " . number_format($itemTotalPrice, 2) . "</td>";
                                                     echo "<td class='td-width'>";
-                                                    echo "<form class='quantity-form' data-item-id='{$row['id']}' method='post'>";
-                                                    echo "<input type='hidden' name='item_id' value='{$row['id']}'>";
+                                                    echo "<form class='quantity-form' data-item-id='{$item['id']}' method='post'>";
+                                                    echo "<input type='hidden' name='item_id' value='{$item['id']}'>";
                                                     echo "<div class='input-group'>";
                                                     echo "<button type='button' class='input-group-text quantity-button decrease'>-</button>";
                                                     echo "<input type='number' name='quantity' class='form-control quantity-input' value='{$item['quantity']}'>";
@@ -173,14 +173,15 @@
                       </div>
 
 
-                      <!-- Left ide of page -->
+                      <!-- Left side of page -->
                       <div class="col-md-4">
                           <div class="card">
                               <h5 class="card-header">Checkout Information</h5>
                               <div class="card-body">
                                   <div class="d-flex justify-content-between mb-3">
                                       <p class="m-0"><strong>Subtotal:</strong></p>
-                                      <p class="m-0 text-end"><strong><?= $totalPrice ?></strong></p>
+                                      <?php
+                                      echo "<p class='m-0 text-end'><strong>RM" . number_format($totalPrice, 2) . "</strong></p>"; ?>
                                   </div>
                                   <!-- Add payment method form or information here -->
                                   <form action="checkoutPage.php" method="POST">
