@@ -31,34 +31,43 @@
       </div>
       <form action="functions/submitLogin.php" method="post" name="login" id="login">
         <div class="row">
-        <div class="col mb-3">
-          Your Username: <input type="text" name="username" placeholder="Username" required />
-        </div>
-          
-        </div>
-        <div class="row">
-        <div class="col mb-3">
-          Your Password: <input type="password" name="password" placeholder="Password" required />
-        </div>
+          <div class="col mb-3">
+            Your Username: <input type="text" name="username" placeholder="Username" required />
+          </div>
+
         </div>
         <div class="row">
-        <div class="col mb-3">
-          <select class="form-select" id="userType" aria-label="Default select example" name="userType">
-            <option value="" selected>Open this select menu</option>
-            <option id="Customer" value="Customer">Customer</option>
-            <option id="Vendor" value="Vendor">Vendor</option>
-          </select>
-        </div>
+          <div class="col mb-3">
+            Your Password: <input type="password" name="password" placeholder="Password" required />
+          </div>
         </div>
         <div class="row">
-        <div class="col mb-3">
-          <input name="submit" type="submit" value="Login" />
+          <div class="col mb-3">
+            <select class="form-select" id="userType" aria-label="Default select example" name="userType">
+              <option value="" selected>Open this select menu</option>
+              <option id="Customer" value="Customer">Customer</option>
+              <option id="Vendor" value="Vendor">Vendor</option>
+            </select>
+          </div>
         </div>
+        <div class="row">
+          <div class="col mb-3">
+            <input name="submit" type="submit" value="Login" />
+          </div>
         </div>
       </form>
+      <form action="functions/submitLogin.php" method="post">
+      <div class="row">
+          <div class="col mb-3">
+            <input name="guest" type="submit" value="Login as Guest" />
+          </div>
+        </div>
+      </form>
+
       <p><a href='registration.php'>Don't have an account?</a></p>
       <!-- <p><a href='forgot.php'>Forgot Password?</a></p> -->
     </div>
   </div>
 </body>
+
 </html>

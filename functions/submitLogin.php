@@ -55,7 +55,13 @@ if (isset($_POST['submit'])) {
             echo "<script>alert('Invalid Login'); window.location='../login.php';</script>";
         }
     }
-} else {
+} else if(isset($_POST['guest'])){
+
+    $_SESSION['User'] = 22;
+    $_SESSION['Role'] = 2;
+    header("location:../user/displayKiosk.php");
+    
+} else{
     echo 'Not Working Now Guys';
 }
 
