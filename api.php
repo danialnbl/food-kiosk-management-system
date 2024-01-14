@@ -98,7 +98,7 @@ if ($_GET['getOrder']) {
         $CustomerName[] = $row['FullName'];
         $OrderTime[] = $row['OrderTime'];
         $Quantity[] = $row['Quantity'];
-        $OrderTotalAmount[] = $row['OrderTotalAmount'];
+        $OrderTotalAmount[] = $row['OrderTotalPrice'];
         $orderStatus[] = $row['OrderStatus'];
     }
 
@@ -113,12 +113,12 @@ if ($_GET['getOrder']) {
     die;
 }
 
-//Get Online Order
+//Get IP Order
 if ($_GET['getIPOrder']) {
 
     $OrderID = $_POST['test'];
 
-    $sql = "SELECT * FROM inpurchaseorder INNER JOIN inpurchaselist ON inpurchaseorder.InPurchaseID = inpurchaselist.InPurchaseID INNER JOIN menu ON inpurchaselist.MenuID = menu.MenuID INNER JOIN user ON inpurchaseorder.UserID = user.UserID WHERE inpurchaselist.InPurchaseListID = $OrderID";
+    $sql = "SELECT * FROM inpurchaseorder INNER JOIN inpurchaselist ON inpurchaseorder.InPurchaseID = inpurchaselist.InPurchaseID INNER JOIN user ON inpurchaseorder.UserID = user.UserID WHERE inpurchaselist.InPurchaseID = $OrderID";
     $result = $conn->query($sql);
     $result = $result->fetch_all(MYSQLI_ASSOC);
 
@@ -126,10 +126,9 @@ if ($_GET['getIPOrder']) {
     foreach ($result as $row) {
         $ItemName[] = $row['ItemName'];
         $CustomerName[] = $row['FullName'];
-        $OrderTime[] = $row['OrderTime'];
+        $OrderTime[] = $row['InPurchaseTime'];
         $Quantity[] = $row['Quantity'];
-        $OrderTotalAmount[] = $row['OrderTotalAmount'];
-        $orderStatus[] = $row['OrderStatus'];
+        $OrderTotalAmount[] = $row['InPurchaseTotalPrice'];
     }
 
     echo json_encode([
@@ -138,7 +137,6 @@ if ($_GET['getIPOrder']) {
         "OrderTime" => $OrderTime,
         "Quantity" => $Quantity,
         "OrderTotalAmount" => $OrderTotalAmount,
-        "orderStatus" => $orderStatus,
     ],JSON_NUMERIC_CHECK );
     die;
 }

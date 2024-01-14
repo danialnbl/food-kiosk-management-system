@@ -31,7 +31,7 @@ if (!isset($_SESSION['User'])) {
             <!-- Content -->
 
             <div class="container-xxl flex-grow-1 container-p-y">
-              <div class="card">
+              <div class="card mb-3">
                 <h5 class="card-header">Online Orders List
                 </h5>
                 <div class="table-responsive text-nowrap">
@@ -40,7 +40,6 @@ if (!isset($_SESSION['User'])) {
                       <tr class="text-nowrap">
                         <th>#</th>
                         <th>Customer Name</th>
-                        <th>Order Item</th>
                         <th>Order Date</th>
                         <th>Order Time</th>
                         <th>Quantity</th>
@@ -65,7 +64,6 @@ if (!isset($_SESSION['User'])) {
                         <tr id="<?php echo $row['OrderID'] ?>">
                           <th scope="row"><?php echo $i; ?></th>
                           <td><?php echo $row['FullName'] ?></td>
-                          <td><?php echo $row['ItemName'] ?></td>
                           <td><?php echo date('d/m/Y', strtotime($row['OrderDate'])); ?></td>
                           <td><?php echo $row['OrderTime'] ?></td>
                           <td><?php echo $row['Quantity'] ?></td>
@@ -79,7 +77,7 @@ if (!isset($_SESSION['User'])) {
                                   <i class="bx bx-dots-vertical-rounded"></i>
                                 </button>
                                 <div class="dropdown-menu">
-                                  <a class="dropdown-item opn" data-bs-toggle="modal" data-bs-target="#edit-menu" href="javascript:void(0);" data-id="<?php echo $row['OrderID']; ?>">
+                                  <a class="dropdown-item opn" data-bs-toggle="modal" data-bs-target="#order-modal" href="javascript:void(0);" data-id="<?php echo $row['OrderID']; ?>">
                                     <i class="bx bx-show me-1"></i>
                                     View More
                                   </a>
@@ -99,6 +97,67 @@ if (!isset($_SESSION['User'])) {
                 </div>
               </div>
 
+              <div class="card mb-3">
+                <h5 class="card-header">In Purchase Orders List
+                </h5>
+                <div class="table-responsive text-nowrap">
+                  <table id="inpurchaseTable" class="table">
+                    <thead>
+                      <tr class="text-nowrap">
+                        <th>#</th>
+                        <th>Customer Name</th>
+                        <th>Order Date</th>
+                        <th>Order Time</th>
+                        <th>Total Price (RM)</th>
+                        <th>QR</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+
+                      $KioskID = $_SESSION['KioskID'];
+                      $i = 0;
+                      $ret = mysqli_query(
+                        $conn,
+                        "SELECT * FROM inpurchaseorder INNER JOIN user ON inpurchaseorder.UserID = user.UserID WHERE inpurchaseorder.KioskID = $KioskID"
+                      );
+                      while ($row = mysqli_fetch_array($ret)) {
+                        $i++;
+                      ?>
+                        <tr id="<?php echo $row['InPurchaseID'] ?>">
+                          <th scope="row"><?php echo $i; ?></th>
+                          <td><?php echo $row['FullName'] ?></td>
+                          <td><?php echo date('d/m/Y', strtotime($row['InPurchaseDate'])); ?></td>
+                          <td><?php echo $row['InPurchaseTime'] ?></td>
+                          <td><?php echo $row['InPurchaseTotalPrice'] ?></td>
+                          <td><img style="height: 100px; width: 100px;" src="data:image;base64,   " alt="TestQR"></td>
+                          <td>
+                            <form method="post">
+                              <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                  <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                  <a class="dropdown-item opnIp" data-bs-toggle="modal" data-bs-target="#Ip-menu" href="javascript:void(0);" data-id="<?php echo $row['InPurchaseID']; ?>">
+                                    <i class="bx bx-show me-1"></i>
+                                    View More
+                                  </a>
+                                  <!-- <a class="dropdown-item opn" data-bs-toggle="modal" data-bs-target="#edit-menu" href="javascript:void(0);" data-id="<?php echo $row['InPurchaseID']; ?>">
+                                    <i class="bx bx-edit-alt me-1"></i>
+                                    Edit
+                                  </a> -->
+                                  <a class="dropdown-item del" data-id="<?php echo $row['InPurchaseID']; ?>" href="javascript:void(0);"><i class="bx bxs-x-square me-1"></i> Cancel Order</a>
+                                </div>
+                              </div>
+                            </form>
+                          </td>
+                        </tr>
+                      <?php } ?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
             <!-- / Content -->
           </div>
@@ -106,13 +165,13 @@ if (!isset($_SESSION['User'])) {
       </div>
     </div>
 
-    <!-- Edit Menu Modal -->
+    <!-- Edit Order Online Modal -->
     <form method="post">
-      <div class="modal fade" id="edit-menu" tabindex="-1" aria-hidden="true">
+      <div class="modal fade" id="order-modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel2">View Order</h5>
+              <h5 class="modal-title" id="exampleModalLabel2">Online Order</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -121,25 +180,25 @@ if (!isset($_SESSION['User'])) {
                   <label for="customerName" class="form-label">Customer Name</label>
                   <input type="text" id="customerName" name="customerName" class="form-control" placeholder="" value="" readonly />
                 </div>
-                <div class="col mb-6">
-                  <label for="menuOrdered" class="form-label">Menu Ordered</label>
-                  <input type="text" id="menuOrdered" name="menuOrdered" class="form-control" placeholder="" value="" readonly />
-                </div>
               </div>
               <div class="row">
                 <div class="col mb-6">
                   <label for="OrderTime" class="form-label">Order Time</label>
                   <input type="text" id="OrderTime" name="OrderTime" class="form-control" placeholder="" value="" readonly />
                 </div>
-                <div class="col mb-3">
-                  <label for="orderQuantity" class="form-label">Quantity</label>
-                  <input type="text" id="orderQuantity" name="orderQuantity" class="form-control" placeholder="" value="" readonly />
-                </div>
               </div>
-              <div class="row">
+              <div class="row mb-3">
                 <div class="col mb-6">
                   <label for="OrderTotalPrice" class="form-label">Order Total Price (RM)</label>
                   <input type="text" id="OrderTotalPrice" name="OrderTotalPrice" class="form-control" placeholder="" value="" readonly />
+                </div>
+
+              </div>
+              <div class="row mb-3">
+                <div class="col mb-3">
+                  <ul id="oList" class="list-group">
+
+                  </ul>
                 </div>
                 <div class="col mb-3">
                   <label for="orderStatus" class="form-label">Order Status</label>
@@ -164,6 +223,53 @@ if (!isset($_SESSION['User'])) {
       </div>
       </div>
     </form>
+
+    <!-- Edit InPurchase Modal -->
+    <form method="post">
+      <div class="modal fade" id="Ip-menu" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel2">In Purchase Order</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row mb-3">
+                <div class="col mb-6">
+                  <label for="customerNameIP" class="form-label">Customer Name</label>
+                  <input type="text" id="customerNameIP" name="customerNameIP" class="form-control" placeholder="" value="" readonly />
+                </div>
+                <div class="col mb-6">
+                  <label for="OrderTime" class="form-label">Order Time</label>
+                  <input type="text" id="OrderTimeIP" name="OrderTimeIP" class="form-control" placeholder="" value="" readonly />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col mb-6">
+                  <label for="OrderTotalPriceIP" class="form-label">Order Total Price (RM)</label>
+                  <input type="text" id="OrderTotalPriceIP" name="OrderTotalPriceIP" class="form-control" placeholder="" value="" readonly />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col mb-3">
+                  <ul id="oIpList" class="list-group">
+
+                  </ul>
+                </div>
+              </div>
+              <input hidden type="text" id="orderIDIP" name="orderID" class="form-control" placeholder="" value="" />
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                Close
+              </button>
+              <!-- <button type="submit" name="editBtn" class="btn btn-primary">Save changes</button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </form>
     <!-- / Layout wrapper -->
     <script>
       var id;
@@ -173,31 +279,72 @@ if (!isset($_SESSION['User'])) {
         $.post('../api.php?getOrder=1', {
           test: id
         }, function(res) {
-          console.log(res)
-          $("#customerName").val(res.CustomerName);
-          $("#menuOrdered").val(res.ItemName);
-          $("#OrderTime").val(res.OrderTime);
-          $("#orderQuantity").val(res.Quantity);
-          $("#OrderTotalPrice").val(res.OrderTotalAmount);
+          // console.log(res)
+          $("#customerName").val(res.CustomerName[0]);
+          $("#OrderTime").val(res.OrderTime[0]);
+          $("#OrderTotalPrice").val(res.OrderTotalAmount[0]);
 
           var unitVal = $("#orderStatus option").filter(function() {
-            return $(this).html() == res.orderStatus;
+            return $(this).html() == res.orderStatus[0];
           }).val()
 
           $("#orderStatus").val(unitVal).change();
 
           $("#orderID").val(id);
 
+          $("#oList").append(`<li class="list-group-item"><b>Ordered Items (Quantity)</b></li>`);
+
+          for (let i = 0; i < res.ItemName.length; i++) {
+            $("#oList").append(`
+            
+            
+            <li class="list-group-item d-flex justify-content-between align-items-center">` + res.ItemName[i] + ` <span style = "background-color:#0d6efd;" class="badge badge-light badge-pill">` + res.Quantity[i] + `</span></li>
+
+            `);
+          }
+
         }, 'json')
 
         $("#id").val(id);
+      });
 
-        // $("#menuDescEdit").val(col[1].innerText);
+      $(".opnIp").click(function() {
+        id = $(this).data('id');
+
+        $.post('../api.php?getIPOrder=1', {
+          test: id
+        }, function(res) {
+
+          $("#oIpList").append(`<li class="list-group-item"><b>Ordered Items (Quantity)</b></li>`);
+
+          for (let i = 0; i < res.ItemName.length; i++) {
+            $("#oIpList").append(`
+            
+            
+            <li class="list-group-item d-flex justify-content-between align-items-center">` + res.ItemName[i] + ` <span style = "background-color:#0d6efd;" class="badge badge-light badge-pill">` + res.Quantity[i] + `</span></li>
+
+            `);
+          }
+
+          $("#customerNameIP").val(res.CustomerName[0]);
+          $("#OrderTimeIP").val(res.OrderTime[0]);
+          $("#OrderTotalPriceIP").val(res.OrderTotalAmount[0]);
+          $("#orderIDIP").val(id);
+
+        }, 'json')
+
         // $("#menuPriceEdit").val(col[2].innerText);
         // $("#menuAvailabilityEdit").val(unitVal).change();
         // $("#menuStockEdit").val(col[4].innerText);
         // $("#frameEdit").val(col[4].innerText);
         // $("#menuIDEdit").val(id);
+      });
+
+      $('#Ip-menu').on('hidden.bs.modal', function(e) {
+        $('#oIpList').empty();
+      });
+      $('#order-modal').on('hidden.bs.modal', function(e) {
+        $('#oList').empty();
       });
 
       $(".del").click(function() {
@@ -226,6 +373,14 @@ if (!isset($_SESSION['User'])) {
             $('.custom-length').css('margin-right', '25px'); // Adjust the margin value as needed
           }
         });
+        $('#inpurchaseTable').dataTable({
+          dom: '<"custom-length"f><t><p>',
+
+          // Callback function to handle the DataTable initialization
+          initComplete: function(settings, json) {
+            $('.custom-length').css('margin-right', '25px'); // Adjust the margin value as needed
+          }
+        });
       });
 
       function preview() {
@@ -237,7 +392,7 @@ if (!isset($_SESSION['User'])) {
         frame.src = "";
       }
     </script>
-    <script src="../assets/js/dashboards-analytics.js"></script>
+    <!-- <script src="../assets/js/dashboards-analytics.js"></script> -->
   </body>
 
   </html>
