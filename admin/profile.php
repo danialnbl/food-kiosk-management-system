@@ -24,7 +24,7 @@ if (!isset($_SESSION['User'])) {
 
   $ret = mysqli_query(
     $conn,
-    "SELECT * FROM vendor INNER JOIN kiosk ON vendor.KioskID = kiosk.KioskID WHERE VendorID = $uid"
+    "SELECT * FROM user WHERE UserID = $uid"
   );
 
   while ($row = mysqli_fetch_array($ret)) {
@@ -55,27 +55,27 @@ if (!isset($_SESSION['User'])) {
                         <form id="formAccountSettings" method="post" enctype="multipart/form-data">
                           <div class="row">
                             <div class="mb-3 col-md-6">
-                              <label for="vendorName" class="form-label">Vendor Name</label>
-                              <input class="form-control" type="text" id="vendorName" name="vendorName" value="<?php echo $row['VendorName']; ?>" autofocus />
+                              <label for="adminName" class="form-label">Admin Name</label>
+                              <input class="form-control" type="text" id="adminName" name="adminName" value="<?php echo $row['FullName']; ?>" autofocus />
                             </div>
                             <div class="mb-3 col-md-6">
                               <label for="email" class="form-label">E-mail</label>
-                              <input class="form-control" type="text" id="email" name="email" value="<?php echo $row['VendorEmail']; ?>" placeholder="john.doe@example.com" />
+                              <input class="form-control" type="text" id="email" name="email" value="<?php echo $row['Email']; ?>" placeholder="john.doe@example.com" />
                             </div>
                             <div class="mb-3 col-md-6">
                               <label class="form-label" for="phoneNumber">Phone Number</label>
                               <div class="input-group input-group-merge">
                                 <span class="input-group-text">MY (+6)</span>
-                                <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" value="<?php echo $row['VendorNum']; ?>" placeholder="1234567890" />
+                                <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" value="<?php echo $row['NumPhone']; ?>" placeholder="1234567890" />
                               </div>
                             </div>
                             <div class="mb-3 col-md-6">
                               <label for="password" class="form-label">Password</label>
-                              <input class="form-control" type="password" id="password" name="password" value="<?php echo $row['VendorPassword']; ?>" autofocus />
+                              <input class="form-control" type="password" id="password" name="password" value="<?php echo $row['Password']; ?>" autofocus />
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label for="qr" class="form-label">QR Code</label>
-                                <img style="height: 100px; width: 100px;" src="data:image/png;base64, <?php echo $row['VendorQR']; ?>" alt="QR Code">
+                                <img style="height: 100px; width: 100px;" src="data:image/png;base64, <?php echo $row['UserQR']; ?>" alt="QR Code">
                             </div>
                           </div>
                           <div class="mt-2">
@@ -84,31 +84,9 @@ if (!isset($_SESSION['User'])) {
                           </div>
                         </form>
                       </div>
-                      <!-- /Account -->
                     </div>
 
                     <div class="card mb-4">
-                      <h5 class="card-header">Edit Logo</h5>
-                      <!-- Account -->
-                      <hr class="my-0" />
-                      <div class="card-body">
-                        <form id="editLogo" method="post" enctype="multipart/form-data">
-                          <div class="row">
-                            <div class="col mb-3">
-                              <label for="formFile" class="form-label">Kiosk Logo </label>
-                              <input class="form-control" type="file" id="formFile" name="formFile" onchange="preview()">
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col mb-3">
-                              <img id="frame" src="data:image;base64,  <?php echo $row['KioskLogo']  ?>" class="img-fluid" style="height: 200px;" />
-                            </div>
-                          </div>
-                          <div class="mt-2">
-                            <button id="editLogoBtn" name="editLogoBtn" type="submit" class="btn btn-primary me-2" disabled>Save changes</button>
-                          </div>
-                        </form>
-                      </div>
                       <!-- /Account -->
                     </div>
 
@@ -121,23 +99,6 @@ if (!isset($_SESSION['User'])) {
                         } else {
                           document.getElementById("deactiveBtn").disabled = true;
                         }
-                      }
-
-                      function preview() {
-                        frame.src = URL.createObjectURL(event.target.files[0]);
-
-                        if (document.getElementById("formFile").files.length >= 1) {
-                        document.getElementById("editLogoBtn").disabled = false;
-                        }
-                      }
-
-                      function clearImage() {
-                        document.getElementById('formFile').value = null;
-                        frame.src = "";
-                      }
-
-                      function enableLogoBtn(){
-                        
                       }
                       
                     </script>
@@ -177,12 +138,12 @@ if (!isset($_SESSION['User'])) {
     if (isset($_POST['editBtn'])) {
 
       $uid = $_SESSION['User'];
-      $vendorName = $_POST['vendorName'];
+      $adminName = $_POST['adminName'];
       $email = $_POST['email'];
       $phoneNumber = $_POST['phoneNumber'];
       $password = $_POST['password'];
 
-      $query = mysqli_query($conn, "UPDATE vendor INNER JOIN kiosk ON vendor.KioskID = kiosk.KioskID SET VendorName = '$vendorName', VendorEmail = '$email', VendorNum = '$phoneNumber', VendorPassword = '$password'  WHERE VendorID = '$uid'");
+      $query = mysqli_query($conn, "UPDATE user SET FullName = '$adminName', Email = '$email', NumPhone = '$phoneNumber', Password = '$password'  WHERE UserID = '$uid'");
 
       if ($query) {
         echo '
@@ -219,72 +180,11 @@ if (!isset($_SESSION['User'])) {
       }
     }
 
-    if (isset($_POST['editLogoBtn'])) {
-      //declare variables
-      $uid = $_SESSION['User'];
-      $image = $_FILES['formFile']['tmp_name'];
-      $name = $_FILES['formFile']['name'];
-      $image = base64_encode(file_get_contents(addslashes($image)));
-
-      if ($image != null) {
-        $query = mysqli_query($conn, "UPDATE vendor INNER JOIN kiosk ON vendor.KioskID = kiosk.KioskID SET KioskLogo = '$image'  WHERE VendorID = '$uid'");
-        if ($query) {
-          echo '
-          <script type="text/javascript">
-          $(document).ready(function(){
-            Swal.fire({
-              title: "Logo Updated!",
-              icon: "success",
-              timer: 2000,
-              showConfirmButton: false,
-            }).then(function() {
-              window.location.href="profile.php";
-            });
-          });
-    
-          </script>
-                ';
-        } else {
-          echo '
-          <script type="text/javascript">
-                  $(document).ready(function(){
-                    Swal.fire({
-                      title: "Something went wrong! 😢",
-                      text: "Please try again",
-                      icon: "error",
-                      timer: 2000,
-                      showConfirmButton: false,
-                    }).then(function() {
-                      window.location.href="profile.php";
-                    });
-                  });
-                </script>
-               ';
-        }
-      } else {
-        echo '
-          <script type="text/javascript">
-                  $(document).ready(function(){
-                    Swal.fire({
-                      title: "Something went wrong! 😢",
-                      text: "Please choose your image!",
-                      icon: "error",
-                      timer: 2000,
-                      showConfirmButton: false,
-                    }).then(function() {
-                      window.location.href="profile.php";
-                    });
-                  });
-                </script>
-               ';
-      }
-    }
-
     if (isset($_POST['deactiveBtn'])) {
 
       $uid = $_SESSION['User'];
 
-      $query = "DELETE from `vendor` WHERE `VendorID` = $uid";
+      $query = "DELETE from `user` WHERE `UserID` = $uid";
       $result = mysqli_query($conn, $query);
 
       if ($result) {
