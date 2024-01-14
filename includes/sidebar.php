@@ -47,6 +47,12 @@
                 <div data-i18n="Account Settings">Manage In-Store Purchase</div>
             </a>
         </li>
+        <li class="menu-item">
+            <a href="ViewInvoice.php" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-receipt"></i>
+                <div data-i18n="Account Settings">View Invoice</div>
+            </a>
+        </li>
         <!-- Layouts for Vendor -->
     </ul>
     HTML;

@@ -216,7 +216,6 @@ if (!isset($_SESSION['User'])) {
             var userID = 0;
             var TotalPointsEarned = 0;
             var points = 0;
-            
     
             var totalPriceInitial = <?= json_encode($totalPrice); ?>;
             var totalPriceBaru = 0;
@@ -442,8 +441,6 @@ if (!isset($_SESSION['User'])) {
             });
 
         });
-
-        
 
     </script>  
     
