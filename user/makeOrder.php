@@ -53,27 +53,27 @@ if (!isset($_SESSION['User'])) {
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                               echo "<div class='col-md-3'>";
-                                echo "<div class='card m-0'>";
+                              echo "<div class='card m-0'>";
 
-                                // Set a fixed height and width for the container
-                                echo "<div style='height: 200px; width: 100%; overflow: hidden;'>";
-                                // Set object-fit: cover for the image
-                                echo '<img src="data:image;base64,' . $row['ItemImage'] . '" class="img-thumbnail menu-image" style="object-fit: cover; height: 100%; width: 100%;" alt="Menu Item Image">';
-                                echo "</div>";
+                              // Set a fixed height and width for the container
+                              echo "<div style='height: 200px; width: 100%; overflow: hidden;'>";
+                              // Set object-fit: cover for the image
+                              echo '<img src="data:image;base64,' . $row['ItemImage'] . '" class="img-thumbnail menu-image" style="object-fit: cover; height: 100%; width: 100%;" alt="Menu Item Image">';
+                              echo "</div>";
 
-                                echo "<div class='card-body'>";
-                                echo "<h5 class='mb-2'>" . $row["ItemName"] . "</h5>";
-                                echo "<div class='mb-1'><p>" . $row["ItemDesc"] . "</p></div>";
-                                echo "<h6 ><strong>Price:</strong> RM" . $row["ItemPrice"] . "</h6>";
-                                echo "<div class='text-center'>";
-                                echo "<button class='add_cart btn btn-primary' data-id='{$row["MenuID"]}'>Add to Cart</button>";
-                                echo "</div>";
-                                echo "</div>";
-                                echo "</div>";
-                                echo "</div>";
+                              echo "<div class='card-body'>";
+                              echo "<h5 class='mb-2'>" . $row["ItemName"] . "</h5>";
+                              echo "<div class='mb-1'><p>" . $row["ItemDesc"] . "</p></div>";
+                              echo "<h6 ><strong>Price:</strong> RM" . $row["ItemPrice"] . "</h6>";
+                              echo "<div class='text-center'>";
+                              echo "<button class='add_cart btn btn-primary' data-id='{$row["MenuID"]}'>Add to Cart</button>";
+                              echo "</div>";
+                              echo "</div>";
+                              echo "</div>";
+                              echo "</div>";
                             }
                         } else {
-                            echo "Select Kiosk first.";
+                          echo "<div class='col-md-3'>None.</div>";
                         }
                     }
 
