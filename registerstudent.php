@@ -34,7 +34,7 @@
       //QR
       $pathQr = './assets/img/qr/';
       $qrCode = $pathQr.$userid.".png";
-      QRcode::png($userid, $qrCode, 'H', 4, 4);
+      QRcode::png("http://localhost/food-kiosk-management-system/test.php?UserID=".$userid, $qrCode, 'H', 4, 4);
       $qrImage = base64_encode(file_get_contents(addslashes($qrCode)));
 
       $queryQR = mysqli_query($conn, "UPDATE user SET UserQR = '$qrImage' WHERE UserID = '$userid'");
