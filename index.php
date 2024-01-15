@@ -34,6 +34,7 @@
         <ul>
           <li><a class="nav-link scrollto" href="index.php">Home</a></li>
           <li><a class="nav-link scrollto" href="index.php#menu">Daily Menu</a></li>
+          <li><a class="nav-link scrollto" href="index.php#vendors">Vendors</a></li>
           <li><a class="nav-link scrollto" href="index.php#about">About Us</a></li>
           <li><a class="nav-link scrollto" href="login.php">Login</a></li>
           <li><a class="getstarted scrollto" href="registration.php">Get Started</a></li>
@@ -96,6 +97,40 @@
     </div>
   </section>
   <!-- End Daily Menu Section -->
+  <!-- ======= Vendor Section ======= -->
+  <section id="vendors" class="vendors section-bg">
+    <div class="container" data-aos="fade-up">
+      <div class="section-title">
+        <h2>Vendors</h2>
+        
+      </div>
+      <div class="row">
+        <?php
+        $ret = mysqli_query(
+          $conn,
+          "SELECT * FROM vendor INNER JOIN kiosk ON vendor.KioskID = kiosk.KioskID WHERE ApprovalStatus = 'Approved'"
+        );
+        while ($row = mysqli_fetch_array($ret)) {
+        ?>
+        <div class="col mb-3">
+          <div class="card" style="width: 15rem;">
+            <img class="card-img-top" style="height: 160px;" src="data:image;base64,  <?php echo $row['KioskLogo']  ?> " alt="Menu Image">
+            <div class="card-body">
+              <h5 class="card-title"><?php echo $row['VendorName']; ?></h5>
+              <p class="card-text">Kiosk Num : <?php echo $row['KioskNum']; ?></p>
+              <p class="card-text">Operation Status : <?php echo $row['OperationStatus']; ?></p>
+              <p class="card-text">Vendor QR : <?php echo $row['VendorName']; ?></p>
+              <img class="card-img-top" src="data:image;base64,  <?php echo $row['VendorQR']  ?> " alt="Menu Image">
+            </div>
+          </div>
+        </div>
+        <?php
+        }
+        ?>
+      </div>
+    </div>
+  </section>
+  <!-- Vendors Section -->
   <!-- Start About Us -->
   <section id="about" class="about">
     <div class="container" data-aos="fade-up">
