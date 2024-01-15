@@ -74,10 +74,19 @@ if (!isset($_SESSION['User'])) {
                               <input class="form-control" type="password" id="password" name="password" value="<?php echo $row['VendorPassword']; ?>" autofocus />
                             </div>
                             <div class="mb-3 col-md-6">
-                                <label for="qr" class="form-label">QR Code</label>
-                                <img style="height: 100px; width: 100px;" src="data:image/png;base64, <?php echo $row['VendorQR']; ?>" alt="QR Code">
+                              <label for="qr" class="form-label">QR Code</label>
+                              <img style="height: 100px; width: 100px;" src="data:image/png;base64, <?php echo $row['VendorQR']; ?>" alt="QR Code">
+                            </div>
+                            <div class="mb-3 col-md-6">
+                              <label for="kioskStatus" class="form-label">Kiosk Status</label>
+                              <select class="form-select" id="kioskStatus" aria-label="Default select example" name="kioskStatus" >
+                                <option <?php if($row['OperationStatus'] == "Open"){echo "selected";}  ?> id="kioskOpen" value="Open">Open</option>
+                                <option <?php if($row['OperationStatus'] == "Close"){echo "selected";} ?> id="kioskClose" value="Close">Close</option>
+                              </select>
                             </div>
                           </div>
+
+
                           <div class="mt-2">
                             <button id="editBtn" name="editBtn" type="submit" class="btn btn-primary me-2">Save changes</button>
                             <button type="reset" class="btn btn-outline-secondary">Cancel</button>
@@ -127,7 +136,7 @@ if (!isset($_SESSION['User'])) {
                         frame.src = URL.createObjectURL(event.target.files[0]);
 
                         if (document.getElementById("formFile").files.length >= 1) {
-                        document.getElementById("editLogoBtn").disabled = false;
+                          document.getElementById("editLogoBtn").disabled = false;
                         }
                       }
 
@@ -136,10 +145,9 @@ if (!isset($_SESSION['User'])) {
                         frame.src = "";
                       }
 
-                      function enableLogoBtn(){
-                        
+                      function enableLogoBtn() {
+
                       }
-                      
                     </script>
                     <div class="card">
                       <h5 class="card-header">Delete Account</h5>
@@ -181,8 +189,9 @@ if (!isset($_SESSION['User'])) {
       $email = $_POST['email'];
       $phoneNumber = $_POST['phoneNumber'];
       $password = $_POST['password'];
+      $kioskStatus = $_POST['kioskStatus'];
 
-      $query = mysqli_query($conn, "UPDATE vendor INNER JOIN kiosk ON vendor.KioskID = kiosk.KioskID SET VendorName = '$vendorName', VendorEmail = '$email', VendorNum = '$phoneNumber', VendorPassword = '$password'  WHERE VendorID = '$uid'");
+      $query = mysqli_query($conn, "UPDATE vendor INNER JOIN kiosk ON vendor.KioskID = kiosk.KioskID SET VendorName = '$vendorName', VendorEmail = '$email', VendorNum = '$phoneNumber', VendorPassword = '$password', OperationStatus = '$kioskStatus'  WHERE VendorID = '$uid'");
 
       if ($query) {
         echo '
