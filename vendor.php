@@ -54,7 +54,7 @@
       //QR
       $pathQr = './assets/img/qr/';
       $qrCode = $pathQr.$vendorID. ".png";
-      QRcode::png("https://indah.ump.edu.my/CB22151/vendorProfile.php?VendorID=".$vendorID, $qrCode, 'H', 4, 4);
+      QRcode::png("https://indah.ump.edu.my/CB22151/food-kiosk-management-system/vendorProfile.php?VendorID=".$vendorID, $qrCode, 'H', 4, 4);
       $qrImage = base64_encode(file_get_contents(addslashes($qrCode)));
 
       $queryQR = mysqli_query($conn, "UPDATE vendor SET VendorQR = '$qrImage' WHERE VendorID = '$vendorID'");

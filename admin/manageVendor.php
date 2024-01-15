@@ -73,15 +73,14 @@ if (!isset($_SESSION['User'])) {
                                                         ?>
                                                     </td>
                                                     <td><?php echo $row['ApprovalStatus']; ?></td>
-                                                    <td><?php 
+                                                    <td><?php
 
-                                                    if($row['ApprovalDate'] != null){
-                                                        echo date('d/m/Y', strtotime($row['ApprovalDate']));
-                                                    }else{
-                                                        echo "Null";
-                                                    }
-                                                    ; 
-                                                    ?></td>
+                                                        if ($row['ApprovalDate'] != null) {
+                                                            echo date('d/m/Y', strtotime($row['ApprovalDate']));
+                                                        } else {
+                                                            echo "Null";
+                                                        };
+                                                        ?></td>
                                                     <td><?php echo $row['KioskID']; ?></td>
                                                     <td><img style="height: 100px; width: 100px;" src="data:image;base64,  <?php echo $row['VendorQR']  ?> " alt="TestQR"></td>
                                                     <td hidden><?php echo $row['VendorPassword']; ?></td>
@@ -355,15 +354,24 @@ if (!isset($_SESSION['User'])) {
         $approval = $_POST['approval'];
         $kioskid = $_POST['kiosk'];
 
-        //QR
-        $pathQr = '../assets/img/qr/';
-        $qrCode = $pathQr . time() . ".png";
-        QRcode::png($phoneNo . "uid=" . $vendorName, $qrCode, 'H', 4, 4);
-        $qrImage = base64_encode(file_get_contents(addslashes($qrCode)));
 
-        $query = mysqli_query($conn, "INSERT INTO vendor (VendorName, VendorEmail, VendorPassword, VendorNum, ApprovalStatus, KioskID, VendorQR) VALUES ('$vendorName','$email', '$password','$phoneNo','$approval','$kioskid','$qrImage')");
+
+        $query = mysqli_query($conn, "INSERT INTO vendor (VendorName, VendorEmail, VendorPassword, VendorNum, ApprovalStatus, KioskID) VALUES ('$vendorName','$email', '$password','$phoneNo','$approval','$kioskid')");
 
         if ($query) {
+
+            $vendorID = mysqli_insert_id($conn);
+
+            //QR
+            $pathQr = '../assets/img/qr/';
+            $qrCode = $pathQr.$vendorID.".png";
+            QRcode::png("https://indah.ump.edu.my/CB22151/food-kiosk-management-system/vendorProfile.php?VendorID=".$vendorID, $qrCode, 'H', 4, 4);
+            $qrImage = base64_encode(file_get_contents(addslashes($qrCode)));
+
+            
+
+            $queryQR = mysqli_query($conn, "UPDATE vendor SET VendorQR = '$qrImage' WHERE VendorID = '$vendorID'");
+
             echo '
       <script type="text/javascript">
       $(document).ready(function(){
