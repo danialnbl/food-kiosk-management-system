@@ -44,6 +44,7 @@ if ($_GET['getSales']) {
     $result = $conn->query($sql);
     $result = $result->fetch_all(MYSQLI_ASSOC);
 
+    $totalSales = 0;
 
     foreach ($result as $row) {
         $OrderTotal[] = $row['SumTotalPrice'];
@@ -68,6 +69,7 @@ if ($_GET['getIPSales']) {
     $result = $conn->query($sql);
     $result = $result->fetch_all(MYSQLI_ASSOC);
 
+    $totalSales = 0;
 
     foreach ($result as $row) {
         $OrderTotal[] = $row['SumTotalPrice'];

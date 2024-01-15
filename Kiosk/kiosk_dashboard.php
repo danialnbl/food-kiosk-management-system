@@ -166,7 +166,7 @@ if (!isset($_SESSION['User'])) {
             $.post('../api.php?getMenu=1', {
                 test: KioskID
             }, function(res) {
-                console.log(res)
+                //console.log(res)
 
                 if (res.totalMenu != null) {
                     $('#totalMenuspan').html(res.totalMenu)
@@ -199,6 +199,8 @@ if (!isset($_SESSION['User'])) {
 
                     var chart = new ApexCharts(document.querySelector("#chart"), options);
                     chart.render();
+                }else{
+                    $('#totalMenuspan').html("No Data...")
                 }
             }, 'json')
 
@@ -207,9 +209,9 @@ if (!isset($_SESSION['User'])) {
                 test: KioskID
             }, function(res) {
                 console.log(res)
+                $('#totalSalespan').html(res.totalSales)
 
-                if (res.totalSales != null) {
-                    $('#totalSalespan').html(res.totalSales)
+                if (res.OrderTotal != null) {
                     $('#totalSalesGraph').html("")
                     var options = {
                         series: [{
@@ -246,6 +248,8 @@ if (!isset($_SESSION['User'])) {
 
                     var chart = new ApexCharts(document.querySelector("#totalSalesGraph"), options);
                     chart.render();
+                }else{
+                    $('#totalSalesGraph').html("No Data...")
                 }
             }, 'json')
 
@@ -253,11 +257,10 @@ if (!isset($_SESSION['User'])) {
             $.post('../api.php?getIPSales=1', {
                 test: KioskID
             }, function(res) {
-                console.log(res)
+                // console.log(res)
 
-                $('#totalInpurchaseSalesGraph').html("")
                 if (res.totalSales != null) {
-
+                    $('#totalInpurchaseSalesGraph').html("")
                     $('#totalIPSalespan').html(res.totalSales)
                     var inpurchaseOptions = {
                         series: [{
@@ -294,6 +297,8 @@ if (!isset($_SESSION['User'])) {
 
                     var chart = new ApexCharts(document.querySelector("#totalInpurchaseSalesGraph"), inpurchaseOptions);
                     chart.render();
+                }else{
+                    $('#totalInpurchaseSalesGraph').html("No Data...")
                 }
             }, 'json')
 
