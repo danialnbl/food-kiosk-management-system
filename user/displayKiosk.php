@@ -40,8 +40,14 @@ if (!isset($_SESSION['User'])) {
                         echo "<div class='card-body'>";
                         echo "<h5 class='card-title'>" . $row["KioskID"] . "</h5>";
                         echo "<h5 class='card-title'>" . $row["KioskName"] . "</h5>";
-                        echo "<a href='makeOrder.php?id=" . $row["KioskID"] . "' class='btn btn-primary'>Open</a>";
-                        // Add more card elements as needed based on your kiosk data
+
+                        // Display the button text based on OperationStatus
+                        if ($row["OperationStatus"] == "Open") {
+                          echo "<a href='makeOrder.php?id=" . $row["KioskID"] . "' class='btn btn-primary'>Open</a>";
+                        } else {
+                            echo "<a href='#' class='btn btn-secondary disabled'>Close</a>";
+                        }
+
                         echo "</div>";
                         echo "</div>";
                         echo "</div>";
