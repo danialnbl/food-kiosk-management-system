@@ -72,13 +72,13 @@ if (!isset($_SESSION['User'])) {
                                                     <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
                                                         <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
                                                             <div class="card-title">
-                                                                <h5 class="text-nowrap mb-2">Collected Points</h5>
+                                                                <h5 class="text-nowrap mb-2">Total Spending By Month</h5>
                                                                 <span class="badge bg-label-warning rounded-pill">Year 2024</span>
                                                             </div>
-                                                            <div id="collectedPoints"></div>
+                                                            <div id="totalSpendGraph">Loading Data...</div>
                                                             <div class="mt-sm-auto">
                                                                 <!-- <small class="text-success text-nowrap fw-semibold"><i class="bx bx-chevron-up"></i> 68.2%</small> -->
-                                                                
+
                                                             </div>
                                                         </div>
                                                         <!-- <div id="profileReportChart"></div> -->
@@ -87,29 +87,23 @@ if (!isset($_SESSION['User'])) {
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-12 col-6 mb-4">
-                                            <div class="row mb-3">
+                                            <div class="row mb-4">
                                                 <div class="card col">
                                                     <div class="card-body">
-                                                        <!-- <div class="card-title d-flex align-items-start justify-content-between">
-                                                            <div class="avatar flex-shrink-0">
-                                                            </div>
-                                                        </div> -->
-                                                        <span>Top Pick Menu</span>
-                                                        <h3 id="topPickMenu" class="card-title text-nowrap mb-1">Loading Data...</h3>
-                                                        <div id="chart"></div>
+                                                        <span>Collected Points</span>
+                                                        <h3 id="totalPoints" class="card-title text-nowrap mb-1">Loading Data...</h3>
                                                         <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small> -->
                                                     </div>
                                                 </div>
-                                                
                                             </div>
-                                            <div class="row">
-                                            <div class="card col">
-                                                <div class="card-body">
-                                                    <span>Purchase History</span>
-                                                    <h3 id="purchaseHistory" class="card-title text-nowrap mb-1">Loading Data...</h3>
-                                                    <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small> -->
+                                            <div class="row mb-4">
+                                                <div class="card col">
+                                                    <div class="card-body">
+                                                        <span>Overall Total Spend</span>
+                                                        <h3 id="totalSpendSpan" class="card-title text-nowrap mb-1">Loading Data...</h3>
+                                                        <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small> -->
+                                                    </div>
                                                 </div>
-                                            </div>
                                             </div>
                                             
                                         </div>
@@ -124,37 +118,83 @@ if (!isset($_SESSION['User'])) {
                     </div>
                 </div>
             </div>
-
-            <!-- TOP PICK MENU - Datatables
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-header h4">Top Pick Menu</div>
-                        <div class="card-body">
-                            <table id="topPickMenu" class="table table-striped">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Menu</th>
-                                        <th scope="col">Description</th>
-                                        <th scope="col">Availability</th>
-                                        <th scope="col">Stock</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-        
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
         </div>
         <!-- <script src="../assets/js/dashboards-analytics.js"></script> -->
     </body>
 
+    
     <script>
-    </script>
+        $(document).ready(function() {
+
+            var UserID = document.getElementById('userID').value;
+
+            $.post('../apiCust.php?getPoints=1', {
+                userID: UserID
+            }, function(res) {
+                console.log(res);
+
+                if (res.totalPoints != null) {
+                    $('#totalPointspan').html(res.totalPoints)
+                    var options = {
+                        series: [{
+                            name: "Total Points",
+                            data: res.totalPoints
+                        }],
+                        
+                    };
+
+                    var chart = new ApexCharts(document.querySelector("#chart"), options);
+                    chart.render();
+                }
+            }, 'json');
+
+            
+
+            // Get Total Spend
+            $.post('../apiCust.php?getSpend=1', {
+                userID: UserID
+            }, function(res) {
+                console.log(res)
+
+                if (res.totalSpend != null) {
+                    $('#totalSpendSpan').html(res.totalSpend)
+                    $('#totalSpendGraph').html("")
+                    var options = {
+                        series: [{
+                            name: "Total Spend",
+                            data: res.OrderTotal
+                        }],
+                        chart: {
+                            height: 300,
+                            type: 'line',
+                            zoom: {
+                                enabled: false
+                            }
+                        },
+                        dataLabels: {
+                            enabled: false
+                        },
+                        stroke: {
+                            curve: 'straight'
+                        },
+                        grid: {
+                            row: {
+                                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                                opacity: 0.5
+                            },
+                        },
+                        xaxis: {
+                            categories: res.OrderDate,
+                        }
+                    };
+
+                    var chart = new ApexCharts(document.querySelector("#totalSpendGraph"), options);
+                    chart.render();
+                }
+            }, 'json')
+
+        })
+    </script> 
 
     </html>
 <?php } ?>

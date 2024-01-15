@@ -15,8 +15,9 @@ if (!isset($_SESSION['User'])) {
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout Page</title>
-    <?php include('../includes/headsettings.php'); ?>
+    <title>Receipt Page</title>
+    <?php include('../includes/headsettings.php'); 
+    require_once '../assets/vendor/phpqrcode/qrlib.php';?>
     <script src="../assets/vendor/libs/jquery/jquery.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
@@ -99,7 +100,19 @@ if (!isset($_SESSION['User'])) {
                                             echo "<p>" . $selectedPaymentMethod;
                                             echo "<div class='d-flex justify-content-between mb-3'>";
                                             echo "<p class='m-0'><strong>QR Order:</strong></p>";
+
+                                            $orderid = mysqli_insert_id($conn);
+
                                             // QR here
+                                            $pathQR = './assets/img/qr/';
+                                            $qrCode = $pathQR . time() . ".png";
+                                            QRcode :: png($orderid, $qrCode, 'H',4,4);
+                                            $qrImage = base64_encode(file_get_contents(addslashes($qrCode)));
+
+                                            $query = mysqli_query($conn, "INSERT INTO onlineorder (OrderID) VALUES ('$orderid')");
+
+                                            echo "<img src='$qrCode' alt='QR Code' class='img-thumbnail'>";
+                                            
                                             echo "</div>";
                                             echo "<div class='d-grid'>";
                                             echo "<button type='submit' class='btn btn-success mb-2'>Order Received</button>";
@@ -124,4 +137,7 @@ if (!isset($_SESSION['User'])) {
     
 </body>
 </html>
+
+
+
 <?php } ?>
