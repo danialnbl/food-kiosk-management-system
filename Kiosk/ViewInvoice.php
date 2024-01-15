@@ -79,7 +79,7 @@ if (!isset($_SESSION['User'])) {
                                 FROM inpurchaseorder io
                                 LEFT JOIN payment p ON io.InPurchaseID = p.InPurchaseID
                                 WHERE io.KioskID = $KioskID
-                                ORDER BY io.InPurchaseDate DESC
+                                ORDER BY io.InPurchaseDate DESC, io.InPurchaseTime DESC
                                 LIMIT $offset, $recordsPerPage";
 
                         $result = $conn->query($sql);
