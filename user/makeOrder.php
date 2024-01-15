@@ -52,8 +52,8 @@ if (!isset($_SESSION['User'])) {
 
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
-                                echo "<div class='col'>";
-                                echo "<div class='card' style='max-width: 21rem;'>"; // Set a maximum width for the card
+                              echo "<div class='col-md-3'>";
+                                echo "<div class='card m-0'>";
 
                                 // Set a fixed height and width for the container
                                 echo "<div style='height: 200px; width: 100%; overflow: hidden;'>";
@@ -63,8 +63,8 @@ if (!isset($_SESSION['User'])) {
 
                                 echo "<div class='card-body'>";
                                 echo "<h5 class='mb-2'>" . $row["ItemName"] . "</h5>";
-                                echo "<p class='mb-1'>" . $row["ItemDesc"] . "</p>" . "<br>";
-                                echo "<h6 class='mb-4'><strong>Price:</strong> RM" . $row["ItemPrice"] . "</h6>";
+                                echo "<div class='mb-1'><p>" . $row["ItemDesc"] . "</p></div>";
+                                echo "<h6 ><strong>Price:</strong> RM" . $row["ItemPrice"] . "</h6>";
                                 echo "<div class='text-center'>";
                                 echo "<button class='add_cart btn btn-primary' data-id='{$row["MenuID"]}'>Add to Cart</button>";
                                 echo "</div>";

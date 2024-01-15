@@ -37,9 +37,15 @@ if (!isset($_SESSION['User'])) {
                     while ($row = $result->fetch_assoc()) {
                         echo "<div class='col-md-4'>";
                         echo "<div class='card mb-3'>";
+
+                        // Set a fixed height and width for the container
+                        echo "<div style='height: 150px; width: 100%; overflow: hidden;'>";
+                        // Set object-fit: cover for the image
+                        echo '<img src="data:image;base64,' . $row["KioskLogo"] . '" class="img-thumbnail menu-image" style="height: 100%; width: 100%;" alt="Menu Item Image">';
+                        echo "</div>";
+
                         echo "<div class='card-body'>";
-                        echo "<h5 class='card-title'>" . $row["KioskID"] . "</h5>";
-                        echo "<h5 class='card-title'>" . $row["KioskName"] . "</h5>";
+                        echo "<h5 class='card-title mt-2'>" . $row["KioskName"] . "</h5>";
 
                         // Display the button text based on OperationStatus
                         if ($row["OperationStatus"] == "Open") {
