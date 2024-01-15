@@ -104,7 +104,7 @@ if (!isset($_SESSION['User'])) {
                                             $orderid = mysqli_insert_id($conn);
 
                                             // QR here
-                                            $pathQR = './assets/img/qr/';
+                                            $pathQR = '../assets/img/qr/';
                                             $qrCode = $pathQR . time() . ".png";
                                             QRcode :: png($orderid, $qrCode, 'H',4,4);
                                             $qrImage = base64_encode(file_get_contents(addslashes($qrCode)));
