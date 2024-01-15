@@ -93,6 +93,7 @@
                                         <?php foreach ($_SESSION['cart'] as $index => $item): ?>   
                                             <table class="table">
                                                 <tr>
+                                                    <td rowspan='2' style="width:30%;"><img src="data:image;base64,<?= $item['image'] ?>" class="img-thumbnail menu-image" style="object-fit: cover; height: 80%; width: 80%;" alt="Menu Item Image"></td>
                                                     <td class="no-border"><?= $item['name'] ?></td>
                                                     <td style="width:30%;" class="no-border">
                                                         <form class='quantity-form' data-item-id='<?= $item['id'] ?>' method='post'>
@@ -124,7 +125,6 @@
                       <!-- Left side of page -->
                       <div class="col-md-4">
                           <div class="card">
-                              <h5 class="card-header">Checkout Information</h5>
                               <div class="card-body">
                                   <div class="d-flex justify-content-between mb-3">
                                       <p class="m-0"><b>Total Price:</b></p>
@@ -134,8 +134,8 @@
                                   <form action="checkoutPage.php" method="POST">
                                     <p class="m-0"><strong>Points Earned:</strong></p>
                                     <div class="d-grid mt-4">
-                                        <button type="submit" class="btn btn-success mb-2">Confirm Order</button>
-                                        <button type="submit" formaction="displayKiosk.php" class="btn btn-danger mb-2">Cancel Order</button>
+                                        <button type="submit" class="btn btn-success mb-2">Proceed to checkout</button>
+                                        <button type="submit" formaction="displayKiosk.php" class="btn btn-danger mb-2">Browse more menu</button>
                                     </div>
                                   </form>
                               </div>

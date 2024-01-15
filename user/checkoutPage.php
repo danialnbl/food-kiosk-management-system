@@ -48,29 +48,21 @@ if (!isset($_SESSION['User'])) {
                               <h5 class="card-header">Order Details</h5>
                               <div class="card-body">
                                   <?php if (!empty($_SESSION['cart'])): ?>
-                                      <table class="table">
-                                          <tbody>
-                                              <?php foreach ($_SESSION['cart'] as $index => $item):
-                                                        $totalPrice = 0;
-                                                        $itemTotalPrice = $item['price'] * $item['quantity'];
-                                                        $totalPrice += $itemTotalPrice; ?>
-                                                  <tr>
-                                                      <td colspan="2">
-                                                        <?php
-                                                        // Display image retrieved from the session (assuming it's in BLOB format)
-                                                        echo '<img src="data:image;base64,' . $item['image'] . '" class="img-thumbnail" alt="Item Image">';
-                                                        ?>
-                                                      </td>
-                                                      <td><?= $item['name'] ?></td>
-                                                      <td colspan="2">RM <?= $item['price'] * $item['quantity'] ?></td>
-                                                      
-                                                  </tr>
-                                                  <tr>
-                                                    <td><?= $item['quantity'] ?></td>
-                                                  </tr>
-                                              <?php endforeach; ?>
-                                          </tbody>
-                                      </table>
+                                
+                                        <?php foreach ($_SESSION['cart'] as $index => $item):
+                                                $totalPrice = 0;
+                                                $itemTotalPrice = $item['price'] * $item['quantity'];
+                                                $totalPrice += $itemTotalPrice; ?>
+                                        <table class="table">
+                                            <tr>
+                                                <td rowspan='2' style="width:30%;"><img src="data:image;base64,<?= $item['image'] ?>" class="img-thumbnail menu-image" style="object-fit: cover; height: 80%; width: 80%;" alt="Menu Item Image"></td>
+                                                <td class="no-border"><?= $item['name'] ?></td>
+                                                <td class="item-price">RM <?= number_format($item['price'], 2) ?></td>
+                                                <td>Quantity : <?=$item['quantity']?></td>
+
+                                            </tr>
+                                        </table>
+                                        <?php endforeach; ?>
                                   <?php else: ?>
                                       <p>Your cart is empty</p>
                                   <?php endif; ?>
