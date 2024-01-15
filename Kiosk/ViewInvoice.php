@@ -7,6 +7,8 @@ include('../functions/functions.php');
 if (!isset($_SESSION['User'])) {
   header('location:../login.php');
 } else {
+
+    $KioskID = $_SESSION['KioskID'];
 ?>
 
   <!DOCTYPE html>
@@ -58,7 +60,7 @@ if (!isset($_SESSION['User'])) {
                     <?php
 
                         $sqlTotalRows = "SELECT COUNT(*) AS totalRows FROM inpurchaseorder io
-                        LEFT JOIN payment p ON io.InPurchaseID = p.InPurchaseID";
+                        LEFT JOIN payment p ON io.InPurchaseID = p.InPurchaseID WHERE io.KioskID = $KioskID";
                         $resultTotalRows = $conn->query($sqlTotalRows);
                         $rowTotalRows = $resultTotalRows->fetch_assoc();
                         $totalRows = $rowTotalRows['totalRows'];
@@ -76,6 +78,7 @@ if (!isset($_SESSION['User'])) {
                         $sql = "SELECT io.InPurchaseID, io.UserID, DATE_FORMAT(io.InPurchaseDate, '%d/%m/%Y') AS InPurchaseDate, io.InPurchaseTime, io.InPurchaseSubtotal, io.InPurchaseTotalPrice, p.PaymentType
                                 FROM inpurchaseorder io
                                 LEFT JOIN payment p ON io.InPurchaseID = p.InPurchaseID
+                                WHERE io.KioskID = $KioskID
                                 ORDER BY io.InPurchaseDate DESC
                                 LIMIT $offset, $recordsPerPage";
 

@@ -381,17 +381,17 @@ if (!isset($_SESSION['User'])) {
                 var TotalPointsCollected = parseInt(TotalPointsEarned, 10) + parseInt(points, 10);
                 var TotalPointsCollectedRedeem = parseInt(TotalPointsEarned, 10) - parseInt(pointsRedeem2, 10);
 
-                console.log("Checkoutnya");
-                console.log("Kiosk ID:", KioskID);
-                console.log("price value:", totalPriceInitial);
-                console.log("User ID:", userID);
-                console.log("Point baru dlm db: ", TotalPointsCollected)
-                console.log("Point baru dlm db bila redeem: ", TotalPointsCollectedRedeem)
-                console.log("points value:", points);
-                console.log("dapatredeem", dapatredeem);
-                console.log("redeem points:", pointsRedeem2);
-                console.log("price value after redeem:", totalPriceBaru);
-                console.log("payment method:", selectedPaymentMethod); 
+                // console.log("Checkoutnya");
+                // console.log("Kiosk ID:", KioskID);
+                // console.log("price value:", totalPriceInitial);
+                // console.log("User ID:", userID);
+                // console.log("Point baru dlm db: ", TotalPointsCollected)
+                // console.log("Point baru dlm db bila redeem: ", TotalPointsCollectedRedeem)
+                // console.log("points value:", points);
+                // console.log("dapatredeem", dapatredeem);
+                // console.log("redeem points:", pointsRedeem2);
+                // console.log("price value after redeem:", totalPriceBaru);
+                // console.log("payment method:", selectedPaymentMethod); 
                 
                 // send to PHP for storage
                 $.ajax({
