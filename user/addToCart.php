@@ -125,6 +125,7 @@ session_start();
 
 $KioskID = $_SESSION['KioskID'];
 
+
 include('../includes/connect.php');
 // Check if the cart is already initiated in the session or create a new cart array
 if (!isset($_SESSION['cart'])) {

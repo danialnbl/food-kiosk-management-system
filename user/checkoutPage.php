@@ -83,7 +83,7 @@ if (!isset($_SESSION['User'])) {
                               <div class="card-body">
                                   <div class="d-flex justify-content-between mb-3">
                                       <p class="m-0"><strong>Subtotal:</strong></p>
-                                      <p class="m-0 text-end"><strong><?= $totalPrice ?></strong></p>
+                                      <p class="m-0 text-end"><strong><?= number_format($totalPrice, 2) ?></strong></p>
                                   </div>
                                   <!-- Add payment method form or information here -->
                                   <form action="receipt.php" method="POST">
@@ -103,7 +103,7 @@ if (!isset($_SESSION['User'])) {
                                       </select>
                                       <div class="d-flex justify-content-between mb-3">
                                           <p class="m-0"><strong>Total Amount:</strong></p>
-                                          <p class="m-0 text-end"><strong>RM <?= $totalPrice ?></strong></p>
+                                          <p class="m-0 text-end"><strong>RM <?= number_format($totalPrice, 2 )?></strong></p>
                                       </div>
                                       <div class="d-grid">
                                           <button type="submit" class="btn btn-success mb-2">Checkout</button>

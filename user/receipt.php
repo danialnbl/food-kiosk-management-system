@@ -3,6 +3,8 @@ session_start();
 //error_reporting(0);
 include('../includes/connect.php');
 include('../functions/functions.php');
+$KioskID = $_SESSION['KioskID'];
+$userid = $_SESSION['User'];
 if (!isset($_SESSION['User'])) {
   header('location:../login.php');
 } else {
@@ -109,7 +111,7 @@ if (!isset($_SESSION['User'])) {
                                             QRcode :: png($orderid, $qrCode, 'H',4,4);
                                             $qrImage = base64_encode(file_get_contents(addslashes($qrCode)));
 
-                                            $query = mysqli_query($conn, "INSERT INTO onlineorder (OrderID) VALUES ('$orderid')");
+                                            $query = mysqli_query($conn, "INSERT INTO onlineorder (OrderID, KioskID, UserID) VALUES ('$orderid', '$KioskID', '$userid')");
 
                                             echo "<img src='$qrCode' alt='QR Code' class='img-thumbnail'>";
                                             
