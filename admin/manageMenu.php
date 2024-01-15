@@ -67,9 +67,9 @@ if (!isset($_SESSION['User'])) {
                           <th scope="row"><?php echo $i; ?></th>
                           <td><?php echo $row['ItemName']; ?></td>
                           <td>
-                           <?php
-                           echo $row['ItemDesc']; 
-                           ?>
+                            <?php
+                            echo $row['ItemDesc'];
+                            ?>
                           </td>
                           <td><?php echo $row['ItemPrice']; ?></td>
                           <td><?php echo $row['Availability']; ?></td>
@@ -145,13 +145,13 @@ if (!isset($_SESSION['User'])) {
                 <div class="col mb-3">
                   <label for="kioskID" class="form-label">Select Kiosk</label>
                   <select class="form-select" id="kioskID" aria-label="Default select example" name="kioskID">
-                            <option selected>Open this select menu</option>
-                            <?php
-                            $kiosk = getListKiosk();
-                            foreach ($kiosk as $row2) {
-                              echo '<option value="' . $row2['KioskID'] . '">' . $row2['KioskName'] . '</option>';
-                            }
-                            ?>
+                    <option selected>Open this select menu</option>
+                    <?php
+                    $kiosk = getListKiosk();
+                    foreach ($kiosk as $row2) {
+                      echo '<option value="' . $row2['KioskID'] . '">' . $row2['KioskName'] . '</option>';
+                    }
+                    ?>
                   </select>
                 </div>
               </div>
@@ -222,13 +222,13 @@ if (!isset($_SESSION['User'])) {
                 <div class="col mb-3">
                   <label for="kioskIDEdit" class="form-label">Select Kiosk</label>
                   <select class="form-select" id="kioskIDEdit" aria-label="Default select example" name="kioskIDEdit">
-                            <option selected>Open this select menu</option>
-                            <?php
-                            $kiosk = getListKiosk();
-                            foreach ($kiosk as $row2) {
-                              echo '<option value="' . $row2['KioskID'] . '">' . $row2['KioskName'] . '</option>';
-                            }
-                            ?>
+                    <option selected>Open this select menu</option>
+                    <?php
+                    $kiosk = getListKiosk();
+                    foreach ($kiosk as $row2) {
+                      echo '<option value="' . $row2['KioskID'] . '">' . $row2['KioskName'] . '</option>';
+                    }
+                    ?>
                   </select>
                 </div>
               </div>
@@ -238,7 +238,7 @@ if (!isset($_SESSION['User'])) {
                   <textarea type="text" id="menuDescEdit" name="menuDescEdit" class="form-control" placeholder="Enter Description" value="" rows="3"></textarea>
                 </div>
               </div>
-              <input hidden type="text" id="menuIDEdit" name="menuIDEdit" class="form-control" placeholder="" value="" />         
+              <input hidden type="text" id="menuIDEdit" name="menuIDEdit" class="form-control" placeholder="" value="" />
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
@@ -252,7 +252,7 @@ if (!isset($_SESSION['User'])) {
       </div>
     </form>
     <!-- / Layout wrapper -->
-   
+
     <script>
       var id;
       $(".opn").click(function() {
@@ -319,8 +319,8 @@ if (!isset($_SESSION['User'])) {
   </html>
 
   <!-- QR Library -->
-  <?php 
-  require_once '../assets/vendor/phpqrcode/qrlib.php'; 
+  <?php
+  require_once '../assets/vendor/phpqrcode/qrlib.php';
   ?>
 
   <!-- CRUD Function -->
@@ -341,15 +341,21 @@ if (!isset($_SESSION['User'])) {
     $name = $_FILES['formFile']['name'];
     $image = base64_encode(file_get_contents(addslashes($image)));
 
-    //QR
-    $pathQr = '../assets/img/qr/';
-    $qrCode = $pathQr.time().".png";
-    QRcode :: png($menuName . "uid=" . $Uid,$qrCode,'H',4,4 );
-    $qrImage = base64_encode(file_get_contents(addslashes($qrCode)));
 
-    $query = mysqli_query($conn, "INSERT INTO menu (KioskID, ItemName, ItemDesc, ItemPrice, Availability, Stock, ItemImage, MenuQR) VALUES ($KioskID,'$menuName', '$menuDesc','$menuPrice','$menuAvailability','$menuStock','$image','$qrImage')");
+
+    $query = mysqli_query($conn, "INSERT INTO menu (KioskID, ItemName, ItemDesc, ItemPrice, Availability, Stock, ItemImage) VALUES ($KioskID,'$menuName', '$menuDesc','$menuPrice','$menuAvailability','$menuStock','$image')");
 
     if ($query) {
+
+      $menuid = mysqli_insert_id($conn);
+
+      //QR
+      $pathQr = '../assets/img/qr/';
+      $qrCode = $pathQr . $menuName . "-" . $KioskID . ".png";
+      QRcode::png($menuid, $qrCode, 'H', 4, 4);
+      $qrImage = base64_encode(file_get_contents(addslashes($qrCode)));
+      $queryQR = mysqli_query($conn, "UPDATE menu SET MenuQR = '$qrImage' WHERE MenuID = '$menuid'");
+
       echo '
       <script type="text/javascript">
       $(document).ready(function(){
