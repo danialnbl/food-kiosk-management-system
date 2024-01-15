@@ -73,7 +73,7 @@
         <?php
         $ret = mysqli_query(
           $conn,
-          "SELECT * FROM menu INNER JOIN vendor ON menu.KioskID = vendor.KioskID INNER JOIN kiosk ON vendor.KioskID = kiosk.KioskID WHERE Availability ='Available' AND OperationStatus = 'Open'"
+          "SELECT * FROM menu INNER JOIN vendor ON menu.KioskID = vendor.KioskID INNER JOIN kiosk ON vendor.KioskID = kiosk.KioskID WHERE Availability ='Available' AND OperationStatus = 'Open' AND ApprovalStatus = 'Approved'"
         );
         while ($row = mysqli_fetch_array($ret)) {
         ?>
