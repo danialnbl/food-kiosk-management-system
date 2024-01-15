@@ -94,12 +94,11 @@ if (!isset($_SESSION['User'])) {
                                                             </div>
                                                         </div> -->
                                                         <span>Overall Total Sales This Month</span>
-                                                        <h3 id="totalMenuspan" class="card-title text-nowrap mb-1">Loading Data...</h3>
+                                                        <h3 id="totalCombineSalespan" class="card-title text-nowrap mb-1">Loading Data...</h3>
                                                         <div id="chart"></div>
                                                         <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small> -->
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <div class="row">
                                                 <div class="card col">
@@ -123,7 +122,7 @@ if (!isset($_SESSION['User'])) {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-md-12 col-6 mb-4">
+                                        <div class="col-lg-6 col-md-12 col-6 mb-4">
                                             <div class="row mb-4">
                                                 <div class="card col">
                                                     <div class="card-body">
@@ -139,6 +138,13 @@ if (!isset($_SESSION['User'])) {
                                                         <span>Overall Total Sales</span>
                                                         <h3 id="totalALLSalespan" class="card-title text-nowrap mb-1">Loading Data...</h3>
                                                         <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-4">
+                                                <div class="card col">
+                                                    <div class="card-body">
+                                                        <h4 id="totalVendor">Total Approved Vendor : Loading Data...</h4>
                                                     </div>
                                                 </div>
                                             </div>
@@ -160,44 +166,6 @@ if (!isset($_SESSION['User'])) {
 
             var totalAllSales = 0;
 
-            //Get Menu
-            // $.post('../apiAdmin.php?getMenu=1',function(res) {
-            //     console.log(res)
-
-            //     if (res.totalMenu != null) {
-            //         $('#totalMenuspan').html(res.totalMenu)
-
-            //         var options = {
-            //             dataLabels: {
-            //                 enabled: false,
-            //                 formatter: function(val) {
-            //                     return val + "%"
-            //                 }
-            //             },
-            //             series: res.StockValue,
-            //             chart: {
-            //                 width: 380,
-            //                 type: 'donut',
-            //             },
-            //             labels: res.itemName,
-            //             responsive: [{
-            //                 breakpoint: 480,
-            //                 options: {
-            //                     chart: {
-            //                         width: 200
-            //                     },
-            //                     legend: {
-            //                         position: 'bottom'
-            //                     }
-            //                 }
-            //             }]
-            //         };
-
-            //         var chart = new ApexCharts(document.querySelector("#chart"), options);
-            //         chart.render();
-            //     }
-            // }, 'json')
-
             $.post('../apiAdmin.php?getCombinedSales=1', function(res) {
                 console.log(res);
 
@@ -210,7 +178,7 @@ if (!isset($_SESSION['User'])) {
                     });
 
                     // Display the total in the specified element
-                    $('#totalMenuspan').html("RM " + totalSales);
+                    $('#totalCombineSalespan').html("RM " + totalSales);
 
                     var options = {
                         dataLabels: {
@@ -250,8 +218,6 @@ if (!isset($_SESSION['User'])) {
                 }
             }, 'json');
 
-
-
             // Get Total Sales
             $.post('../apiAdmin.php?getSales=1', function(res) {
                 console.log(res)
@@ -288,6 +254,7 @@ if (!isset($_SESSION['User'])) {
                             },
                         },
                         xaxis: {
+                            width: 100,
                             categories: res.OrderDate,
                         }
                     };
@@ -340,6 +307,16 @@ if (!isset($_SESSION['User'])) {
 
                     var chart = new ApexCharts(document.querySelector("#totalInpurchaseSalesGraph"), inpurchaseOptions);
                     chart.render();
+                }
+            }, 'json')
+
+            $.post('../apiAdmin.php?getVendorCount=1', function(res) {
+                console.log(res)
+
+                if (res.vendorCount != null) {
+
+                    $('#totalVendor').html("Total Approved Vendor : "+ res.vendorCount)
+                    
                 }
             }, 'json')
 

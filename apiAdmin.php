@@ -12,6 +12,7 @@ error_reporting(0);
 // }
 
 //Get Menu List
+
 if ($_GET['getMenu']) {
 
     $sql = "SELECT * from menu";
@@ -33,8 +34,9 @@ if ($_GET['getMenu']) {
     die;
 }
 
-// Get combined sales data from onlineorder and inpurchaseorder
+// Get combined sales data from onlineorder and instorepurchaseorder
 if ($_GET['getCombinedSales']) {
+
     $currentYear = date("Y");
     $currentMonth = date("m");
     
@@ -64,7 +66,6 @@ if ($_GET['getCombinedSales']) {
     echo json_encode($data, JSON_NUMERIC_CHECK);
     die;
 }
-
 
 //Get Sales
 if ($_GET['getSales']) {
@@ -139,50 +140,17 @@ if ($_GET['getOrder']) {
 }
 
 if ($_GET['getVendorCount']) {
-    $query = "SELECT COUNT(*) AS VendorCount FROM vendor";
+    $query = "SELECT COUNT(*) AS VendorCount FROM vendor WHERE ApprovalStatus = 'Approved'";
     $result = $conn->query($query);
 
     if ($result) {
         $row = $result->fetch_assoc();
         $vendorCount = $row['VendorCount'];
 
-        echo json_encode(['vendorCount' => $vendorCount]);
-    } else {
-        echo json_encode(['error' => 'Error executing query']);
+        echo json_encode([
+            'vendorCount' => $vendorCount
+        ],JSON_NUMERIC_CHECK );
+        die;
     }
-    exit; // Terminate further execution after API response
 }
 
-// Total vendor
-// if ($_GET['postVendorStatus']) {
-
-//     $sql = "SELECT COUNT(*) AS TotalApprovedVendors FROM vendor WHERE ApprovalStatus = 'Approved'";
-//     $result = $conn->query($sql);
-//     $result = $result->fetch_all(MYSQLI_ASSOC);
-
-//     foreach ($result as $row) {
-//         $ItemName[] = $row['ItemName'];
-//         $CustomerName[] = $row['FullName'];
-//         $OrderTime[] = $row['OrderTime'];
-//         $Quantity[] = $row['Quantity'];
-//         $OrderTotalAmount[] = $row['OrderTotalAmount'];
-//         $orderStatus[] = $row['OrderStatus'];
-//     }
-
-//     echo json_encode([
-//         "ItemName" => $ItemName,
-//         "CustomerName" => $CustomerName,
-//         "OrderTime" => $OrderTime,
-//         "Quantity" => $Quantity,
-//         "OrderTotalAmount" => $OrderTotalAmount,
-//         "orderStatus" => $orderStatus,
-//     ],JSON_NUMERIC_CHECK );
-//     die;
-
-// }
-
-
-//     $query = mysqli_query($conn, "UPDATE vendor SET ApprovalStatus = 'Approved', ApprovalDate = '$dateNow' WHERE VendorID = '$vendorID'");
-
-//     die;
-// }
