@@ -67,7 +67,7 @@ if (!isset($_SESSION['User'])) {
                           <td><?php echo $row['OrderTime'] ?></td>
                           <td><?php echo $row['OrderTotalPrice'] ?></td>
                           <td><?php echo $row['OrderStatus'] ?></td>
-                          <td><img style="height: 100px; width: 100px;" src="data:image;base64,   " alt="TestQR"></td>
+                          <td><img style="height: 100px; width: 100px;" src="data:image;base64, <?php echo $row['OrderQR']  ?>  " alt="TestQR"></td>
                           <td>
                             <form method="post">
                               <div class="dropdown">
