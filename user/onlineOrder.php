@@ -33,10 +33,9 @@ if($query){
     $qrImage = base64_encode(file_get_contents(addslashes($qrCode)));
 
     $query2 = mysqli_query($conn, "UPDATE onlineorder SET OrderQR = '$qrImage' WHERE OrderID = '$orderidFK'");
-    $result2 = mysqli_query($conn, $query2);
 
     
-    if($result2){
+    if($query2){
 
         foreach ($items as $item){
 
@@ -53,6 +52,10 @@ if($query){
 
     }
 
+    unset ($_SESSION['cart']);
+    header("Location: receipt.php");
+    exit();
+
 }
 
 
@@ -60,6 +63,6 @@ if($query){
 
 
 
-unset ($_SESSION['cart']);
+
 
 ?>
