@@ -8,7 +8,7 @@ require_once '../assets/vendor/phpqrcode/qrlib.php';
 $items = $_SESSION['cart'];
 $userid = $_SESSION['User'];
 $kioskid = $_SESSION['KioskID'];
-
+$totalPrice = 0;
 
 foreach ($items as $item){
     $menuid = $item['id'];
@@ -20,13 +20,9 @@ foreach ($items as $item){
 
 }
 
-$query = mysqli_query($conn, "INSERT INTO onlineorder (UserID, KioskID, OrderDate, OrderTime, OrderSubTotal, OrderTotalPrice, TotalPointsEarned, TotalPointsRedeemed, OrderStatus)
-                                  VALUES ('$userid', '$kioskid', CURDATE() , CURTIME() , '$totalPrice','$totalPrice', 0, 0,'Pending')");
-$result = mysqli_query($conn, $query);
+$query = mysqli_query($conn, "INSERT INTO onlineorder (UserID, KioskID, OrderDate, OrderTime, OrderSubTotal, OrderTotalPrice, TotalPointsEarned, TotalPointsRedeemed, OrderStatus) VALUES ('$userid', '$kioskid', CURDATE() , CURTIME() , '$totalPrice','$totalPrice', 0, 0,'Pending')");
 
-
-
-if($result){
+if($query){
 
     $orderidFK = mysqli_insert_id($conn);
 

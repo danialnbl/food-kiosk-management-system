@@ -97,13 +97,14 @@ if (!isset($_SESSION['User'])) {
                                           <p class="m-0"><strong>Total Amount:</strong></p>
                                           <p class="m-0 text-end"><strong>RM <?= number_format($totalPrice, 2 )?></strong></p>
                                       </div>
-                                      <form action="onlineOrder.php" method='post'>
+                                      
+                                      
+                                  </form>
+                                  <form action="onlineOrder.php" method='post'>
                                       <div class="d-grid">
                                           <button type="submit" class="btn btn-success mb-2">Checkout</button>
                                       </div>
                                       </form>
-                                      
-                                  </form>
 
                               </div>
                           </div>
