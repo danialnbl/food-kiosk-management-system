@@ -78,7 +78,7 @@ if (!isset($_SESSION['User'])) {
                                       <p class="m-0 text-end"><strong><?= number_format($totalPrice, 2) ?></strong></p>
                                   </div>
                                   <!-- Add payment method form or information here -->
-                                  <form action="receipt.php" method="POST">
+                                  <form action="onlineOrder.php" method="POST">
                                       <p class="m-0"><strong>Points Earned:</strong></p>
                                       <p class="m-0 text-end"><strong><?= $index + 1 ?></strong></p>
                                       
@@ -100,7 +100,7 @@ if (!isset($_SESSION['User'])) {
                                       
                                       
                                   </form>
-                                  <form action="onlineOrder.php" method='post'>
+                                  <form action="receipt.php" method='post'>
                                       <div class="d-grid">
                                           <button type="submit" class="btn btn-success mb-2">Checkout</button>
                                       </div>
