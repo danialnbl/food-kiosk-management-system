@@ -96,11 +96,14 @@ if (!isset($_SESSION['User'])) {
                                             echo "<div class='d-flex justify-content-between mb-3'>";
                                             echo "<p class='m-0'><strong>QR Order:</strong></p>";
 
-                                            
+                                            $query = mysqli_query($conn, "SELECT OrderQR FROM onlineorder");
+                                            $row = mysqli_fetch_assoc($query);
 
                                             
+                                            $qrImage = $row['OrderQR'];
 
-                                            echo "<img src='$qrCode' alt='QR Code' class='img-thumbnail'>";
+                                            
+                                            echo '<img src="data:image/png;base64,' . $qrImage . '" alt="QR Code">';
                                             
                                             echo "</div>";
                                             echo "<div class='d-grid'>";
