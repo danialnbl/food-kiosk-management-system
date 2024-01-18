@@ -100,7 +100,7 @@ if (!isset($_SESSION['User'])) {
                                       
                                       
                                   </form>
-                                  <form action="receipt.php" method='post'>
+                                  <form action="onlineOrder.php" method='post'>
                                       <div class="d-grid">
                                           <button type="submit" class="btn btn-success mb-2">Checkout</button>
                                       </div>

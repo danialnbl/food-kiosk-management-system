@@ -5,6 +5,8 @@ include('../includes/connect.php');
 include('../functions/functions.php');
 $KioskID = $_SESSION['KioskID'];
 $userid = $_SESSION['User'];
+$orderidFK= $_SESSION['ordered'];
+
 if (!isset($_SESSION['User'])) {
   header('location:../login.php');
 } else {
@@ -51,66 +53,115 @@ if (!isset($_SESSION['User'])) {
                           <div class="card">
                               <h5 class="card-header">Your Receipt</h5>
                               <div class="card-body">
-                              <?php if (!empty($_SESSION['cart'])): ?>
-                                
-                                      <?php foreach ($_SESSION['cart'] as $index => $item):
-                                              $totalPrice = 0;
-                                              $itemTotalPrice = $item['price'] * $item['quantity'];
-                                              $totalPrice += $itemTotalPrice; ?>
-                                      <table class="table">
-                                          <tr>
-                                              <td rowspan='2' style="width:30%;"><img src="data:image;base64,<?= $item['image'] ?>" class="img-thumbnail menu-image" style="object-fit: cover; height: 80%; width: 80%;" alt="Menu Item Image"></td>
-                                              <td class="no-border"><?= $item['name'] ?></td>
-                                              <td class="item-price">RM <?= number_format($item['price'], 2) ?></td>
-                                              <td>Quantity : <?=$item['quantity']?></td>
+                              <?php
 
-                                          </tr>
-                                      </table>
-                                      <?php endforeach; ?>
-                                <?php else: ?>
-                                    <p>Your cart is empty</p>
-                                <?php endif; ?>
+                                $sql = "SELECT 
+                                            o.OrderTotalPrice,
+                                            ol.Quantity,
+                                            ol.OrderTotalAmount,
+                                            m.ItemName,
+                                            m.ItemImage
+                                        FROM onlineorder o
+                                        JOIN orderlist ol ON o.OrderID = ol.OrderID
+                                        JOIN menu m ON ol.MenuID = m.MenuID
+                                        WHERE o.OrderID = $orderidFK";
+
+                                $result = $conn->query($sql);
+
+                                if ($result) {
+                                    // Check if there are rows in the result set
+                                    if ($result->num_rows > 0) {
+                                        // Fetch the data from the result set
+                                        while ($row = $result->fetch_assoc()) {
+                                            $orderTotalPrice = $row['OrderTotalPrice'];
+                                            $quantity = $row['Quantity'];
+                                            $orderTotalAmount = $row['OrderTotalAmount'];
+                                            $itemName = $row['ItemName'];
+                                            $itemImage = $row['ItemImage'];
+
+                                            // Output the HTML table with fetched data
+                                            echo "<table class='table'>
+                                                    <tr>
+                                                        <td rowspan='2' style='width:30%;'><img src='data:image;base64,{$itemImage}' class='img-thumbnail menu-image' style='object-fit: cover; height: 80%; width: 80%;' alt='Menu Item Image'></td>
+                                                        <td class='no-border'>{$itemName}</td>
+                                                        <td class='item-price'>RM {$orderTotalAmount}</td>
+                                                        <td>Quantity: {$quantity}</td>
+                                                    </tr>
+                                                </table>";
+                                        }
+                                    } else {
+                                        echo "No results found.";
+                                    }
+                                } else {
+                                    // Handle the query error
+                                    echo "Error: " . $conn->error;
+                                }
+
+                                // Close the database connection when done
+                                ?>
                               </div>
                           </div>
                       </div>
-
-
 
                       <!-- Left side of page -->
                       <div class="col-md-4">
                           <div class="card">
                               <h5 class="card-header"></h5>
                               <div class="card-body">
-                                  <div class="d-flex justify-content-between mb-3">
-                                      <p class="m-0"><strong>Total Payment:</strong></p>
-                                      <p class="m-0 text-end"><strong><?= $totalPrice ?></strong></p>
-                                  </div>
-                                        <?php
-                                            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                                       
-                                        
-                                            echo "<p class='m-0'><strong>Points Earned:</strong></p>";
-                                            echo "<p class='m-0 text-end'><strong><?= $index + 1 ?></strong></p>";
-                                            echo "<p class='m-0'><strong>Payment Method:</strong></p>";
-                                            echo "<p>Cash</p>";
-                                            echo "<div class='d-flex justify-content-between mb-3'>";
-                                            echo "<p class='m-0'><strong>QR Order:</strong></p>";
+                              <div class="d-flex justify-content-between mb-3">
+                                <p class="m-0"><strong>Total Payment:</strong></p>
+                                <p class="m-0 text-end"><strong>
+                                    <?php
+                                    // Assuming $order contains the OrderID you're interested in
 
-                                            $query = mysqli_query($conn, "SELECT OrderQR FROM onlineorder");
-                                            $row = mysqli_fetch_assoc($query);
+                                    // SQL query to retrieve OrderTotalPrice for a specific OrderID
+                                    $sql = "SELECT OrderTotalPrice FROM onlineorder WHERE OrderID = $orderidFK";
+                                    $result = $conn->query($sql);
 
-                                            
-                                            $qrImage = $row['OrderQR'];
+                                    if ($result) {
+                                        $row = $result->fetch_assoc();
 
-                                            
-                                            echo '<img src="data:image/png;base64,' . $qrImage . '" alt="QR Code">';
-                                            
-                                            echo "</div>";
-                                            echo "<div class='d-grid'>";
-                                            echo "<button type='submit' class='btn btn-success mb-2' disabled>Order Received</button>";
-                                            echo "</div>";
-                                            }
-                                        ?>
+                                        if ($row) {
+                                            $orderTotalPrice = $row['OrderTotalPrice'];
+                                            echo $orderTotalPrice;
+                                        } else {
+                                            echo "N/A";
+                                        }
+                                    } else {
+                                        echo "Error: " . $conn->error;
+                                    }
+                                    ?>
+                                </strong></p>
+                            </div>
+
+                            <?php
+
+                            $sql = "SELECT OrderQR FROM onlineorder WHERE OrderID = $orderidFK";
+                            $result = $conn->query($sql);
+
+                            if ($result) {
+                                $row = $result->fetch_assoc();
+
+                                if ($row) {
+                                    $orderQR = $row['OrderQR'];
+
+                                    // Display the QR Code image
+                                    echo "<div class='d-flex justify-content-between mb-3'>";
+                                    echo "<p class='m-0'><strong>QR Order:</strong></p>";
+                                    echo "<img src='data:image;base64, " . $orderQR . "' class='img-thumbnail menu-image' style='object-fit: cover; height: 80%; width: 80%;' alt='Menu Item Image'>";
+                                    echo "</div>";
+                                } else {
+                                    echo "<p class='m-0 text-danger'>No QR Code found for OrderID: $orderidFK</p>";
+                                }
+                            } else {
+                                // Handle the query error
+                                echo "Error: " . $conn->error;
+                            }
+                            ?>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success mb-2" disabled>Order Received</button>
+                            </div>
 
                               </div>
                           </div>

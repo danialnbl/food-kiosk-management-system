@@ -9,6 +9,7 @@ $items = $_SESSION['cart'];
 $userid = $_SESSION['User'];
 $kioskid = $_SESSION['KioskID'];
 $totalPrice = 0;
+$finalPrice = 0;
 
 foreach ($items as $item){
     $menuid = $item['id'];
@@ -16,7 +17,7 @@ foreach ($items as $item){
     $orderPrice = $item['price'];
     $quantity = $item['quantity'];
 
-    $totalPrice += $orderPrice;
+    $totalPrice += ($orderPrice*$quantity);
 
 }
 
@@ -25,6 +26,8 @@ $query = mysqli_query($conn, "INSERT INTO onlineorder (UserID, KioskID, OrderDat
 if($query){
 
     $orderidFK = mysqli_insert_id($conn);
+
+    $_SESSION['ordered'] = $orderidFK ;
 
     // QR here
     $pathQR = '../assets/img/qr/';
@@ -43,9 +46,10 @@ if($query){
             $itemName = $item['name'];
             $orderPrice = $item['price'];
             $quantity = $item['quantity'];
+            $finalPrice = $orderPrice* $quantity;
 
             $query3 = "INSERT INTO orderlist (OrderID, MenuID, Quantity, OrderTotalAmount )
-                        VALUES ('$orderidFK', '$menuid', '$quantity', '$orderPrice') ";
+                        VALUES ('$orderidFK', '$menuid', '$quantity', '$finalPrice') ";
             $result3 = mysqli_query($conn, $query3);
             
         }
