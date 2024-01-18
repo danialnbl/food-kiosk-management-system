@@ -124,6 +124,7 @@ if (!isset($_SESSION['User'])) {
 
     
     <script>
+        
         $(document).ready(function() {
 
             var UserID = document.getElementById('userID').value;
@@ -131,22 +132,33 @@ if (!isset($_SESSION['User'])) {
             $.post('../apiCust.php?getPoints=1', {
                 userID: UserID
             }, function(res) {
-                console.log(res);
+                console.log(res)
 
-                if (res.totalPoints != null) {
-                    $('#totalPointspan').html(res.totalPoints)
-                    var options = {
-                        series: [{
-                            name: "Total Points",
-                            data: res.totalPoints
-                        }],
-                        
-                    };
-
-                    var chart = new ApexCharts(document.querySelector("#chart"), options);
-                    chart.render();
+                if (res.totalPoints) {
+                    $('#totalPoints').html(res.totalPoints);
                 }
             }, 'json');
+
+
+            // $.post('../apiCust.php?getPoints=1', {
+            //     userID: UserID
+            // }, function(res) {
+            //     console.log(res);
+
+            //     if (res.totalPoints != null) {
+            //         $('#totalPointspan').html(res.totalPoints)
+            //         var options = {
+            //             series: [{
+            //                 name: "Total Points",
+            //                 data: res.totalPoints
+            //             }],
+                        
+            //         };
+
+            //         var chart = new ApexCharts(document.querySelector("#chart"), options);
+            //         chart.render();
+            //     }
+            // }, 'json');
 
             
 

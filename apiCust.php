@@ -7,23 +7,33 @@ error_reporting(0);
 
 
 // Collected points for customer
-if ($_POST['getPoints']) {
+if ($_GET['getPoints']) {
 
     $userID = $_POST['userID'];
+    $totalPoints = 0;
 
-    $sql = "SELECT TotalPointsEarned FROM membership INNER JOIN user ON membership.UserID = user.UserID WHERE membership.UserID = $userID";
+    $sql = "SELECT TotalPointsEarned FROM membership WHERE UserID = $userID";
     $result = $conn->query($sql);
-    $result = $result->fetch_all(MYSQLI_ASSOC);
+
+    if ($result) {
+        $row = $result->fetch_assoc();
+
+        // Store the TotalPointsEarned in another variable
+        $totalPoints = $row['TotalPointsEarned'];
 
 
-    foreach ($result as $row) {
-        $totalPoints[] = $row['TotalPointsEarned'];
+
+    } else {
+        // Handle the query error
+        echo "Error: " . $conn->error;
     }
 
     echo json_encode([
         "totalPoints" => $totalPoints,
     ],JSON_NUMERIC_CHECK );
     die;
+
+
 }
 
 
