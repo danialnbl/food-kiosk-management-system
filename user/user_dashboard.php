@@ -138,8 +138,15 @@ if (!isset($_SESSION['User'])) {
                     var options = {
                         series: [{
                             name: "Total Points",
-                            data: res.totalPoints
+                            data: [res.totalPoints]
                         }],
+
+                        chart: {
+                            type: 'bar', // Adjust the chart type if needed
+                        },
+                        xaxis: {
+                            categories: ['Points'], // You might need to adjust this based on your requirements
+                        },
                         
                     };
 

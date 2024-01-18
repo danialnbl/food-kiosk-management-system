@@ -7,7 +7,7 @@ error_reporting(0);
 
 
 // Collected points for customer
-if ($_POST['getPoints']) {
+if ($_GET['getPoints']) {
 
     $userID = $_POST['userID'];
 
@@ -15,6 +15,7 @@ if ($_POST['getPoints']) {
     $result = $conn->query($sql);
     $result = $result->fetch_all(MYSQLI_ASSOC);
 
+    $totalPoints = array();
 
     foreach ($result as $row) {
         $totalPoints[] = $row['TotalPointsEarned'];

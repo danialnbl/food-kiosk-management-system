@@ -87,12 +87,12 @@ if (!isset($_SESSION['User'])) {
                                   </div>
                                         <?php
                                             if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                                            $selectedPaymentMethod = $_POST["payment_method"];
+                                       
                                         
                                             echo "<p class='m-0'><strong>Points Earned:</strong></p>";
                                             echo "<p class='m-0 text-end'><strong><?= $index + 1 ?></strong></p>";
                                             echo "<p class='m-0'><strong>Payment Method:</strong></p>";
-                                            echo "<p>" . $selectedPaymentMethod;
+                                            echo "<p>Cash</p>";
                                             echo "<div class='d-flex justify-content-between mb-3'>";
                                             echo "<p class='m-0'><strong>QR Order:</strong></p>";
 
