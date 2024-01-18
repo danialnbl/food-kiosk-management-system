@@ -92,7 +92,7 @@ if ($_GET['getSales']) {
 //Get Sales
 if ($_GET['getIPSales']) {
 
-    $sql = "SELECT SUM(InPurchaseTotalPrice) SumTotalPrice, DATE_FORMAT(InPurchaseDate, '%M') OrderMonth from inpurchaseorder";
+    $sql = "SELECT SUM(InPurchaseTotalPrice) SumTotalPrice, DATE_FORMAT(InPurchaseDate, '%M') OrderMonth from inpurchaseorder  GROUP BY MONTH(InPurchaseDate)";
     $result = $conn->query($sql);
     $result = $result->fetch_all(MYSQLI_ASSOC);
 
