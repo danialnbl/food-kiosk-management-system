@@ -165,12 +165,13 @@ if (!isset($_SESSION['User'])) {
         $(document).ready(function() {
 
             var totalAllSales = 0;
+            var totalSales = 0;
 
             $.post('../apiAdmin.php?getCombinedSales=1', function(res) {
                 console.log(res);
 
                 if (res.length > 0) {
-                    var totalSales = 0;
+                    
 
                     // Iterate through the response data to get the total
                     res.forEach(function(item) {
@@ -178,7 +179,7 @@ if (!isset($_SESSION['User'])) {
                     });
 
                     // Display the total in the specified element
-                    $('#totalCombineSalespan').html("RM " + totalSales);
+                    $('#totalCombineSalespan').html("RM " + totalSales.toFixed(2));
 
                     var options = {
                         dataLabels: {
@@ -332,7 +333,7 @@ if (!isset($_SESSION['User'])) {
             var retonlineSales = parseFloat(onlineSales.replace('RM ','')); 
 
             
-
+            var totalSales
             var TotalAllSales = retInpurchaseSales + retonlineSales;
             $('#totalALLSalespan').html("RM " + TotalAllSales.toFixed(2))
         }, 5000);
