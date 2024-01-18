@@ -134,18 +134,8 @@ if (!isset($_SESSION['User'])) {
             }, function(res) {
                 console.log(res)
 
-                if (res.totalPoints != null) {
-                    $('#totalPointspan').html(res.totalPoints)
-                    var options = {
-                        series: [{
-                            name: "Total Points",
-                            data: res.totalPoints
-                        }],
-                        
-                    };
-
-                    var chart = new ApexCharts(document.querySelector("#chart"), options);
-                    chart.render();
+                if (res.totalPoints) {
+                    $('#totalPoints').html(res.totalPoints);
                 }
             }, 'json');
 

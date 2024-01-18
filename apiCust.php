@@ -21,7 +21,6 @@ if ($_GET['getPoints']) {
         // Store the TotalPointsEarned in another variable
         $totalPoints = $row['TotalPointsEarned'];
 
-    $totalPoints = array();
 
 
     } else {
